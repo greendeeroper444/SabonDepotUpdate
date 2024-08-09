@@ -1,0 +1,149 @@
+.customer-contact-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* background-color: #f8f8f8; */
+}
+
+.customer-contact-container  .customer-contact-content{
+    display: flex;
+    /* background-color: white; */
+    padding: 20px;
+    border-radius: 8px;
+    /* box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); */
+    max-width: 1200px;
+    width: 85%;
+}
+
+.customer-contact-container .customer-contact-form{
+    flex: 1;
+    padding: 20px;
+}
+
+.customer-contact-container .customer-contact-header{
+    font-size: 2rem;
+    font-weight: bold;
+    color: black;
+}
+
+.customer-contact-container .customer-contact-header span{
+    color: #077A37;
+}
+
+.customer-contact-container .welcome-message{
+    font-size: 1rem;
+    color: black;
+    margin-bottom: 20px;
+}
+
+.customer-contact-container .form-group{
+    margin-bottom: 15px;
+}
+
+.customer-contact-container .form-input{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(100% - 41px); 
+    padding-right: 30px;
+    outline: none;
+}
+
+.customer-contact-container .form-textarea{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(100% - 41px); 
+    padding-right: 30px;
+    outline: none;
+}
+
+.customer-contact-container .customer-contact-button-submit{
+    width: 100%;
+    padding: 10px;
+    background-color: #077A37;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin-top: 10px;
+}
+
+.customer-contact-container .customer-contact-button-submit:hover{
+    background-color: #08632e;
+}
+
+
+
+.customer-contact-container .customer-contact-number-email{
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.customer-contact-container .customer-contact-number-email .phone, 
+.customer-contact-container .customer-contact-number-email .email{
+    display: flex;
+    align-items: center;
+}
+
+.customer-contact-container .customer-contact-number-phone .phone .phone-content{
+    display: block;
+}
+
+
+.customer-contact-container .customer-contact-number-email .email .email-content{
+    display: block;
+}
+
+.customer-contact-container .customer-contact-number-email img{
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+}
+
+.customer-contact-container .customer-contact-number-email h6{
+    margin: 0;
+    font-size: 0.875rem;
+    color: black;
+}
+
+.customer-contact-container .customer-contact-number-email span{
+    font-size: 0.875rem;
+    color: gray;
+}
+
+
+/* map section */
+.customer-contact-container .map-section{
+    flex: 1;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    right: 0;
+}
+
+
+.customer-contact-container .map-section .gmap-frame{
+    position: relative;
+    right: 0;
+}
+
+
+
+
+
+
+
+@media (max-width: 968px){
+    .customer-contact-container  .customer-contact-content{
+        display: block;
+    }
+    .customer-contact-container .map-section{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+}

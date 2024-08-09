@@ -1,0 +1,104 @@
+.admin-sidebar{
+    width: 180px;
+    height: 100vh; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #ffffff;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow-y: hidden;
+    z-index: 1000;
+}
+
+.admin-sidebar .admin-sidebar-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.admin-sidebar .admin-sidebar-header .logo{
+    width: 120px;
+}
+
+.admin-sidebar .admin-sidebar-header h2{
+    font-size: 30px;
+    font-weight: 700;
+    color: #000;
+    margin: 0;
+}
+
+.admin-sidebar .admin-sidebar-list{
+    list-style: none;
+    padding: 0;
+    width: 100%;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item{
+    display: flex;
+    align-items: center;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #718096;
+    font-size: 15px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    outline: none;
+    cursor: pointer;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item-dropdown{
+    position: relative;
+    left: 50px;
+}
+
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item .sidebar-icon{
+    width: 24px;
+    margin-right: 20px;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item .sidebar-icon-active{
+    display: none;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item span{
+    flex-grow: 1;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item.active{
+    background-color: #077A37;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item.active .sidebar-icon{
+    display: none;
+}
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item.active .sidebar-icon-active{
+    display: inline-block;
+    width: 24px;
+    margin-right: 20px;
+}
+
+
+.admin-sidebar .admin-sidebar-list .admin-sidebar-item.active span{
+    color: #fff;
+}
+
+
+.admin-sidebar-hide{
+    display: none;
+}
+
+
+
+
+
+
+@media (max-width: 768px){
+    .original-admin-sidebar{
+        display: none;
+    }
+}

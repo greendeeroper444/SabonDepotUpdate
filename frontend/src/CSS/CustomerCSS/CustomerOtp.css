@@ -1,0 +1,145 @@
+.customer-otp-container{
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+  
+.customer-otp-container h2{
+    color: #2e7d32;
+}
+  
+.customer-otp-container p{
+    color: #555;
+    margin-bottom: 20px;
+}
+  
+.customer-otp-container .customer-otp-inputs{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+  
+.customer-otp-container .customer-otp-field{
+    width: 40px;
+    height: 40px;
+    margin: 0 5px;
+    text-align: center;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+}
+
+.customer-otp-container .customer-otp-field:hover,
+.customer-otp-container .customer-otp-field:focus{
+    border-color: #077A37;
+    box-shadow: 0 0 0 0.2rem rgba(112, 218, 139, 0.5);
+}
+  
+.customer-otp-container .timer{
+    margin-bottom: 10px;
+    color: #555;
+}
+  
+.customer-otp-container .resend{
+    margin-bottom: 20px;
+    color: #555;
+}
+  
+.customer-otp-container .resend-link{
+    color: red;
+    cursor: pointer;
+}
+  
+.customer-otp-container .submit-button{
+    background-color: #077A37;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+  
+.customer-otp-container .submit-button:hover{
+    background-color: #08632e;
+}
+
+
+
+
+/* vectors */
+
+.customer-otp-vectors{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.customer-otp-vectors .vector-left{
+    margin-left: -10px;
+}
+
+.customer-otp-vectors .vector-right{
+    margin-left: -10px;
+}
+
+/* end vectors */
+
+
+
+
+
+
+@media (max-width: 1500px){
+    .customer-otp-vectors{
+        width: 100%;
+        height: 35%;
+    }
+
+}
+
+
+@media (max-width: 1000px){
+    .customer-otp-vectors{
+        width: 100%;
+        height: 25%;
+    }
+
+}
+
+
+
+@media (max-width: 768px){
+    .customer-otp-vectors{
+        width: 100%;
+        height: 20%;
+    }
+
+}
+
+
+@media (max-width: 624px){
+    .customer-otp-vectors{
+        width: 100%;
+        height: 15%;
+    }
+
+}
+
+@media (max-width: 516px){
+    .customer-otp-vectors{
+        width: 100%;
+        height: 10%;
+    }
+
+}

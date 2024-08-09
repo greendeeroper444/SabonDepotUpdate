@@ -1,0 +1,150 @@
+.admin-navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    height: 90px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 20px;
+    background-color: white;
+    border-bottom: 1px solid #ECEDED;
+    z-index: 500;
+}
+
+.admin-navbar .admin-menu-burger button{
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.admin-navbar .admin-menu-burger button img{
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+.admin-navbar .admin-navbar-container{
+    display: flex;
+    justify-content: space-between;
+    margin-left: 185px;
+    align-items: center;
+    gap: 20px;
+    width: 90%;
+    box-sizing: border-box;
+    padding: 10px;
+    height: 90px;
+    padding: 40px;
+}
+
+.admin-navbar .admin-navbar-container .hi-span{
+    line-height: 5px;
+    margin-bottom: 10px;
+}
+.admin-navbar .admin-navbar-container .hi-span span{
+    line-height: 15px;
+}
+.admin-navbar .admin-navbar-container .admin-navbar-profile{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .notification-icon{
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .notification-count{
+    position: absolute;
+    top: -5px;
+    width: 17px;
+    height: 17px;
+    background-color: #202852;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .profile-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .profile-name{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .profile-role{
+    font-size: 14px;
+    color: #666;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .dropdown-icon{
+    width: 16px;
+    height: 12px;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .dropdown-menu{
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ECEDED;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.admin-navbar .admin-navbar-container .admin-navbar-profile .dropdown-menu button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+}
+
+
+
+
+@media (max-width: 768px){
+    .admin-navbar .admin-navbar-container{
+        display: flex;
+        justify-content: space-between;
+        margin-left: 0;
+        align-items: center;
+        gap: 20px;
+        width: 100%;
+        box-sizing: border-box;
+        padding: 10px;
+        height: 90px;
+        padding: 40px 30px;
+    }
+    .admin-navbar .admin-navbar-container .hi-span{
+        display: none;
+    }
+    /* .admin-navbar .admin-navbar-container .hi-span h2{
+        font-size: 16px;
+    }
+    .admin-navbar .admin-navbar-container .hi-span span{
+        font-size: 12px;
+    } */
+
+    .admin-navbar .admin-navbar-container .admin-navbar-profile{
+        position: absolute;
+        right: 0;
+        margin-right: 50px;
+    }
+}

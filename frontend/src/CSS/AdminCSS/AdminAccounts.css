@@ -1,0 +1,136 @@
+.admin-accounts-container{
+    padding: 50px 0;
+}
+
+
+.admin-accounts-container .admin-accounts-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background-color: #fff;
+    border-bottom: 1px solid #e0e0e0;
+}
+  
+.admin-accounts-container .admin-accounts-header h1{
+    margin: 0;
+    color: #077A37;
+    font-size: 1.5em;
+}
+  
+.admin-accounts-container .admin-accounts-header .search-bar{
+    display: flex;
+    align-items: center;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 8px;
+    width: 200px;
+}
+  
+.admin-accounts-container .admin-accounts-header .search-bar img{
+    margin-right: 8px;
+}
+  
+.admin-accounts-container .admin-accounts-header .search-bar input{
+    border: none;
+    outline: none;
+    width: 100%;
+}
+
+  
+.admin-accounts-container .admin-accounts-content{
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    gap: 20px;
+    padding: 16px;
+}
+  
+.admin-accounts-container .admin-accounts-card{
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+.admin-accounts-container .admin-accounts-card .card-info-name{
+    display: flex;
+    justify-content: flex-start;
+    gap: 20px;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 0.890em;
+}
+  
+.admin-accounts-container .admin-accounts-card .role-badge{
+    padding: 5px 10px;
+    border-radius: 12px;
+    color: #fff;
+}
+  
+.admin-accounts-container .admin-accounts-card  .role-badge.customer{
+    background-color: #2CBB1F;
+}
+  
+.admin-accounts-container .admin-accounts-card  .role-badge.staff{
+    background-color: #1FB4BB;
+}
+  
+.admin-accounts-container .admin-accounts-card  .account-card h3{
+    margin: 0;
+}
+  
+.admin-accounts-container .admin-accounts-card .card-info p{
+    margin: 4px 0;
+    font-size: 13px;
+}
+  
+.admin-accounts-container .admin-accounts-card  .delete-icon{
+    position: absolute;
+    top: 30px;
+    right: 16px;
+    color: #dc3545;
+    cursor: pointer;
+}
+  
+.admin-accounts-container .admin-accounts-card  .delete-icon img{
+    
+}
+  
+
+
+
+@media (max-width: 768px){
+    .admin-accounts-container{
+        padding: 0 0;
+    }
+    .admin-accounts-container .admin-accounts-content{
+        padding: 8px;
+    }
+   
+      
+}
+/* 
+
+@media (max-width: 467px){
+    .admin-accounts-container .admin-accounts-card{
+        width: 360px !important;
+    }
+}
+
+
+@media (max-width: 404px){
+    .admin-accounts-container .admin-accounts-card{
+        width: 75%;
+    }
+}
+
+@media (max-width: 467px){
+    .admin-accounts-container .admin-accounts-card{
+        width: 75%;
+    }
+} */

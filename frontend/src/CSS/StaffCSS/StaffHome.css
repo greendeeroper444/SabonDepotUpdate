@@ -1,0 +1,83 @@
+.staff-container{
+    padding: 50px 0;
+}
+.staff-container .staff-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.staff-container h1{
+    font-size: 1.5em;
+}
+  
+.staff-container .filter-options{
+    display: flex;
+    gap: 20px;
+    font-size: 15px;
+}
+  
+.staff-container .filter-options span{
+    cursor: pointer;
+    color: #888;
+}
+  
+.staff-container .filter-options .active{
+    color: #077A37;
+    font-weight: bold;
+}
+  
+.staff-container .transaction-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 50px;
+}
+  
+.staff-container .transaction-table th, .transaction-table td{
+    padding: 20px 15px;
+    text-align: left;
+}
+  
+.staff-container .transaction-table th{
+    background-color: #f9f9f9;
+    font-size: 15px;
+}
+
+.transaction-table tbody tr{
+    border-bottom: 1px solid #F2F2F2;
+    font-size: 13px;
+}
+  
+.staff-container .transaction-table tbody tr:hover{
+    background-color: #f1f1f1;
+}
+  
+.staff-container .status.complete{
+    color: #2CC56F;
+    background-color: #E6F6E9;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+  
+.staff-container .payment-status.paid{
+    color: #2CC56F;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+
+
+
+
+
+
+
+
+  
+@media screen and (max-width: 768px){
+    .staff-container .transaction-table th, .transaction-table td{
+        padding: 8px 10px;
+    }
+
+}
+  

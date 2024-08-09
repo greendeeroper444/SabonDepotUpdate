@@ -1,0 +1,63 @@
+.customer-hastag-sabon-depot-container{
+    text-align: center;
+}
+
+.customer-hastag-sabon-depot-container .customer-hastag-sabon-depot-header{
+    margin-top: 100px;
+}
+.customer-hastag-sabon-depot-container .customer-hastag-sabon-depot-header span{
+    font-size: 15px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hastag-sabon-depot-header h3{
+    font-size: 25px;
+}
+
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products{
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-image{
+    object-fit: cover;
+    border-radius: 5px;
+}
+
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-1{
+    width: 300px;
+    height: 400px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-2{
+    width: 180px;
+    height: 200px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-3{
+    width: 200px;
+    height: 250px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-4{
+    width: 300px;
+    height: 400px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-5{
+    width: 160px;
+    height: 210px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-6{
+    width: 120px;
+    height: 160px;
+}
+
+.customer-hastag-sabon-depot-container .customer-hashtag-sabon-depot-products .product-7{
+    width: 180px;
+    height: 230px;
+}

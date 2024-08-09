@@ -1,0 +1,141 @@
+.customer-home-main-container{
+    height: 100vh; 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 0 50px;
+    position: relative;
+}
+  
+.customer-home-main-container .customer-home-main-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+}
+  
+.customer-home-main-container .customer-home-main-popup{
+    position: relative;
+    background-color: #fff;
+    color: #111;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    width: 500px;
+    z-index: 1;
+    margin-bottom: 200px;
+}
+  
+.customer-home-main-container .close-icon{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+    font-size: 1.5em;
+    color: #077A37;
+}
+  
+.customer-home-main-container .customer-home-main-popup h1{
+    font-size: 2em;
+    margin-bottom: 10px;
+}
+
+.customer-home-main-container .customer-home-main-popup h1 span:nth-child(2){
+    color: #F9D704;
+}
+.customer-home-main-container .customer-home-main-popup h1 span:nth-child(3){
+    color: #077A37;
+}
+  
+.customer-home-main-container .discount{
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+  
+.customer-home-main-container .discount span{
+    color: #077A37;
+    font-weight: bold;
+}
+  
+.customer-home-main-container .customer-home-main-popup p{
+    font-size: 1em;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+  
+.customer-home-main-container .timer{
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+  
+.customer-home-main-container .timer p{
+    margin: 0;
+}
+  
+.customer-home-main-container .timer span{
+    font-size: 1.3em;
+    font-weight: bold;
+    color: #077A37;
+}
+  
+.customer-home-main-container .customer-home-main-popup button{
+    background-color: #077A37;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease;
+    font-weight: bold;
+    color: #fff;
+}
+  
+.customer-home-main-container .customer-home-main-popup button:hover,
+.customer-home-main-container .customer-home-main-popup button:focus{
+    box-shadow: 0 0 0 0.2rem rgba(116, 218, 112, 0.5);
+}
+  
+.customer-home-main-container .customer-home-content{
+    background-color: #077A37;
+    padding: 10px 20px;
+    color: white;
+    border-radius: 10px;
+    width: 400px;
+    height: 280px;
+    animation: bounce 2s infinite;
+}
+  
+.customer-home-main-container .customer-home-content button{
+    background-color: #FEF200;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: box-shadow 0.3s ease;
+    font-weight: bold;
+}
+  
+.customer-home-main-container .customer-home-content button:hover,
+.customer-home-main-container .customer-home-content button:focus{
+    box-shadow: 0 0 0 0.2rem rgba(218, 211, 112, 0.5);
+}
+  
+@keyframes bounce{
+        0%, 20%, 50%, 80%, 100%{
+        transform: translateY(0);
+    }
+        40%{
+        transform: translateY(-30px);
+    }
+        60%{
+        transform: translateY(-15px);
+    }
+}
+  

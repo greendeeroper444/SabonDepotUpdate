@@ -1,0 +1,231 @@
+.customer-register-container{
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 20px;
+    text-align: center;
+    /* border: 1px solid #ddd; */
+    border-radius: 8px;
+    /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
+}
+  
+.customer-register-container .customer-register-header{
+    color: #077A37;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+  
+.customer-register-container .welcome-message{
+    font-size: 16px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+  
+.customer-register-container .customer-register-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+.customer-register-container .form-group{
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: left;
+}
+  
+.customer-register-container .form-group label{
+    display: block;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+  
+.customer-register-container .form-group .form-input{
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    width: calc(100% - 41px); 
+    padding-right: 30px;
+    outline: none;
+}
+
+  
+.customer-register-container .form-group .form-input:focus,
+.customer-register-container .form-group .form-input:hover{
+    border-color: #077A37;
+    box-shadow: 0 0 0 0.2rem rgba(112, 218, 139, 0.5);
+}
+
+.customer-register-container .password-input{
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+  
+.customer-register-container .password-icon{
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: grey;
+}
+
+
+/* .customer-register-container .input-keep-signed-up{
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 20px;
+    justify-content: flex-start;
+}
+  
+.customer-register-container .input-keep-signed-up .checkbox{
+    margin-right: 10px;
+} */
+
+.customer-register-container .terms-of-service{
+    text-decoration: none;
+    color: #077A37;
+    font-weight: bold;
+}
+
+.customer-register-container .customer-register-button{
+    width: 100%;
+    padding: 10px;
+    background-color: #077A37;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.customer-register-container .customer-register-button:hover,
+.customer-register-container .customer-register-button:focus{
+    background-color: #08632e;
+}
+  
+.customer-register-container .or-sign-up{
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+    width: 100%;
+}
+  
+.customer-register-container .divider-line{
+    flex-grow: 1;
+    height: 1px;
+    background-color: #ddd;
+}
+
+.customer-register-container .divider-text{
+    margin: 0 10px;
+    color: #a3a3a3;
+    padding: 5px 10px;
+    background-color: #f1f1f1;
+}
+
+  
+.customer-register-container .google-register-button{
+    width: 100%;
+    padding: 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+  
+.customer-register-container .google-register-button img{
+    height: 20px;
+    margin-right: 10px;
+}
+
+.customer-register-button .already-account{
+    display: flex;
+    justify-content: space-between;
+}
+.customer-register-container .signin-here{
+    font-size: 14px;
+    color: #077A37;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+
+
+
+/* vectors */
+
+.customer-register-vectors{
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: -1;
+}
+
+.customer-register-vectors .vector-left{
+    margin-left: -10px;
+}
+
+.customer-register-vectors .vector-right{
+    margin-left: -10px;
+}
+
+/* end vectors */
+
+
+
+
+
+@media (max-width: 1500px){
+    .customer-register-vectors{
+        width: 100%;
+        height: 35%;
+    }
+
+}
+
+
+@media (max-width: 1000px){
+    .customer-register-vectors{
+        width: 100%;
+        height: 25%;
+    }
+
+}
+
+
+
+@media (max-width: 768px){
+    .customer-register-vectors{
+        width: 100%;
+        height: 20%;
+    }
+
+}
+
+
+@media (max-width: 624px){
+    .customer-register-vectors{
+        width: 100%;
+        height: 15%;
+    }
+
+}
+
+@media (max-width: 516px){
+    .customer-register-vectors{
+        width: 100%;
+        height: 10%;
+    }
+
+}

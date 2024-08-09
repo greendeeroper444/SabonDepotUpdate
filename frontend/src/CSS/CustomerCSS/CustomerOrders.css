@@ -1,0 +1,105 @@
+.customer-orders-container{
+    max-width: 1000px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+    padding: 20px;
+}
+  
+.customer-orders-container h1{
+    font-size: 28px;
+    margin-bottom: 20px;
+    text-align: start;
+}
+  
+.customer-orders-container .customer-orders-filters{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+  
+.customer-orders-container .customer-orders-filters button,
+.customer-orders-container .customer-orders-filters select{
+    padding: 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+}
+  
+.customer-orders-container .customer-orders-order{
+    border: 1px solid #e6e6e6;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    background-color: #fafafa;
+}
+  
+.customer-orders-container .order-header,
+.customer-orders-container .order-details{
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e6e6e6;
+}
+  
+.customer-orders-container .order-header span,
+.customer-orders-container .order-details span{
+    flex: 1;
+    text-align: center;
+}
+  
+.customer-orders-container .order-feedback{
+    background-color: #ffffe0;
+    padding: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+}
+  
+.customer-orders-container .customer-orders-order-items{
+    margin-top: 20px;
+}
+  
+.customer-orders-container .customer-orders-order-items .order-item{
+    display: flex;
+    align-items: center;
+    border: 1px solid #e6e6e6;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+  
+.customer-orders-container .customer-orders-order-items .order-item img{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 20px;
+}
+  
+.customer-orders-container .customer-orders-order-items .item-details{
+    flex: 1;
+}
+  
+.customer-orders-container .customer-orders-order-items .item-details h3{
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+  
+.customer-orders-container .customer-orders-order-items .item-details span{
+    display: block;
+    margin-bottom: 10px;
+    color: #888;
+}
+  
+.customer-orders-container .customer-orders-order-items .item-details button{
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: white;
+    cursor: pointer;
+    margin-right: 10px;
+    border-radius: 4px;
+}
+  
+.customer-orders-container .customer-orders-order-items .item-details button:hover{
+    background-color: #f0f0f0;
+}
+  

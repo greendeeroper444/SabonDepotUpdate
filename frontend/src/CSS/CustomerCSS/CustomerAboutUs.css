@@ -1,0 +1,83 @@
+.customer-about-us-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+  
+.customer-about-us-container .customer-about-us-content{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    /* max-width: 1200px; */
+    margin-top: 25px;
+}
+  
+.customer-about-us-container .vision-mission-content{
+    width: 60%;
+    padding: 30px 50px;
+}
+  
+.customer-about-us-container .our-vision, .our-mission{
+    margin-bottom: 40px;
+}
+  
+.customer-about-us-container .our-vision h1, .our-mission h1{
+    font-family: 'Roboto', sans-serif;
+    font-size: 24px;
+    color: #003d00;
+    margin-bottom: 10px;
+    position: relative;
+}
+  
+
+.customer-about-us-container .our-vision img, .our-mission img{
+    width: 150px;
+    margin-bottom: 20px;
+}
+  
+.customer-about-us-container .our-vision p, .our-mission p{
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #333;
+    line-height: 1.6;
+    text-align: justify;
+}
+  
+.customer-about-us-container .background-image-content{
+    width: 40%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.customer-about-us-container .background-image{
+    position: absolute;
+    right: 0;
+}
+.customer-about-us-container .background-image img{
+    width: 100%;
+    max-width: 400px;
+    height: auto;
+    position: relative;
+    z-index: -1;
+}
+  
+
+
+@media (max-width: 768px){
+    .customer-about-us-container .customer-about-us-content{
+        display: block;
+    }
+
+    .customer-about-us-container .vision-mission-content{
+        width: 90%;
+        padding: 30px 30px;
+    }
+    /* .customer-about-us-container .background-image{
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin-top: 350px;
+    } */
+}

@@ -1,0 +1,23 @@
+.customer-shop-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 200px;
+    background: linear-gradient(to right, #FAF050, #948E2F 100%);
+    color: black;
+}
+  
+.customer-shop-header h1{
+    margin: 0;
+    font-size: 50px;
+}
+  
+.customer-shop-header h6{
+    margin: 5px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+}
+  

@@ -1,0 +1,210 @@
+.staff-payment-container{
+    display: flex;
+    justify-content: space-between;
+    padding: 50px 0;
+}
+  
+.staff-payment-container .staff-payment-order-details{
+    width: 90%;
+    padding: 20px 10px;
+    padding-right: 20px;
+}
+.staff-payment-container .staff-payment-payment-details{
+    width: 40%;
+    padding-left: 20px;
+    padding: 20px 40px;
+    border-left: 1px solid #ECEDED;
+}
+
+  
+.staff-payment-container .staff-payment-order-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+  
+.staff-payment-container .staff-payment-order-header .order-number{
+    font-size: 1.5em;
+}
+  
+.staff-payment-container .staff-payment-order-header .time{
+    font-size: 15px;
+    color: #4CAF50;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-weight: 500;
+}
+
+.staff-payment-container .staff-payment-order-header .time img{
+    margin-right: -12px;
+    width: 15px;
+    height: 15px;
+}
+  
+  
+.staff-payment-container .staff-payment-order-header .time span:nth-child(2){
+   color: #2C3832;
+   font-size: 12px;
+}
+
+.staff-payment-container .staff-payment-order-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+  
+.staff-payment-container .staff-payment-order-table th,
+.staff-payment-container .staff-payment-order-table td{
+    padding: 20px 15px;
+    border-bottom: 1px solid #e0e0e0;
+    text-align: left;
+}
+  
+.staff-payment-container .staff-payment-order-table th{
+    background-color: #f9f9f9;
+}
+  
+.staff-payment-container .staff-payment-order-table .item{
+    display: flex;
+    justify-content: space-between;
+}
+  
+.staff-payment-container .staff-payment-order-action-add{
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+  
+.staff-payment-container .staff-payment-order-action-add .add-product{
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    background-color: #1366D9;
+    color: #fff;
+    border-radius: 5px;
+}
+.staff-payment-container .staff-payment-order-action-add .add-product:hover,
+.staff-payment-container .staff-payment-order-action-add .add-product:focus{
+    background-color: transparent;
+    border: 1px solid #1366D9;
+    color: #1366D9;
+    padding: 9px 20px;
+}
+
+
+
+.staff-payment-container .staff-payment-order-action-cancel{
+    display: flex;
+    justify-content: center;
+    margin-top: 100px;
+    width: 100%;
+}
+  
+
+.staff-payment-container .staff-payment-order-action-cancel .cancel-order{
+    padding: 1.2rem 15rem;
+    border: none;
+    cursor: pointer;
+    background-color: #EC5A5A;
+    color: #fff;
+    border-radius: 10px;
+}
+  
+
+
+
+  
+.staff-payment-container .payment-summary{
+    border-radius: 5px;
+}
+  
+.staff-payment-container .payment-summary .payable-amount{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #A9A9A9;
+}
+
+.staff-payment-container .payment-summary .payable-amount span:nth-child(1){
+    font-size: 1.5em;
+}
+  
+
+.staff-payment-container .payment-summary .payable-amount span:nth-child(2){
+    font-size: 1.5em;
+    color: #077A37;
+}
+
+
+.staff-payment-container .payment-summary .cash-euro{
+   padding: 10px;
+   margin-top: 100px;
+}
+
+.staff-payment-container .payment-summary .cash-euro button{
+    padding: 10px 25px;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+    background-color: #EAF0F0;
+ }
+ 
+
+
+
+
+.staff-payment-container .payment-summary .cash-received{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 20px 10px;
+    background-color: #ECF3F5;
+    border: 1px dashed #A9A9A9;
+    margin-top: 20px;
+}
+
+.staff-payment-container .payment-summary .cash-received span:nth-child(1){
+    font-weight: bold;
+}
+
+.staff-payment-container .payment-summary .cash-received span:nth-child(2){
+    font-size: 1.5em;
+    color: #077A37;
+}
+
+
+
+.staff-payment-container .payment-summary .subtotal,
+.staff-payment-container .payment-summary .service-charge{
+    display: flex;
+    justify-content: space-between;
+    line-height: 1px;
+    font-weight: bold;
+    padding: 20px 0;
+}
+
+  
+.staff-payment-container .payment-summary .total{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.5em;
+    margin-top: 20px;
+    padding: 50px 30px;
+    border-top: 1px dashed #A9A9A9;
+}
+  
+.staff-payment-container .payment-summary .pay-now{
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #077A37;
+    color: #fff;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    font-size: 1em;
+}

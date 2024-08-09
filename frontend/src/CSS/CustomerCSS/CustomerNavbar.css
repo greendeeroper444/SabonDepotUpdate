@@ -1,0 +1,183 @@
+.customer-navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: white;
+    /* box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); */
+    z-index: 1000;
+}
+
+.customer-navbar .customer-navbar-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    width: 97%;
+    box-sizing: border-box;
+}
+ 
+.customer-navbar .customer-navbar-container .customer-navbar-logo{
+    display: flex;
+    align-items: center;
+}
+.customer-navbar .customer-navbar-container .customer-navbar-logo .logo-depot{
+    height: 80px;
+    margin-right: 10px;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-logo .sabon{
+    color: #F9D704;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-logo .depot{
+   color: #077A37;
+}
+
+  
+.customer-navbar .customer-navbar-container .customer-navbar-logo span{
+    font-size: 24px;
+    font-weight: bold;
+}
+  
+.customer-navbar .customer-navbar-container .customer-navbar-links{
+    list-style: none;
+    display: flex;
+    align-items: center;
+    right: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-links .active{
+    color: #077A37 !important;
+    font-weight: 500;
+}
+  
+.customer-navbar .customer-navbar-container .customer-navbar-links li{
+    margin-left: 20px;
+}
+  
+.customer-navbar .customer-navbar-container .customer-navbar-links .link{
+    text-decoration: none;
+    color: #343434;
+    font-size: 16px;
+}
+  
+.customer-navbar .customer-navbar-container .customer-navbar-links .link:hover{
+    color: #077A37;
+    font-weight: 500;
+}
+  
+
+.customer-navbar .customer-navbar-container .customer-navbar-links .profile-picture{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+
+
+.customer-navbar .customer-navbar-container .customer-menu-burger{
+    display: none;
+}
+
+.customer-navbar .customer-navbar-container .customer-menu-burger button{
+    border: none;
+    background: none;
+    cursor: pointer;
+}
+
+.customer-navbar .customer-navbar-container .customer-menu-burger button img{
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+}
+
+
+
+.customer-navbar .customer-navbar-container .customer-navbar-dropdown-container{
+    position: relative;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-dropdown-trigger{
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+
+.customer-navbar .customer-navbar-container .profile-picture{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-dropdown-menu{
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    z-index: 1001;
+    width: 200px;
+    padding: 10px 0;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-dropdown-menu::before{
+    content: '';
+    position: absolute;
+    top: -10px;
+    right: 10px;
+    border-width: 0 10px 10px 10px;
+    border-style: solid;
+    border-color: transparent transparent #ccc transparent;
+    z-index: -1;
+}
+
+.customer-navbar .customer-navbar-container .customer-navbar-dropdown-menu::after{
+    content: '';
+    position: absolute;
+    top: -9px;
+    right: 10px;
+    border-width: 0 9px 9px 9px;
+    border-style: solid;
+    border-color: transparent transparent white transparent;
+    z-index: 0;
+}
+
+.customer-navbar .customer-navbar-container .dropdown-item{
+    padding: 10px;
+    color: #343434;
+    text-decoration: none;
+    font-size: 16px;
+}
+
+.customer-navbar .customer-navbar-container .dropdown-item:hover{
+    background-color: #f1f1f1;
+    /* color: #077A37;
+    font-weight: 500; */
+}
+
+
+
+@media (max-width: 768px){
+    .customer-navbar .customer-navbar-container .customer-navbar-links{
+        display: none;
+    }
+
+    .customer-navbar .customer-navbar-container .customer-menu-burger{
+        display: block;
+        padding: 0 20px;
+    }
+}

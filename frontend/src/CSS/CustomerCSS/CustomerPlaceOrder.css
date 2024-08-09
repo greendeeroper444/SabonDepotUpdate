@@ -1,0 +1,187 @@
+.customer-place-order-container{
+    padding: 20px;
+    margin: 0 auto;
+    font-family: Arial, sans-serif;
+}
+  
+.customer-place-order-container .customer-place-order-header{
+    border-top: 1px solid #ddd;
+    padding: 50px 0;
+}
+  
+.customer-place-order-container .breadcrumb{
+    font-size: 14px;
+    color: #888;
+}
+  
+.customer-place-order-container .order-id{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+  
+.customer-place-order-container .order-id h2{
+    font-size: 20px;
+    margin: 0;
+}
+  
+.customer-place-order-container .invoice-button{
+    padding: 10px 10px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    border-radius: 10px;
+}
+  
+.customer-place-order-container .invoice-button:hover{
+    background-color: #ddd;
+}
+  
+.customer-place-order-container .order-details{
+    margin-top: 10px;
+}
+  
+.customer-place-order-container .order-details p{
+    margin: 5px 0;
+    font-size: 14px;
+}
+  
+.customer-place-order-container .order-details span{
+    font-weight: bold;
+}
+  
+.customer-place-order-container .estimated-delivery{
+    color: #4CAF50;
+}
+  
+.customer-place-order-container .customer-place-order-progress-tracker{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+}
+  
+.customer-place-order-container .status{
+    text-align: center;
+    flex: 1;
+    position: relative;
+}
+  
+.customer-place-order-container .status p{
+    margin: 5px 0;
+    font-size: 14px;
+    color: #b0b0b0;
+}
+  
+.customer-place-order-container .status span{
+    font-size: 12px;
+    color: #b0b0b0;
+}
+  
+.customer-place-order-container .status-circle{
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: #ddd;
+    margin: 0 auto;
+}
+  
+.customer-place-order-container .status-circle.active{
+    background-color: #2ecc71;
+}
+  
+.customer-place-order-container .status.confirmed p,
+.customer-place-order-container .status.confirmed span{
+    color: #2ecc71;
+}
+  
+.customer-place-order-container .status + .status::before{
+    content: '';
+    position: absolute;
+    left: 0;
+    transform: translateX(-50%) translateY(-50%);
+    width: 100%;
+    height: 2px;
+    background-color: #ddd;
+    z-index: -1;
+}
+  
+.customer-place-order-container .status-circle.active + .status::before{
+    background-color: #2ecc71;
+}
+  
+.customer-place-order-container .customer-place-order-item{
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+    border-bottom: 1px solid #ddd;
+}
+  
+.customer-place-order-container .item-image img{
+    width: 60px;
+    height: auto;
+    border-radius: 4px;
+}
+  
+.customer-place-order-container .item-details{
+    flex: 1;
+    margin-left: 15px;
+}
+  
+.customer-place-order-container .item-details h3{
+    margin: 0;
+    font-size: 18px;
+}
+  
+.customer-place-order-container .item-details p{
+    margin: 5px 0 0;
+    color: #888;
+    font-size: 14px;
+}
+  
+.customer-place-order-container .item-price{
+    text-align: right;
+}
+  
+.customer-place-order-container .item-price p{
+    margin: 0;
+    font-size: 14px;
+}
+  
+
+
+
+
+
+
+
+.customer-place-order-payment, 
+.customer-place-order-delivery{
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+}
+
+.customer-place-order-payment h4, 
+.customer-place-order-delivery h4{
+    margin: 0 0 5px 0;
+    font-weight: bold;
+}
+
+.customer-place-order-summary h4{
+    font-weight: bold;
+    border-bottom: 1px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.customer-place-order-total{
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.2em;
+    font-weight: bold;
+}

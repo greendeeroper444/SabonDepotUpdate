@@ -1,0 +1,33 @@
+.customer-trending-products-container{
+    text-align: center;
+    padding: 0 15px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.customer-trending-products-container .customer-trending-products-header{
+    margin-top: 100px;
+    font-size: 25px;
+}
+
+.customer-trending-products-container .customer-trending-products-content{
+    display: flex;
+    justify-content: center;
+    padding: 50px;
+}
+
+
+.customer-trending-products-container .slick-slide img{
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+
+.customer-trending-products-container .slick-dots li button:before{
+    color: #000; 
+}
+
+.customer-trending-products-container .slick-dots li.slick-active button:before{
+    color: #ff6600;
+}

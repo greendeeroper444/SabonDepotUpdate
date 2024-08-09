@@ -1,0 +1,137 @@
+.staff-payment-method-modal-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.staff-payment-method-modal-container .staff-payment-method-modal-content{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 90%;
+    max-width: 400px;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.staff-payment-method-modal-container .modal-close{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.staff-payment-method-modal-container .modal-body{
+    padding: 20px;
+}
+
+.staff-payment-method-modal-container .modal-header{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.staff-payment-method-modal-container .modal-icon{
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+
+.staff-payment-method-modal-container .modal-icon.success-icon{
+    color: green;
+}
+
+.staff-payment-method-modal-container .modal-icon.pending-icon{
+    color: yellow;
+}
+
+.staff-payment-method-modal-container .modal-header h2{
+    margin: 10px 0;
+}
+
+.staff-payment-method-modal-container .modal-header p{
+    color: #666;
+}
+
+.staff-payment-method-modal-container .payment-total{
+    margin: 20px 0;
+}
+
+.staff-payment-method-modal-container .payment-total h3{
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.staff-payment-method-modal-container .payment-total p{
+    font-size: 24px;
+    font-weight: bold;
+    margin: 0;
+}
+
+.staff-payment-method-modal-container .payment-details{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 10px 0px;
+}
+
+.staff-payment-method-modal-container .detail{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 5px;
+}
+
+.staff-payment-method-modal-container .detail span{
+    font-size: 14px;
+}
+
+.staff-payment-method-modal-container .detail span:last-child{
+    font-weight: bold;
+}
+
+.staff-payment-method-modal-container .modal-footer{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #eaeaea;
+    padding-bottom: 5px;
+}
+
+.staff-payment-method-modal-container .modal-footer .approve-button{
+    padding: 10px 10px;
+    background-color: #077A37;
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.staff-payment-method-modal-container .modal-footer .approve-button:disabled{
+    background-color: #aaa;
+    cursor: not-allowed;
+}
+
+.staff-payment-method-modal-container .modal-footer .decline-button{
+    padding: 10px 10px;
+    background-color: #EC5A5A;
+    border: none;
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.staff-payment-method-modal-container .modal-footer .decline-button:hover{
+    background-color: #d94a4a;
+}

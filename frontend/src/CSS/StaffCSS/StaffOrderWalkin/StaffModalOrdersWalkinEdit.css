@@ -1,0 +1,108 @@
+.staff-modal-order-walkin-edit-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content{
+    background: white;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    /* height: 90%; */
+    border: 3px solid #000;
+    padding: 40px 50px;
+    border-radius: 20px;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text label{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text div{
+    margin-right: 150px;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text input,
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text select{
+    width: calc(100% - 40px);
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text label{
+    flex: 0 0 150px;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .label-text div{
+    flex: 1;
+}
+  
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content .staff-modal-order-walkin-edit-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    float: right;
+}
+  
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button{
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+  
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button:nth-child(1){
+    background-color: #077A37;
+}
+
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button:nth-child(1):hover, 
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button:nth-child(1):focus{
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid #077A37;
+    color: #077A37;
+}
+  
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button:nth-child(2){
+    background-color: #EC5A5A;
+}
+  
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button:nth-child(2):hover, 
+.staff-modal-order-walkin-edit-container .staff-modal-order-walkin-edit-content button:nth-child(2):focus{
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid #EC5A5A;
+    color: #EC5A5A;
+}
+  

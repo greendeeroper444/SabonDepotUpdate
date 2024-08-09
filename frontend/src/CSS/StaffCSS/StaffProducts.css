@@ -1,0 +1,103 @@
+.staff-products-container{
+    padding: 50px 0;
+}
+  
+.staff-products-container .staff-products-header{
+    text-align: left;
+    margin-bottom: 20px;
+}
+  
+.staff-products-container .staff-products-header h1{
+    color: #221FC5;
+    font-size: 1.5em;
+}
+  
+.staff-products-container .staff-products-header h2{
+    color: #C51F29;
+    font-size: 1.2em;
+}
+  
+.staff-products-container .staff-products-controls{
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 20px;
+}
+  
+.staff-products-container .staff-products-controls button:nth-child(1){
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: #1366D9;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.staff-products-container .staff-products-controls button:nth-child(1):hover, 
+.staff-products-container .staff-products-controls button:nth-child(1):focus{
+    background-color: transparent;
+    border: 1px solid #1366D9;
+    color: #1366D9;
+}
+  
+
+.staff-products-container .staff-products-controls button:nth-child(2){
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: transparent;
+    color: #5D6679;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    border: 1px solid #D0D3D9;
+}
+
+.staff-products-container .staff-products-controls button:nth-child(2):hover, 
+.staff-products-container .staff-products-controls button:nth-child(2):focus{
+    background-color: #1366D9;
+    color: white;
+}
+  
+.staff-products-container .staff-products-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+.staff-products-container .staff-products-table tbody tr .actions-tbody{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+  
+
+.staff-products-container .staff-products-table .button-edit-icon, .button-delete-icon{
+    border: none;
+    background: none;
+    padding: 0;
+    cursor: pointer;
+}
+  
+  
+.staff-products-container .staff-products-table th, .staff-products-table td{
+    border-bottom: 1px solid #F2F2F2;
+    padding: 20px 15px;
+    text-align: left;
+}
+  
+.staff-products-container .staff-products-table th{
+    background-color: #f2f2f2;
+    color: black;
+}
+  
+.staff-products-container .staff-products-table .in-stock{
+    color: #10A760;
+}
+  
+.staff-products-container .staff-products-table .out-of-stock{
+    color: #DA3E33;
+}
+  
+.staff-products-container .staff-products-table .low-stock{
+    color: #E19133;
+}

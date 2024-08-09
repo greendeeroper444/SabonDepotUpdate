@@ -1,0 +1,162 @@
+.staff-navbar{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    background-color: white;
+    border-bottom: 1px solid #ECEDED;
+    z-index: 1000;
+}
+
+.staff-navbar .staff-navbar-container{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    width: 97%;
+    box-sizing: border-box;
+}
+
+.staff-navbar .staff-navbar-container .active{
+    color: #077A37 !important;
+    font-weight: 500;
+}
+ 
+.staff-navbar .staff-navbar-container .staff-navbar-logo{
+    display: flex;
+    align-items: center;
+}
+.staff-navbar .staff-navbar-container .staff-navbar-logo .logo-depot{
+    height: 80px;
+    margin-right: 10px;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-logo .sabon{
+    color: #F9D704;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-logo .depot{
+   color: #077A37;
+}
+
+  
+.staff-navbar .staff-navbar-container .staff-navbar-logo span{
+    font-size: 24px;
+    font-weight: bold;
+}
+
+
+.staff-navbar .staff-navbar-container .staff-navbar-content{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 100%;
+}
+
+.staff-navbar .staff-navbar-container form{
+    display: flex;
+    align-items: center;
+    background-color: #f1f5f7;
+    border-radius: 8px;
+    padding: 5px 5px;
+    width: 100%;
+    max-width: 400px;
+}
+  
+.staff-navbar .staff-navbar-container .search-input{
+    border: none;
+    background: transparent;
+    outline: none;
+    padding: 10px;
+    font-size: 16px;
+    flex: 1;
+    color: #6c757d;
+}
+  
+.staff-navbar .staff-navbar-container .search-button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    position: relative;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-icon{
+    width: 30px;
+    height: 30px;
+    object-fit: contain;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-count{
+    position: absolute;
+    top: -5px;
+    width: 17px;
+    height: 17px;
+    background-color: #202852;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 9px;
+    font-weight: bold;
+    margin-left: 15px;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .profile-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .profile-name{
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .profile-role{
+    font-size: 14px;
+    color: #666;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .dropdown-icon{
+    width: 16px;
+    height: 12px;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .dropdown-menu{
+    position: absolute;
+    top: 50px;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ECEDED;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    padding: 10px;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .dropdown-menu button{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+}

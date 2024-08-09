@@ -1,0 +1,59 @@
+.cart-modal-product-delete-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.cart-modal-product-delete-container .cart-modal-product-delete-modal{
+    background: white;
+    padding: 30px 70px;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.cart-modal-product-delete-container .cart-modal-product-delete-modal-buttons{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.cart-modal-product-delete-container .cart-modal-product-delete-modal-buttons button{
+    margin: 0 10px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.cart-modal-product-delete-modal-buttons button:nth-child(1){
+    background-color: #077A37;
+    color: white;
+}
+
+.cart-modal-product-delete-modal-buttons button:nth-child(1):hover,
+.cart-modal-product-delete-modal-buttons button:nth-child(1):focus{
+    background-color: transparent;
+    color: #077A37;
+    padding: 9px 19px;
+    border: 1px solid #077A37;
+}
+
+.cart-modal-product-delete-modal-buttons button:nth-child(2){
+    background-color: #7a0707;
+    color: white;
+}
+
+.cart-modal-product-delete-modal-buttons button:nth-child(2):hover,
+.cart-modal-product-delete-modal-buttons button:nth-child(2):focus{
+    background-color: transparent;
+    color: #7a0707;
+    padding: 9px 19px;
+    border: 1px solid #7a0707;
+}

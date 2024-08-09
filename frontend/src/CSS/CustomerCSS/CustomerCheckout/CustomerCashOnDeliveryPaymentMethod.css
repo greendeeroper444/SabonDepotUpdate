@@ -1,0 +1,93 @@
+.customer-delivery-payment-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.customer-delivery-payment-container .customer-delivery-payment-content{
+    background: white;
+    padding: 30px 40px;
+    border-radius: 10px;
+    width: 320px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.5s ease-in-out;
+    position: relative;
+}
+
+.customer-delivery-payment-container .customer-delivery-payment-content.slide-center{
+    transform: translateX(0);
+}
+
+.customer-delivery-payment-container .step-content{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.customer-delivery-payment-container h2{
+    font-size: 1.5em;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.customer-delivery-payment-container .company-number{
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: #555;
+}
+
+.customer-delivery-payment-container p{
+    margin-bottom: 10px;
+    color: #666;
+}
+
+
+.customer-delivery-payment-container .input-field{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1em;
+}
+
+.customer-delivery-payment-container .modal-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.customer-delivery-payment-container .modal-buttons button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.customer-delivery-payment-container .cancel-button{
+    background-color: #ccc;
+    color: #fff;
+}
+
+.customer-delivery-payment-container .cancel-button:hover{
+    background-color: #bbb;
+}
+
+.customer-delivery-payment-container .next-button, .submit-button{
+    background-color: #077A37;
+    color: #fff;
+}
+
+.customer-delivery-payment-container .next-button:hover, .submit-button:hover{
+    background-color: #065a29;
+}

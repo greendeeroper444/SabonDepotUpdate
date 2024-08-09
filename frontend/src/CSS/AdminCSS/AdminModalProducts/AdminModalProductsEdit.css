@@ -1,0 +1,167 @@
+.admin-modal-products-edit-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content{
+    background: white;
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    /* height: 50%; */
+    border: 3px solid #000;
+    padding: 40px 50px;
+    border-radius: 20px;
+}
+
+.admin-modal-products-edit-image-upload{
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.admin-modal-products-edit-image-upload label{
+    cursor: pointer;
+}
+
+.admin-modal-products-edit-image-upload .upload-placeholder{
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    background: #f0f0f0;
+    border-radius: 5px;
+}
+
+.admin-modal-products-edit-image-upload-right{
+    display: flex;
+    flex-direction: column;
+}
+
+.admin-modal-products-edit-image-upload-right .upload-instructions{
+    margin-left: 20px;
+    margin-bottom: 20px;
+    font-size: 12px;
+    color: #888;
+}
+
+.admin-modal-products-edit-image-upload-right .file-input-container{
+    display: flex;
+    align-items: center;
+    margin-left: 20px;
+    position: relative;
+}
+
+.admin-modal-products-edit-image-upload-right .file-input-container input[type="file"]{
+    display: none;
+}
+
+.admin-modal-products-edit-image-upload-right .file-input-container .file-input-label{
+    background-color: #fff;
+    color: #10B981;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    border: 1px solid #10B981;
+}
+
+.admin-modal-products-edit-image-upload-right .file-input-container .file-input-text{
+    color: #888;
+}
+
+
+
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text{
+    display: flex;
+    margin-bottom: 20px;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+  
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text label{
+    display: block;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text div{
+    margin-right: 150px;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text input,
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text select{
+    width: calc(100% - 40px);
+    padding: 10px 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+    margin-top: 10px;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text label{
+    flex: 0 0 150px;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content .label-text div{
+    flex: 1;
+}
+
+  
+.admin-modal-products-edit-container .admin-modal-products-edit-content .admin-modal-products-edit-buttons{
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    float: right;
+}
+  
+.admin-modal-products-edit-container .admin-modal-products-edit-content button{
+    width: 48%;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    text-align: center;
+}
+  
+.admin-modal-products-edit-container .admin-modal-products-edit-content button:nth-child(1){
+    background-color: #077A37;
+}
+
+.admin-modal-products-edit-container .admin-modal-products-edit-content button:nth-child(1):hover, 
+.admin-modal-products-edit-container .admin-modal-products-edit-content button:nth-child(1):focus{
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid #077A37;
+    color: #077A37;
+}
+  
+.admin-modal-products-edit-container .admin-modal-products-edit-content button:nth-child(2){
+    background-color: #EC5A5A;
+}
+  
+.admin-modal-products-edit-container .admin-modal-products-edit-content button:nth-child(2):hover, 
+.admin-modal-products-edit-container .admin-modal-products-edit-content button:nth-child(2):focus{
+    padding: 8px;
+    background-color: transparent;
+    border: 1px solid #EC5A5A;
+    color: #EC5A5A;
+}
+  
