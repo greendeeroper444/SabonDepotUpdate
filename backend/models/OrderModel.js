@@ -19,6 +19,7 @@ const OrderSchema = new mongoose.Schema({
             price: Number,
             discountPercentage: Number,
             discountedPrice: Number,
+            finalPrice: Number,
             quantity: Number,
             uploaderId: mongoose.Schema.Types.ObjectId,
             uploaderType: String,
@@ -30,6 +31,14 @@ const OrderSchema = new mongoose.Schema({
         },
     ],
     totalAmount: {
+        type: Number,
+        required: true,
+    },
+    partialPayment: {
+        type: Number,
+        default: 0,
+    },
+    outstandingAmount: {
         type: Number,
         required: true,
     },
@@ -47,13 +56,29 @@ const OrderSchema = new mongoose.Schema({
     },
     paymentStatus: {
         type: String,
-        enum: ['Pending', 'Paid'],
-        default: 'Pending',
+        enum: ['Paid', 'Partial', 'Unpaid'],
+        default: 'Unpaid'
     },
     orderStatus: {
         type: String,
         enum: ['On Delivery', 'Delivered', 'Under Review', 'Cancelled'],
         default: 'On Delivery',
+    },
+    approved: {
+        type: Boolean,
+        default: false,
+    },
+    shipped: {
+        type: Boolean,
+        default: false,
+    },
+    outForDelivery: {
+        type: Boolean,
+        default: false,
+    },
+    delivered: {
+        type: Boolean,
+        default: false,
     },
     createdAt: {
         type: Date,

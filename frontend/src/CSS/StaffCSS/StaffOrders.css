@@ -117,6 +117,11 @@
     font-size: 12px;
     text-align: center;
 }
+
+.staff-orders-container .badge.partial{
+    background-color: #f7f5e7;
+    color: #afa40c;
+}
   
 .staff-orders-container .badge.paid{
     background-color: #E7F7EF;

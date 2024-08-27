@@ -125,7 +125,9 @@ const verifyOtpCustomer = async(req, res) => {
         const customer = new CustomerAuthModel({
             fullName: otpEntry.fullName,
             emailAddress: otpEntry.emailAddress,
-            password: otpEntry.password
+            password: otpEntry.password,
+            isNewCustomer: true,
+            newCustomerExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
 
         await customer.save();

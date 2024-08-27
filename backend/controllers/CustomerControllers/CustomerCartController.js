@@ -3,20 +3,21 @@ const jwt = require('jsonwebtoken');
 const CustomerAuthModel = require('../../models/CustomerModels/CustomerAuthModel');
 const ProductModel = require('../../models/ProductModel');
 
+
 const addProductToCartCustomer = async(req, res) => {
-    const {productId, quantity} = req.body; 
+    const {productId, quantity} = req.body;
     const token = req.cookies.token;
 
     if(!token){
-        return res.json({ 
-            error: 'Unauthorized - Missing token' 
+        return res.json({
+            error: 'Unauthorized - Missing token'
         });
     }
 
     jwt.verify(token, process.env.JWT_SECRET, {}, async(err, decodedToken) => {
         if(err){
-            return res.json({ 
-                error: 'Unauthorized - Invalid token' 
+            return res.json({
+                error: 'Unauthorized - Invalid token'
             });
         }
 
@@ -24,8 +25,8 @@ const addProductToCartCustomer = async(req, res) => {
 
         const customerExists = await CustomerAuthModel.findById(customerId);
         if(!customerExists){
-            return res.json({ 
-                error: 'Customer does not exist' 
+            return res.json({
+                error: 'Customer does not exist'
             });
         }
 
@@ -33,8 +34,8 @@ const addProductToCartCustomer = async(req, res) => {
             const product = await ProductModel.findById(productId);
 
             if(!product){
-                return res.json({ 
-                    error: 'Product does not exist' 
+                return res.json({
+                    error: 'Product does not exist'
                 });
             }
 
@@ -46,36 +47,121 @@ const addProductToCartCustomer = async(req, res) => {
                 discountedPrice = originalPrice - (originalPrice * product.discountPercentage / 100);
             }
 
+            //determine final price based on new customer status
+            const currentTime = Date.now();
+            let finalPrice = discountedPrice;
+            if(customerExists.isNewCustomer && currentTime <= customerExists.newCustomerExpiresAt){
+                finalPrice = discountedPrice;
+            } else{
+                finalPrice = originalPrice;
+            }
+
             let existingCartItem = await CartModel.findOne({customerId, productId});
 
             if(existingCartItem){
-                //if item exists, update the quantity
+                //if item exists, update the quantity and finalPrice
                 existingCartItem.quantity += quantity;
                 existingCartItem.discountedPrice = discountedPrice;
+                existingCartItem.finalPrice = finalPrice;
                 existingCartItem.updatedAt = Date.now();
                 await existingCartItem.save();
             } else{
-                await new CartModel({ 
-                    customerId, 
-                    productId, 
+                await new CartModel({
+                    customerId,
+                    productId,
                     quantity,
-                    discountedPrice
+                    discountedPrice,
+                    finalPrice
                 }).save();
             }
 
-            const updatedCart = await CartModel.find({ 
-                customerId 
+            const updatedCart = await CartModel.find({
+                customerId
             }).populate('productId');
 
             res.json(updatedCart);
         } catch (error) {
             console.log(error);
-            return res.status(500).json({ 
-                message: 'Server error' 
+            return res.status(500).json({
+                message: 'Server error'
             });
         }
     });
 };
+
+// const addProductToCartCustomer = async(req, res) => {
+//     const {productId, quantity} = req.body; 
+//     const token = req.cookies.token;
+
+//     if(!token){
+//         return res.json({ 
+//             error: 'Unauthorized - Missing token' 
+//         });
+//     }
+
+//     jwt.verify(token, process.env.JWT_SECRET, {}, async(err, decodedToken) => {
+//         if(err){
+//             return res.json({ 
+//                 error: 'Unauthorized - Invalid token' 
+//             });
+//         }
+
+//         const customerId = decodedToken.id;
+
+//         const customerExists = await CustomerAuthModel.findById(customerId);
+//         if(!customerExists){
+//             return res.json({ 
+//                 error: 'Customer does not exist' 
+//             });
+//         }
+
+//         try {
+//             const product = await ProductModel.findById(productId);
+
+//             if(!product){
+//                 return res.json({ 
+//                     error: 'Product does not exist' 
+//                 });
+//             }
+
+//             const originalPrice = product.price;
+//             let discountedPrice = originalPrice;
+
+//             //calculate discounted price
+//             if(product.discountPercentage && product.discountPercentage > 0){
+//                 discountedPrice = originalPrice - (originalPrice * product.discountPercentage / 100);
+//             }
+
+//             let existingCartItem = await CartModel.findOne({customerId, productId});
+
+//             if(existingCartItem){
+//                 //if item exists, update the quantity
+//                 existingCartItem.quantity += quantity;
+//                 existingCartItem.discountedPrice = discountedPrice;
+//                 existingCartItem.updatedAt = Date.now();
+//                 await existingCartItem.save();
+//             } else{
+//                 await new CartModel({ 
+//                     customerId, 
+//                     productId, 
+//                     quantity,
+//                     discountedPrice
+//                 }).save();
+//             }
+
+//             const updatedCart = await CartModel.find({ 
+//                 customerId 
+//             }).populate('productId');
+
+//             res.json(updatedCart);
+//         } catch (error) {
+//             console.log(error);
+//             return res.status(500).json({ 
+//                 message: 'Server error' 
+//             });
+//         }
+//     });
+// };
 
 
 const getProductCartCustomer = async(req, res) => {

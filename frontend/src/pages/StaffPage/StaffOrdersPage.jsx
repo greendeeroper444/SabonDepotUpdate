@@ -7,24 +7,26 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
+import StaffAllOrders from '../../components/StaffComponents/StaffOrders/StaffAllOrders';
+import StaffOnDeliveryOrders from '../../components/StaffComponents/StaffOrders/StaffOnDeliveryOrders';
+import StaffDeliveredOrders from '../../components/StaffComponents/StaffOrders/StaffDeliveredOrders';
+import StaffCanceledOrders from '../../components/StaffComponents/StaffOrders/StaffCanceledOrders';
 
 function StaffOrdersPage() {
     const [orders, setOrders] = useState([]);
+    const [activeTab, setActiveTab] = useState('All Orders');
     const navigate = useNavigate();
 
     const handleRowClick = (orderId) => {
         navigate(`/staff/orders/details/${orderId}`);
     };
 
-    const handleCheckboxClick = (e) => {
-        e.stopPropagation();
-    };
-
     useEffect(() => {
         const fetchOrders = async() => {
             try {
                 const response = await axios.get('/staffOrders/getAllOrdersStaff');
-                setOrders(response.data);
+                const sortedOrders = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setOrders(sortedOrders);
             } catch (error) {
                 console.error(error);
             }
@@ -39,16 +41,37 @@ function StaffOrdersPage() {
     };
     
 
+    const handleTabClick = (tab) => {
+        setActiveTab(tab);
+    };
+
+    const renderTabContent = () => {
+        switch (activeTab) {
+            case 'All Orders':
+                return <StaffAllOrders orders={orders} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'On Delivery':
+                return <StaffOnDeliveryOrders orders={orders.filter(order => order.orderStatus === 'On Delivery')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Delivered':
+                return <StaffDeliveredOrders orders={orders.filter(order => order.orderStatus === 'Delivered')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Canceled':
+                return <StaffCanceledOrders orders={orders.filter(order => order.orderStatus === 'Canceled')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            default:
+                return null;
+        }
+    };
+
   return (
     <div className='staff-orders-container'>
+        
         <div className='staff-orders-header'>
             <ul className='staff-orders-nav'>
-                <li className='active'>All Orders</li>
-                <li>On Delivery</li>
-                <li>Delivered</li>
-                <li>Canceled</li>
+                <li className={activeTab === 'All Orders' ? 'active' : ''} onClick={() => handleTabClick('All Orders')}>All Orders</li>
+                <li className={activeTab === 'On Delivery' ? 'active' : ''} onClick={() => handleTabClick('On Delivery')}>On Delivery</li>
+                <li className={activeTab === 'Delivered' ? 'active' : ''} onClick={() => handleTabClick('Delivered')}>Delivered</li>
+                <li className={activeTab === 'Canceled' ? 'active' : ''} onClick={() => handleTabClick('Canceled')}>Canceled</li>
             </ul>
         </div>
+
         <div className='staff-orders-search'>
             <form action="">
                 <button type="submit" className='search-button'>
@@ -61,51 +84,10 @@ function StaffOrdersPage() {
                 <span>April 11 - April 24</span>
             </div>
         </div>
-        <table className='staff-orders-table'>
-            <thead>
-                <tr>
-                    <th><input type='checkbox' onClick={handleCheckboxClick} /></th>
-                    <th>Orders</th>
-                    <th>Date</th>
-                    <th>Customer</th>
-                    <th>Payment</th>
-                    <th>Status</th>
-                    <th>Price</th>
-                    {/* <th> </th> */}
-                </tr>
-            </thead>
-            <tbody>
-                {
-                    orders.map(order => (
-                        <tr
-                        key={order._id}
-                        className='clickable-row'
-                        onClick={() => handleRowClick(order._id)}
-                        >
-                                <td><input type='checkbox' onClick={handleCheckboxClick} /></td>
-                            <td>
-                                {
-                                    order.items.map(item =>
-                                        <div key={item._id}>
-                                            <h4>{item.productName}</h4>
-                                            <span style={{ fontSize: '12px', color: 'grey' }}>#ID{order._id}</span>
-                                        </div>
-                                    )
-                                }
-                            </td>
-                            <td>{orderDate(order.createdAt)}</td>
-                            <td>{order.billingDetails.fullName}</td>
-                            <td><span className={`badge ${order.paymentStatus.toLowerCase()}`}>{order.paymentStatus}</span></td>
-                            <td><span className={`badge ${order.orderStatus.toLowerCase().replace(' ', '-')}`}>{order.orderStatus}</span></td>
-                            <td>{`₱${order.totalAmount.toFixed(2)}`}</td>
-                            {/* <td>
-                                <img src={editIcon} alt="Edit Icon" className='edit-icon' />
-                            </td> */}
-                        </tr>
-                    ))
-                }
-            </tbody>
-        </table>
+
+        {/* all orders */}
+        {renderTabContent()}
+        
         <div className='staff-orders-footer'>
             <div className='show-result'>
                 <span>Show result: </span>

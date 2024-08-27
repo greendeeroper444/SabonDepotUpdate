@@ -43,7 +43,7 @@ function CustomerRegisterPage() {
                 setData({});
                 setCustomer(response.data.customer);
                 navigate('/otp', {
-                    state: { emailAddress }
+                    state: {emailAddress}
                 });
                 toast.success(response.data.message);
             }

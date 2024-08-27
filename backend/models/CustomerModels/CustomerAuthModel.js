@@ -38,6 +38,15 @@ const CustomerAuthSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    isNewCustomer: { //new field to track if customer is newly registered
+        type: Boolean,
+        default: true
+    },
+    newCustomerExpiresAt: { //new field to track expiry time of new customer status
+        type: Date,
+        required: true,
+        default: () => new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from registration
+    }
 })
 
 

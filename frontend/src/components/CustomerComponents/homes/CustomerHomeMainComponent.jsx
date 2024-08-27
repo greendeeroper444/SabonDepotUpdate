@@ -11,52 +11,58 @@ import { motion, useAnimation } from 'framer-motion';
 
 function CustomerHomeMainComponent() {
     const navigate = useNavigate();
-    const [timeLeft, setTimeLeft] = useState({ hours: 0, minutes: 0, seconds: 0 });
+    const [timeLeft, setTimeLeft] = useState({hours: 0, minutes: 0, seconds: 0});
     const [overlayVisible, setOverlayVisible] = useState(true);
     const {customer} = useContext(CustomerContext);
     const controls = useAnimation();
 
     useEffect(() => {
-      if (overlayVisible) {
-          controls.start({ y: 0, opacity: 1 });
-      } else {
-          controls.start({ y: '-100%', opacity: 0 });
-      }
-  }, [overlayVisible, controls]);
+        if(customer && customer.isNewCustomer){
+            const currentTime = new Date();
+            const expireTime = new Date(customer.newCustomerExpiresAt);
 
+            const calculateTimeLeft = () => {
+                const now = new Date();
+                const timeDiff = expireTime - now;
+
+                if(timeDiff > 0){
+                    const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
+                    const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
+                    const seconds = Math.floor((timeDiff / 1000) % 60);
+                    setTimeLeft({ hours, minutes, seconds });
+                } else{
+                    setOverlayVisible(false);
+                }
+            };
+
+            calculateTimeLeft();
+            const interval = setInterval(calculateTimeLeft, 1000);
+
+            return () => clearInterval(interval);
+        } else {
+            setOverlayVisible(false);
+        }
+    }, [customer]);
 
     useEffect(() => {
-        // Set countdown timer to 24 hours from the current time
-        const targetTime = new Date().getTime() + 24 * 60 * 60 * 1000;
-        
-        const interval = setInterval(() => {
-            const currentTime = new Date().getTime();
-            const difference = targetTime - currentTime;
-
-            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-            if(difference < 0){
-                clearInterval(interval);
-            } else {
-                setTimeLeft({ hours, minutes, seconds });
-            }
-        }, 1000);
-
-        return () => clearInterval(interval);
-    }, []);
+        if(overlayVisible){
+            controls.start({y: 0, opacity: 1});
+        } else {
+            controls.start({y: '-100%', opacity: 0});
+        }
+    }, [overlayVisible, controls]);
 
 
   return (
     <div className='customer-home-main-container' style={{ backgroundImage: `url(${backgroundHome})` }}>
+        
         {
             !!customer && (
                 <motion.div
                 className='customer-home-main-overlay'
-                initial={{ y: '-100%', opacity: 0 }}
+                initial={{y: '-100%', opacity: 0}}
                 animate={controls}
-                transition={{ duration: 0.5 }}
+                transition={{duration: 0.5}}
                 >
                     <Draggable>
                         <div className='customer-home-main-popup'>

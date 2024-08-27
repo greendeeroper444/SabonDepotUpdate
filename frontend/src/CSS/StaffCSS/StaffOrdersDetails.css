@@ -36,6 +36,13 @@
     background-color: #10B981;
     color: #fff;
 }
+
+.staff-order-details-container .order-actions .order-actions-button.active{
+    background-color: #10B981;
+    color: #fff;
+    border-color: #10B981;
+}
+
   
 .staff-order-details-container .order-dates{
     display: flex;

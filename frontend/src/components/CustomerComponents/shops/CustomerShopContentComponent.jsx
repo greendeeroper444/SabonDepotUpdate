@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import '../../../CSS/CustomerCSS/Shop/CustomerShopContent.css';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import { CustomerContext } from '../../../../contexts/CustomerContexts/CustomerAuthContext';
 
 function CustomerShopContentComponent() {
     const [products, setProducts] = useState([]);
@@ -9,6 +10,17 @@ function CustomerShopContentComponent() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('');
+    const {customer} = useContext(CustomerContext);
+
+    //discount valid
+    const isDiscountValid = () => {
+        if(customer && customer.newCustomerExpiresAt){
+            const expireTime = new Date(customer.newCustomerExpiresAt);
+            const currentTime = new Date();
+            return currentTime <= expireTime;
+        }
+        return false;
+    };
 
     //categories fetching
     const fetchCategories = async() => {
@@ -85,35 +97,40 @@ function CustomerShopContentComponent() {
         <div className='shop-products-content'>
             <ul>
                 {
-                    products.map((product, index) => (
-                        <li key={product._id}>
-                            <div>
-                                <div className='product-image-container'>
-                                    <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />
-                                    {
-                                        index === products.length - 1 && (
-                                            <div className='new-badge'>New</div>
-                                        )
-                                    }
-                                    {
-                                        product.discountPercentage > 0 && (
-                                            <div className='discount-badge'>
-                                                {product.discountPercentage}% OFF
-                                            </div>
-                                        )
-                                    }
+                    products.map((product, index) => {
+                        const shouldShowDiscount = isDiscountValid() && product.discountPercentage > 0;
+                        const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
+
+                        return (
+                            <li key={product._id}>
+                                <div>
+                                    <div className='product-image-container'>
+                                        <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />
+                                        {
+                                            index === products.length - 1 && (
+                                                <div className='new-badge'>New</div>
+                                            )
+                                        }
+                                        {
+                                            shouldShowDiscount && (
+                                                <div className='discount-badge'>
+                                                    {product.discountPercentage}% OFF
+                                                </div>
+                                            )
+                                        }
+                                    </div>
+                                    <div className='details-list'>
+                                        <h5>{product.productName}</h5>
+                                        <span>{product.category}</span>
+                                        <h6>{`Php ${finalPrice}`}</h6>
+                                    </div>
                                 </div>
-                                <div className='details-list'>
-                                    <h5>{product.productName}</h5>
-                                    <span>{product.category}</span>
-                                    <h6>{`Php ${product.discountedPrice ? product.discountedPrice.toFixed(2) : product.price.toFixed(2)}`}</h6>
+                                <div className='view-details'>
+                                    <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
                                 </div>
-                            </div>
-                            <div className='view-details'>
-                                <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
-                            </div>
-                        </li>
-                    ))
+                            </li>
+                        );
+                    })
                 }
             </ul>
 

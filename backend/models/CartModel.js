@@ -19,6 +19,9 @@ const CartSchema = new mongoose.Schema({
     discountedPrice: { 
         type: Number 
     },
+    finalPrice: { 
+        type: Number 
+    },
     createdAt: {
         type: Date,
         default: Date.now

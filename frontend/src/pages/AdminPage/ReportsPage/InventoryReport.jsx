@@ -139,7 +139,7 @@ function InventoryReport() {
             ) : error ? (
                 <p>Error loading products.</p>
             ) : (
-                <div className='report-content'>
+                <div className='admin-inventory-report-content'>
                     <div className='report-header'>
                         <div className='report-logo'>LOGO HERE</div>
                         <div className='report-title'>

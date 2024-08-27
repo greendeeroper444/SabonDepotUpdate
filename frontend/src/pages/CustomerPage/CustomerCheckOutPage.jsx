@@ -25,10 +25,18 @@ function CustomerCheckOutPage() {
     });
     const [paymentMethod, setPaymentMethod] = useState('');
     const [total, setTotal] = useState(0);
+    const [partialPayment, setPartialPayment] = useState(0);
     const [showCashOnDeliveryModal, setShowCashOnDeliveryModal] = useState(false);
     const [showGcashModal, setShowGcashModal] = useState(false);
 
 
+    //for cash on delivery modal
+    const handleSetPartialPayment = (amount) => {
+        setPartialPayment(amount);
+    };
+
+
+    //for place order button
     const handlePlaceOrder = async() => {
         const missingFields = [];
         for(const [key, value] of Object.entries(billingDetails)){
@@ -47,6 +55,7 @@ function CustomerCheckOutPage() {
                 paymentMethod,
                 selectedItems: selectedItems.map(item => item._id),
                 billingDetails,
+                partialPayment,
             });
     
             if(response.data.message){
@@ -70,11 +79,11 @@ function CustomerCheckOutPage() {
 
 
     // useEffect(() => {
-    //     setTotal(selectedItems.reduce((acc, item) => acc + item.productId.discountedPrice * item.quantity, 0));
+    //     setTotal(selectedItems.reduce((acc, item) => acc + item.productId.finalPrice * item.quantity, 0));
     // }, [selectedItems]);
     useEffect(() => {
         setTotal(selectedItems.reduce((acc, item) => {
-            const price = item.discountedPrice || item.productId.price;
+            const price = item.finalPrice || item.productId.price;
             return acc + price * item.quantity;
         }, 0));
     }, [selectedItems]);
@@ -109,11 +118,11 @@ function CustomerCheckOutPage() {
     };
 
     const handlePaymentChange = (e) => {
-        const { value } = e.target;
+        const {value} = e.target;
         setPaymentMethod(value);
-        if (value === 'Cash On Delivery') {
+        if(value === 'Cash On Delivery'){
             setShowCashOnDeliveryModal(true);
-        } else if (value === 'Gcash') {
+        } else if(value === 'Gcash'){
             setShowGcashModal(true);
         }
     };
@@ -202,7 +211,7 @@ function CustomerCheckOutPage() {
                     selectedItems.map((item, index) => (
                         <div key={index} className='order-items-subtotal'>
                             <p>{`${item.productId.productName} x ${item.quantity}`}</p>
-                            <p>{`Php ${item.discountedPrice ? item.discountedPrice.toFixed(2) : item.productId.price.toFixed(2)}`}</p>
+                            <p>{`Php ${item.finalPrice ? item.finalPrice.toFixed(2) : item.productId.price.toFixed(2)}`}</p>
                         </div>
                     ))
                 }
@@ -255,7 +264,15 @@ function CustomerCheckOutPage() {
             </div>
         </form>
 
-        {showCashOnDeliveryModal && <CustomerCashOnDeliveryPaymentMethod onClose={() => setShowCashOnDeliveryModal(false)} />}
+        {
+            showCashOnDeliveryModal && (
+                <CustomerCashOnDeliveryPaymentMethod
+                    onClose={() => setShowCashOnDeliveryModal(false)}
+                    onSetPartialPayment={handleSetPartialPayment}
+                />
+            )
+        }
+
         {showGcashModal && <CustomerGcashPaymentMethod onClose={() => setShowGcashModal(false)} />}
 
         <CustomerTopFooterComponent />

@@ -12,6 +12,27 @@ function StaffOrdersDetailsPage() {
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
+     //update order status function
+     const handleStatusUpdate = async(status) => {
+        try {
+            const response = await axios.put(`/staffOrders/updateOrderStatusStaff/${orderId}`, {status});
+            setOrder(response.data);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
+    //approve order fucntion
+    const handleApprove = async() => {
+        try {
+            const response = await axios.put(`/staffOrders/approveOrderStaff/${orderId}`);
+            setOrder(response.data);
+            setIsModalOpen(false);
+        } catch (error) {
+            setError(error.message);
+        }
+    };
+
     const placedOrderDate = (dateString) => {
         const date = new Date(dateString);
         return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
@@ -35,11 +56,23 @@ function StaffOrdersDetailsPage() {
     if(loading) return <div>Loading...</div>;
     if(error) return <div>Error: {error}</div>;
 
+    //determine active status for buttons
+    const {shipped, outForDelivery, delivered} = order;
+
+    const getButtonClass = (status) => {
+        if(delivered) return 'delivered';
+        if(outForDelivery) return 'out-for-delivery';
+        if(shipped) return 'shipped';
+        return 'confirmed';
+    };
+
   return (
     <div className='staff-order-details-container'>
         <StaffPaymentMethodModal 
         isOpen={isModalOpen} 
         onClose={() => setIsModalOpen(false)} 
+        handleApprove={handleApprove}
+        order={order}
         />
 
         <div className='order-header'>
@@ -51,7 +84,10 @@ function StaffOrdersDetailsPage() {
                 {/* <button>More</button>
                 <button>Export</button>
                 <button>Create shipping label</button> */}
-                 <button onClick={() => setIsModalOpen(true)}>Payment Method</button>
+                <button onClick={() => setIsModalOpen(true)}>Payment Method</button>
+                <button className={`order-actions-button shipped ${getButtonClass('shipped') === 'shipped' ? 'active' : ''}`} onClick={() => handleStatusUpdate('shipped')}>Shipped</button>
+                <button className={`order-actions-button outForDelivery ${getButtonClass('outForDelivery') === 'outForDelivery' ? 'active' : ''}`} onClick={() => handleStatusUpdate('outForDelivery')}>Out For Delivery</button>
+                <button className={`order-actions-button delivered ${getButtonClass('delivered') === 'delivered' ? 'active' : ''}`} onClick={() => handleStatusUpdate('delivered')}>Delivered</button>
             </div>
         </div>
 

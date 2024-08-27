@@ -2,10 +2,16 @@ import React, { useState } from 'react'
 import '../../../CSS/CustomerCSS/CustomerCheckout/CustomerCashOnDeliveryPaymentMethod.css';
 import { toast } from 'react-hot-toast';
 
-const CustomerCashOnDeliveryPaymentMethod = ({onClose}) => {
+const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => {
     const [step, setStep] = useState(1);
     const [contactNumber, setContactNumber] = useState('');
     const [amount, setAmount] = useState('');
+
+    if(typeof onSetPartialPayment !== 'function'){
+        console.error('onSetPartialPayment is not a function');
+        return null; //or handle the error as needed
+    }
+
 
     const handleNext = () => {
         if(contactNumber){
@@ -17,13 +23,10 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose}) => {
 
     const handleSubmit = () => {
         if(amount){
-            toast.success('Submitted successfully! Please place your order.');
-            setTimeout(() => {
-                onClose();
-        }, 3000);
+            onSetPartialPayment(amount);
             onClose();
         } else {
-            toast.error('Please enter the amount.');
+            toast.error('Please enter the payment amount.');
         }
     };
 

@@ -66,6 +66,8 @@
     margin: 20px 0;
 }
   
+
+/* status */
 .customer-place-order-container .status{
     text-align: center;
     flex: 1;
@@ -95,8 +97,8 @@
     background-color: #2ecc71;
 }
   
-.customer-place-order-container .status.confirmed p,
-.customer-place-order-container .status.confirmed span{
+.customer-place-order-container .status.active p,
+.customer-place-order-container .status.active span{
     color: #2ecc71;
 }
   
@@ -114,6 +116,9 @@
 .customer-place-order-container .status-circle.active + .status::before{
     background-color: #2ecc71;
 }
+
+
+
   
 .customer-place-order-container .customer-place-order-item{
     display: flex;

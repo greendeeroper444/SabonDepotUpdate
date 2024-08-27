@@ -13,8 +13,9 @@ import CustomerModalShopDetailsComponent from '../../components/CustomerComponen
 import CustomerTopFooterComponent from '../../components/CustomerComponents/CustomerTopFooterComponent';
 import CustomerFooterComponent from '../../components/CustomerComponents/CustomerFooterComponent';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
+import toast from 'react-hot-toast';
 
 function CustomerShopProductDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -26,9 +27,26 @@ function CustomerShopProductDetails() {
     const [quantity, setQuantity] = useState(1);
     const [cartItems, setCartItems] = useState([]);
     const {customer} = useContext(CustomerContext);
+    const navigate = useNavigate();
+
+    //discount valid
+    const isDiscountValid = () => {
+        if(customer && customer.newCustomerExpiresAt){
+            const expireTime = new Date(customer.newCustomerExpiresAt);
+            const currentTime = new Date();
+            return currentTime <= expireTime;
+        }
+        return false;
+    };
 
 
     const handleAddToCartClick = async(customerId) => {
+        if(!customer){
+            toast.error('Please login first before adding a product to the cart');
+            navigate('/login');
+            return;
+        }
+
         try {
             const response = await axios.post('/customerCart/addProductToCartCustomer', {
                 customerId,
@@ -37,7 +55,9 @@ function CustomerShopProductDetails() {
             });
             if(response.status === 200){
                 setCartItems(response.data);
+                toast.success('Product successfully added to cart');
                 setIsModalOpen(true);
+
             } else{
                 throw new Error('Failed to add product to cart');
             }
@@ -93,6 +113,11 @@ function CustomerShopProductDetails() {
         return <div>Error: {error.message}</div>;
     }
 
+
+    //calculate final price and check if discount should be shown
+    const shouldShowDiscount = isDiscountValid() && product.discountPercentage > 0;
+    const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
+
   return (
     <div className='customer-shop-product-details-container'>
 
@@ -137,7 +162,7 @@ function CustomerShopProductDetails() {
                             <div className='product-image-container'>
                                 <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />
                                 {
-                                    product.discountPercentage > 0 && (
+                                    shouldShowDiscount && (
                                         <div className='discount-badge'>
                                             {product.discountPercentage}% OFF
                                         </div>
@@ -154,7 +179,7 @@ function CustomerShopProductDetails() {
 
                             <div className='customer-shop-product-details-content-right-header'>
                                 <h1>{product.productName}</h1>
-                                <span>{`Php ${product.discountedPrice ? product.discountedPrice.toFixed(2) : product.price.toFixed(2)}`}</span>
+                                <span>{`Php ${finalPrice}`}</span>
                                 <div className='stars-reviews-content'>
                                     {renderStars(rating)}
                                     <span className='customer-review'>5 Customer Review</span>

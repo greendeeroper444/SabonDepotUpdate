@@ -6,7 +6,7 @@
 }
   
 .customer-orders-container h1{
-    font-size: 28px;
+    font-size: 1.5rem;
     margin-bottom: 20px;
     text-align: start;
 }
@@ -45,6 +45,7 @@
 .customer-orders-container .order-details span{
     flex: 1;
     text-align: center;
+    font-size: 13px;
 }
   
 .customer-orders-container .order-feedback{
@@ -66,6 +67,8 @@
     margin-bottom: 10px;
     border-radius: 8px;
     background-color: #fff;
+    text-decoration: none;
+    color: black;
 }
   
 .customer-orders-container .customer-orders-order-items .order-item img{
@@ -80,7 +83,7 @@
 }
   
 .customer-orders-container .customer-orders-order-items .item-details h3{
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 10px;
 }
   
@@ -88,6 +91,7 @@
     display: block;
     margin-bottom: 10px;
     color: #888;
+    font-size: 13px;
 }
   
 .customer-orders-container .customer-orders-order-items .item-details button{

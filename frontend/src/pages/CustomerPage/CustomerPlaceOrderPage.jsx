@@ -3,9 +3,14 @@ import '../../CSS/CustomerCSS/CustomerPlaceOrder.css';
 import invoiceIcon from '../../assets/placeorder/placeorder-invoice-icon.png'
 import { useParams } from 'react-router-dom';
 import axios from 'axios';
+
+
 function CustomerPlaceOrderPage() {
     const {customerId, orderId} = useParams();
     const [order, setOrder] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
 
     useEffect(() => {
         const fetchOrderDetails = async() => {
@@ -14,6 +19,8 @@ function CustomerPlaceOrderPage() {
             setOrder(response.data.order);
         } catch (error) {
             console.error(error);
+        }finally {
+            setLoading(false);
         }
     };
     
@@ -64,17 +71,34 @@ function CustomerPlaceOrderPage() {
         return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
     };
 
+    if(loading){
+        return <div>Loading...</div>;
+    }
+
+    if(error){
+        return <div>{error}</div>;
+    }
     if(!order){
         return <div>Loading...</div>;
     }
 
     //calculate subtotal
     const subtotal = order.items.reduce((acc, item) => {
-        return acc + item.productId.discountedPrice * item.quantity;
+        return acc + item.finalPrice * item.quantity;
     }, 0);
 
     //shipping cost
     const shippingCost = 50;
+
+    const {shipped, outForDelivery, delivered} = order;
+
+    const getStatusClass = (status) => {
+        if(delivered) return 'delivered';
+        if(outForDelivery) return 'out-for-delivery';
+        if(shipped) return 'shipped';
+        return 'confirmed';
+    };
+
 
   return (
     <div className='customer-place-order-container'>
@@ -96,25 +120,25 @@ function CustomerPlaceOrderPage() {
         </div>
 
         <div className='customer-place-order-progress-tracker'>
-            <div className='status confirmed'>
-                <div className='status-circle active'></div>
+            <div className={`status confirmed ${getStatusClass('confirmed') === 'confirmed' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('confirmed') === 'confirmed' ? 'active' : ''}`}></div>
                 <p>Order Confirmed</p>
                 <span>{formatFullDate(confirmedDate)}</span>
             </div>
-            <div className='status shipped'>
-                <div className='status-circle'></div>
+            <div className={`status shipped ${getStatusClass('shipped') === 'shipped' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('shipped') === 'shipped' ? 'active' : ''}`}></div>
                 <p>Shipped</p>
-                <span>Wed, 10th Jan</span>
+                <span>{shipped ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
-            <div className='status out-for-delivery'>
-                <div className='status-circle'></div>
+            <div className={`status out-for-delivery ${getStatusClass('out-for-delivery') === 'out-for-delivery' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('out-for-delivery') === 'out-for-delivery' ? 'active' : ''}`}></div>
                 <p>Out For Delivery</p>
-                <span>Wed, 11th Jan</span>
+                <span>{outForDelivery ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
-            <div className='status delivered'>
-                <div className='status-circle'></div>
+            <div className={`status delivered ${getStatusClass('delivered') === 'delivered' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('delivered') === 'delivered' ? 'active' : ''}`}></div>
                 <p>Delivered</p>
-                <span>Expected by, Mon 16th</span>
+                <span>{delivered ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
         </div>
 
@@ -129,7 +153,7 @@ function CustomerPlaceOrderPage() {
                         <p>{item.productId.category} | 250ml</p>
                     </div>
                     <div className='item-price'>
-                        <p>{`₱${item.productId.discountedPrice.toFixed(2)}`}</p>
+                        <p>Php {item.finalPrice}.00</p>
                         <p>{`Qty: ${item.quantity}`}</p>
                     </div>
                 </div>

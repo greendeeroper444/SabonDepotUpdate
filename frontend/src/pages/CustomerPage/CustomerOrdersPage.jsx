@@ -2,10 +2,12 @@ import React, { useEffect, useState, useContext } from 'react'
 import axios from 'axios';
 import '../../CSS/CustomerCSS/CustomerOrders.css';
 import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
+import { Link, useParams } from 'react-router-dom';
 
 function CustomerOrdersPage() {
     const [orders, setOrders] = useState([]);
     const {customer} = useContext(CustomerContext);
+    const {customerId, orderId} = useParams();
 
     useEffect(() => {
         const fetchOrders = async() => {
@@ -43,7 +45,10 @@ function CustomerOrdersPage() {
             orders.map((order) => (
                 <div key={order._id} className='customer-orders-order'>
                     <div className='order-header'>
-                        <span>Order placed</span><span>Total</span><span>Ship to</span>
+                        <span>Order placed</span>
+                        <span>Total</span>
+                        <span>Name</span>
+                        <span>Ship to</span>
                         {/* <span>Order #</span><span>Actions</span> */}
                     </div>
                     <div className='order-details'>
@@ -55,13 +60,13 @@ function CustomerOrdersPage() {
                             <a href='#'>View order details</a> | <a href='#'>View invoice</a>
                         </span> */}
                     </div>
-                    <div className='order-feedback'>
+                    {/* <div className='order-feedback'>
                         <span>Please rate your experience with the seller</span>
-                    </div>
+                    </div> */}
                     <div className='customer-orders-order-items'>
                         {
                             order.items.map((item) => (
-                                <div key={item._id} className='order-item'>
+                                <Link key={item._id} to={`/place-order/${customerId}/${order._id}`} className='order-item'>
                                     <img src={`http://localhost:8000/${item.productId.imageUrl}`} alt={item.productId.productName} />
                                     <div className='item-details'>
                                         <h3>{item.productId.productName}</h3>
@@ -70,7 +75,7 @@ function CustomerOrdersPage() {
                                         <button>View your item</button>
                                         <button>Track package</button>
                                     </div>
-                                </div>
+                                </Link>
                             ))
                         }
                     </div>

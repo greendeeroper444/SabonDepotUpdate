@@ -65,7 +65,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
-        if (file) {
+        if(file){
             setSelectedImage(file);
         }
     };

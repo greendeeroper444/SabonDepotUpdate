@@ -1,19 +1,22 @@
 import React, { useState } from 'react'
 import { toast } from 'react-hot-toast';
 import '../../../CSS/StaffCSS/StaffOrdersDetails/StaffPaymentMethodModal.css';
+import PropTypes from 'prop-types';
 
-function StaffPaymentMethodModal({isOpen, onClose}) {
-    const [isApproved, setIsApproved] = useState(false);
+
+function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
 
     if(!isOpen) return null;
 
-    const handleApprove = () => {
-        setIsApproved(true);
-        toast.success('Payment approved successfully!');
-    };
-
     const handleDecline = () => {
         onClose();
+    };
+
+
+    //order date
+    const orderDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
     };
 
     return (
@@ -22,32 +25,32 @@ function StaffPaymentMethodModal({isOpen, onClose}) {
                 <button className='modal-close' onClick={onClose}>×</button>
                 <div className='modal-body'>
                     <div className='modal-header'>
-                        <div className={`modal-icon ${isApproved ? 'success-icon' : 'pending-icon'}`}>
-                            {isApproved ? '✔️' : '⚠️'}
+                        <div className={`modal-icon ${order.approved ? 'success-icon' : 'pending-icon'}`}>
+                            {order.approved ? '✔️' : '⚠️'}
                         </div>
-                        <h2>{isApproved ? 'Payment Success!' : 'Pending Payment'}</h2>
-                        <p>{isApproved ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
+                        <h2>{order.approved ? 'Payment Success!' : 'Pending Payment'}</h2>
+                        <p>{order.approved ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
                     </div>
                     <div className='payment-total'>
                         <h3>Total Payment</h3>
-                        <p>PHP 500.00</p>
+                        <p>{`PHP ${order.outstandingAmount}`}</p>
                     </div>
                     <div className='payment-details'>
                         <div className='detail'>
                             <span>Ref Number</span>
-                            <span>000085752257</span>
+                            <span>N/A</span>
                         </div>
                         <div className='detail'>
                             <span>Payment Time</span>
-                            <span>9 August 2024, 13:22</span>
+                            <span>{orderDate(order.createdAt)}</span>
                         </div>
                         <div className='detail'>
                             <span>Payment Method</span>
-                            <span>Gcash</span>
+                            <span>{order.paymentMethod}</span>
                         </div>
                         <div className='detail'>
                             <span>Sender Name</span>
-                            <span>Greendee Roper Panogalon</span>
+                            <span>{order.billingDetails.fullName}</span>
                         </div>
                     </div>
                 </div>
@@ -55,9 +58,9 @@ function StaffPaymentMethodModal({isOpen, onClose}) {
                     <button 
                     onClick={handleApprove} 
                     className='approve-button'
-                    disabled={isApproved}
+                    disabled={order.approved}
                     >
-                        Approve
+                        {order.approved ? 'Approved' : 'Approve'}
                     </button>
                     <button onClick={handleDecline} className='decline-button'>
                         Decline
@@ -67,5 +70,21 @@ function StaffPaymentMethodModal({isOpen, onClose}) {
         </div>
     )
 }
+
+
+StaffPaymentMethodModal.propTypes = {
+    isOpen: PropTypes.bool.isRequired,
+    onClose: PropTypes.func.isRequired,
+    order: PropTypes.shape({
+        outstandingAmount: PropTypes.number.isRequired,
+        createdAt: PropTypes.string.isRequired,
+        paymentMethod: PropTypes.string.isRequired,
+        billingDetails: PropTypes.shape({
+            fullName: PropTypes.string.isRequired,
+        }).isRequired,
+        approved: PropTypes.bool.isRequired,
+    }).isRequired,
+    handleApprove: PropTypes.func.isRequired,
+};
 
 export default StaffPaymentMethodModal

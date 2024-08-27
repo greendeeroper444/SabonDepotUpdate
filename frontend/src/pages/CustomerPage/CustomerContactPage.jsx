@@ -1,29 +1,82 @@
-import React from 'react'
+import React, { useState } from 'react'
 import phoneIcon from '../../assets/contact/phone-icon.png';
 import emailIcon from '../../assets/contact/email-icon.png';
-import '../../CSS/CustomerCSS/CustomerContact.css'
+import '../../CSS/CustomerCSS/CustomerContact.css';
+import emailjs from 'emailjs-com';
+import toast from 'react-hot-toast'
 
 function CustomerContactPage() {
+    const [formData, setFormData] = useState({
+        name: '',
+        email: '',
+        message: ''
+    });
+    const [status, setStatus] = useState('');
+
+    const handleInputChange = (e) => {
+        const {id, value} = e.target;
+        setFormData({...formData, [id]: value});
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+
+        const loadingToast = toast.loading('Sending message...');
+        
+        //template params to match email js template
+        const templateParams = {
+            from_name: formData.name,
+            from_email: formData.email,
+            message: formData.message,
+            reply_to: formData.email, 
+            to_name: 'Sabon Depot',
+        };
+
+        emailjs.send(
+            'service_bh8abvt',//service id from email js
+            'template_xssa40y', //template id from email js
+            templateParams,
+            'IQslrKfwSpuXzMa-_'  //email js public key
+        ).then((response) => {
+            console.log('SUCCESS!', response.status, response.text);
+            toast.success('Message sent successfully!', {
+                id: loadingToast,
+            });
+            setFormData({ 
+                name: '', 
+                email: '', 
+                message: '' 
+            }); 
+        }).catch((error) => {
+            console.log('FAILED...', error);
+            toast.error('Failed to send message. Please try again later.', {
+                id: loadingToast,
+            });
+        });
+    };
+
   return (
     <div className='customer-contact-container'>
         <div className='customer-contact-content'>
-            <form action="" className='customer-contact-form'>
+            <form action="" className='customer-contact-form' onSubmit={handleSubmit}>
                 <h2 className='customer-contact-header'>Get in <span style={{ color: '#077A37' }}>Touch</span></h2>
                 <p className='welcome-message'>For More Information About Our Product & Services. Please Feel Free To Drop Us An Email. Our Staff Always Be There To Help You Out. Do Not Hesitate!</p>
 
                 <div className='form-group'>
-                    <input type='name' className='form-input' id='name' placeholder='Name' />
+                    <input type='name' className='form-input' id='name' placeholder='Name' value={formData.name} onChange={handleInputChange} />
                 </div>
 
                 <div className='form-group'>
-                    <input type='email' className='form-input' id='email' placeholder='Email' />
+                    <input type='email' className='form-input' id='email' placeholder='Email' value={formData.email} onChange={handleInputChange} />
                 </div>
 
                 <div className='form-group'>
-                    <textarea type='message' className='form-textarea' id='message' placeholder='Send us a message/comments' />
+                    <textarea type='message' className='form-textarea' id='message' placeholder='Send us a message/comments' value={formData.message} onChange={handleInputChange} />
                 </div>
 
                 <button type='submit' className='customer-contact-button-submit'>SEND</button>
+
+                {status && <p className='status-message'>{status}</p>}
 
                 <div className='customer-contact-number-email'>
                     <div className='phone'>

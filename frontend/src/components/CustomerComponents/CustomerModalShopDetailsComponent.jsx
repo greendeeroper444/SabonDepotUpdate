@@ -38,12 +38,12 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
 
     const calculateSubtotal = () => {
         //check if any item has a discounted price lower than the original price
-        const hasDiscount = cartItems.some(item => item.productId.discountedPrice < item.productId.price);
+        const hasDiscount = cartItems.some(item => item.productId.finalPrice < item.productId.price);
     
         //calculate subtotal based on whether a discount is applied
         const subtotal = cartItems.reduce((acc, cartItem) => {
-            const price = hasDiscount && cartItem.productId.discountedPrice
-                ? cartItem.productId.discountedPrice
+            const price = hasDiscount && cartItem.productId.finalPrice
+                ? cartItem.productId.finalPrice
                 : cartItem.productId.price;
             return acc + (price * cartItem.quantity);
         }, 0);
@@ -92,7 +92,7 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                                         <p>
                                             <span>{cartItem.quantity}</span>
                                             <span>X</span> 
-                                            <span>{`Php ${cartItem.discountedPrice ? cartItem.discountedPrice.toFixed(2) : cartItem.productId.price.toFixed(2)}`}</span>
+                                            <span>{`Php ${cartItem.finalPrice ? cartItem.finalPrice.toFixed(2) : cartItem.productId.price.toFixed(2)}`}</span>
                                             {/* <span>=</span>
                                             <span>{`Php ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
                                         </p>
@@ -132,13 +132,13 @@ CustomerModalShopDetailsComponent.propTypes = {
     cartItems: PropTypes.arrayOf(PropTypes.shape({
         _id: PropTypes.string.isRequired,
         productId: PropTypes.shape({
-            discountedPrice: PropTypes.number,
+            finalPrice: PropTypes.number,
             price: PropTypes.number.isRequired,
             imageUrl: PropTypes.string.isRequired,
             productName: PropTypes.string.isRequired,
         }).isRequired,
         quantity: PropTypes.number.isRequired,
-        discountedPrice: PropTypes.number,
+        finalPrice: PropTypes.number,
     })).isRequired,
     setCartItems: PropTypes.func.isRequired,
     customerId: PropTypes.string.isRequired,

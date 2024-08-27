@@ -134,11 +134,11 @@ function CustomerCartPage() {
                                                     <p>{cartItem.productId.productName}</p>
                                                 </div>
                                             </td>
-                                            <td>{`Php ${cartItem.discountedPrice ? cartItem.discountedPrice.toFixed(2) : cartItem.productId.price.toFixed(2)}`}</td>
+                                            <td>{`Php ${cartItem.finalPrice.toFixed(2)}`}</td>
                                             <td>
                                                 <input type="number" className='input-quantity' defaultValue={cartItem.quantity} />
                                             </td>
-                                            <td>{`Php ${(cartItem.discountedPrice ? cartItem.discountedPrice : cartItem.productId.price) * cartItem.quantity.toFixed(2)}`}</td>
+                                            <td>{`Php ${(cartItem.finalPrice) * cartItem.quantity.toFixed(2)}`}</td>
                                             <td>
                                                 <button className='delete-button' 
                                                 onClick={() => handleDeleteCartClick(cartItem._id)}>
@@ -161,8 +161,8 @@ function CustomerCartPage() {
                         <span>Subtotal</span>
                         <span>
                             {`Php ${
-                                selectedItems.some(item => item.discountedPrice < item.productId.price)
-                                ? selectedItems.reduce((acc, item) => acc + (item.discountedPrice || item.productId.price) * item.quantity, 0).toFixed(2)
+                                selectedItems.some(item => item.finalPrice < item.productId.price)
+                                ? selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0).toFixed(2)
                                 : selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0).toFixed(2)
                             }`}
                         </span>
@@ -175,8 +175,8 @@ function CustomerCartPage() {
                         <span>Total</span>
                         <span>
                             {`Php ${
-                                selectedItems.some(item => item.discountedPrice < item.productId.price)
-                                ? (selectedItems.reduce((acc, item) => acc + (item.discountedPrice || item.productId.price) * item.quantity, 0) + 50).toFixed(2)
+                                selectedItems.some(item => item.finalPrice < item.productId.price)
+                                ? (selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0) + 50).toFixed(2)
                                 : (selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0) + 50).toFixed(2)
                             }`}
                         </span>
