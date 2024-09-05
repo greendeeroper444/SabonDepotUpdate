@@ -46,6 +46,12 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    sizeUnit: {
+        type: String, //example: 'Milliliters (mL)', 'Liters (L)', 'Gallons (gal)'
+    },
+    productSize: {
+        type: String, //example: '500 mL', '1 L', etc.
+    },
     createdBy: {
         type: String,
         required: true,

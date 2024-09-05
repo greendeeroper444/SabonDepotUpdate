@@ -1,56 +1,17 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 import Draggable from 'react-draggable';
 import '../../../CSS/CustomerCSS/Home/CustomerHomeMain.css';
 import backgroundHome from '../../../assets/backgrounds/background-home.png';
 import { useNavigate } from 'react-router-dom';
-import { CustomerContext } from '../../../../contexts/CustomerContexts/CustomerAuthContext';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
+import UseCustomerHomeHook from '../../../hooks/CustomerHooks/UseCustomerHomeHook';
 
 
 function CustomerHomeMainComponent() {
     const navigate = useNavigate();
-    const [timeLeft, setTimeLeft] = useState({hours: 0, minutes: 0, seconds: 0});
-    const [overlayVisible, setOverlayVisible] = useState(true);
-    const {customer} = useContext(CustomerContext);
-    const controls = useAnimation();
-
-    useEffect(() => {
-        if(customer && customer.isNewCustomer){
-            const currentTime = new Date();
-            const expireTime = new Date(customer.newCustomerExpiresAt);
-
-            const calculateTimeLeft = () => {
-                const now = new Date();
-                const timeDiff = expireTime - now;
-
-                if(timeDiff > 0){
-                    const hours = Math.floor((timeDiff / (1000 * 60 * 60)) % 24);
-                    const minutes = Math.floor((timeDiff / (1000 * 60)) % 60);
-                    const seconds = Math.floor((timeDiff / 1000) % 60);
-                    setTimeLeft({ hours, minutes, seconds });
-                } else{
-                    setOverlayVisible(false);
-                }
-            };
-
-            calculateTimeLeft();
-            const interval = setInterval(calculateTimeLeft, 1000);
-
-            return () => clearInterval(interval);
-        } else {
-            setOverlayVisible(false);
-        }
-    }, [customer]);
-
-    useEffect(() => {
-        if(overlayVisible){
-            controls.start({y: 0, opacity: 1});
-        } else {
-            controls.start({y: '-100%', opacity: 0});
-        }
-    }, [overlayVisible, controls]);
+    const {customer, timeLeft, setOverlayVisible, controls} = UseCustomerHomeHook(navigate);
 
 
   return (

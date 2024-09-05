@@ -1,7 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../CSS/StaffCSS/StaffHome.css'
+import axios from 'axios';
+import { orderDate } from '../../utils/OrderUtils';
 
 function StaffHomePage() {
+    const [orders, setOrders] = useState([]);
+
+    useEffect(() => {
+        const fetchOrders = async() => {
+            try {
+                const response = await axios.get('/staffOrders/getCompleteOrderTransactionStaff');
+                const sortedOrders = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                setOrders(sortedOrders);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchOrders();
+    }, []);
+
   return (
     <div className='staff-container'>
         <div className='staff-header'>
@@ -26,18 +44,19 @@ function StaffHomePage() {
                 </tr>
             </thead>
             <tbody>
-                {/* Example Rows */}
-                {Array.from({ length: 9 }).map((_, index) => (
-                    <tr key={index}>
-                        <td>12564878</td>
-                        <td>10:00 PM</td>
-                        <td>Online</td>
-                        <td>Angel Rana</td>
-                        <td><span className='status complete'>Complete</span></td>
-                        <td><span className='payment-status paid'>Paid</span></td>
-                        <td>Php 500.00</td>
-                    </tr>
-                ))}
+                {
+                    orders.map((order, index) => (
+                        <tr key={index}>
+                            <td>{order._id}</td>
+                            <td>{orderDate(order.deliveredDate)}</td>
+                            <td>Online</td>
+                            <td>{order.billingDetails.fullName}</td>
+                            <td><span className='status complete'>Complete</span></td>
+                            <td><span className='payment-status paid'>{order.paymentStatus}</span></td>
+                            <td>{`Php ${order.totalAmount.toFixed(2)}`}</td>
+                        </tr>
+                    ))
+                }
             </tbody>
         </table>
     </div>

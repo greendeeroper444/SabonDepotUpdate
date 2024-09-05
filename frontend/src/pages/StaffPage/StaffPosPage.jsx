@@ -5,6 +5,8 @@ import clockIcon from '../../assets/staff/stafficons/staff-payment-clock-icon.pn
 import euroIcon from '../../assets/staff/stafficons/staff-payment-euro-icon.png'
 import removeRedIcon from '../../assets/staff/stafficons/staff-payment-remove-red-icon.png'
 import axios from 'axios';
+import CustomerShopContentComponent from '../../components/CustomerComponents/shops/CustomerShopContentComponent';
+import StaffPosContentComponent from '../../components/StaffComponents/StaffPos/StaffPosContentComponent';
 
 function StaffPosPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -43,7 +45,8 @@ function StaffPosPage() {
 
   return (
     <div className='staff-payment-container'>
-        <div className='staff-payment-order-details'>
+        <StaffPosContentComponent />
+        {/* <div className='staff-payment-order-details'>
 
             <StaffModalOrdersWalkinAddComponent
             isOpen={isModalOpen} 
@@ -133,7 +136,7 @@ function StaffPosPage() {
                 </div>
                 <button className='pay-now'>PAY NOW</button>
             </div>
-        </div>
+        </div> */}
     </div>
   )
 }

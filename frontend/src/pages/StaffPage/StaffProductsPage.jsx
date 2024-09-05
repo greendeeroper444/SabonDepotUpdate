@@ -188,6 +188,7 @@ function StaffProductsPage() {
                             <th>PRODUCT CODE</th>
                             <th>PRODUCT NAME</th>
                             <th>CATEGORY</th>
+                            <th>PRODUCT SIZE</th>
                             <th>PRICE</th>
                             <th>QUANTITY</th>
                             <th>Availability</th>
@@ -201,6 +202,7 @@ function StaffProductsPage() {
                                     <td>{product.productCode}</td>
                                     <td>{product.productName}</td>
                                     <td>{product.category}</td>
+                                    <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td>
                                     <td>{`₱${product.price.toFixed(2)}`}</td>
                                     <td>{product.quantity}</td>
                                     <td className={product.quantity > 0 ? 'in-stock' : 'out-of-stock'}>

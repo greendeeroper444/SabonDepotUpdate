@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { orderDate } from '../../utils/OrderUtils';
 
 function AdminOrdersPage() {
     const [orders, setOrders] = useState([]);
@@ -38,12 +39,6 @@ function AdminOrdersPage() {
         fetchOrders();
     }, []);
   
-
-    //order date
-    const orderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
 
   return (
     <div className='admin-orders-container'>

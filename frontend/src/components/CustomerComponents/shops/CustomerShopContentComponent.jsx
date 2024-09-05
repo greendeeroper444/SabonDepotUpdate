@@ -1,61 +1,17 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import '../../../CSS/CustomerCSS/Shop/CustomerShopContent.css';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { CustomerContext } from '../../../../contexts/CustomerContexts/CustomerAuthContext';
+import UseFetchCategoriesHook from '../../../hooks/CustomerHooks/UseFetchCategoriesHook';
+import UseFetchProductsHook from '../../../hooks/CustomerHooks/UseFetchProductsHook';
+import IsDiscountValidUtils from '../../../utils/IsDiscountValidUtils';
 
 function CustomerShopContentComponent() {
-    const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [selectedCategory, setSelectedCategory] = useState('');
     const {customer} = useContext(CustomerContext);
 
-    //discount valid
-    const isDiscountValid = () => {
-        if(customer && customer.newCustomerExpiresAt){
-            const expireTime = new Date(customer.newCustomerExpiresAt);
-            const currentTime = new Date();
-            return currentTime <= expireTime;
-        }
-        return false;
-    };
-
-    //categories fetching
-    const fetchCategories = async() => {
-        try {
-            const response = await axios.get('/customerProduct/getUniqueCategoriesCustomer');
-            setCategories(response.data);
-        } catch (error) {
-            console.log(error)
-        }
-    };
-
-    useEffect(() => {
-        fetchCategories();
-    }, []);
-
-
-    //products fetching
-    const fetchProducts = async(category = '') => {
-        try {
-            const response = await axios.get(`/customerProduct/getProductCustomer`, {
-                params: {category}
-            });
-            const productData = Array.isArray(response.data) ? response.data : [];
-            
-            setProducts(productData);
-            setLoading(false);
-        } catch (error){
-            setError(error);
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts(selectedCategory);
-    }, [selectedCategory]);
+    const categories = UseFetchCategoriesHook();
+    const {products, loading, error} = UseFetchProductsHook(selectedCategory);
 
 
     if(loading){
@@ -98,7 +54,7 @@ function CustomerShopContentComponent() {
             <ul>
                 {
                     products.map((product, index) => {
-                        const shouldShowDiscount = isDiscountValid() && product.discountPercentage > 0;
+                        const shouldShowDiscount = IsDiscountValidUtils(customer) && product.discountPercentage > 0;
                         const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
 
                         return (

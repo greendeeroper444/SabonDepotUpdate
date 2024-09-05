@@ -1,0 +1,47 @@
+.order-summary-container{
+    margin: 20px;
+}
+
+.order-summary{
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+    background-color: #f9f9f9;
+}
+
+.order-summary h2{
+    margin-bottom: 10px;
+}
+
+.order-items{
+    display: flex;
+    flex-direction: column;
+}
+
+.order-item{
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.order-item img{
+    width: 80px;
+    height: 80px;
+    margin-right: 20px;
+}
+
+.order-item h3{
+    margin: 0;
+}
+
+.order-item p{
+    margin: 0;
+    font-size: 14px;
+}
+
+.no-orders-message{
+    text-align: center;
+    margin-top: 50px;
+    font-size: 18px;
+    color: #555;
+}

@@ -1,109 +1,63 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import '../../CSS/CustomerCSS/CustomerShopProductDetails.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import ourProduct1 from '../../assets/ourproducts/our-products-1.png'
-import ourProduct2 from '../../assets/ourproducts/our-products-2.png'
-import ourProduct3 from '../../assets/ourproducts/our-products-3.png'
-import ourProduct4 from '../../assets/ourproducts/our-products-4.png'
 import fullStar from '../../assets/shopproductdetails/stars/fullstar.png';
 import halfStar from '../../assets/shopproductdetails/stars/halfstar.png';
 import emptyStar from '../../assets/shopproductdetails/stars/emptystar.png';
 import CustomerModalShopDetailsComponent from '../../components/CustomerComponents/CustomerModalShopDetailsComponent';
 import CustomerTopFooterComponent from '../../components/CustomerComponents/CustomerTopFooterComponent';
 import CustomerFooterComponent from '../../components/CustomerComponents/CustomerFooterComponent';
-import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
-import toast from 'react-hot-toast';
+import UseFetchProductDetailsHook from '../../hooks/CustomerHooks/UseFetchProductDetailsHook';
+import UseCartHook from '../../hooks/CustomerHooks/UseCartHook';
+import calculateFinalPriceUtils from '../../utils/CalculateFinalPriceUtils';
 
 function CustomerShopProductDetails() {
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const rating = 4.5;
-    const {productId} = useParams();
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const [quantity, setQuantity] = useState(1);
-    const [cartItems, setCartItems] = useState([]);
+    const {productId} = useParams();
     const {customer} = useContext(CustomerContext);
+    const {product, loading, error} = UseFetchProductDetailsHook(productId);
+    const {cartItems, setCartItems, handleAddToCartClick} = UseCartHook(customer);
     const navigate = useNavigate();
+    const [selectedSizeUnit, setSelectedSizeUnit] = useState("");
+    const [selectedProductId, setSelectedProductId] = useState("");
 
-    //discount valid
-    const isDiscountValid = () => {
-        if(customer && customer.newCustomerExpiresAt){
-            const expireTime = new Date(customer.newCustomerExpiresAt);
-            const currentTime = new Date();
-            return currentTime <= expireTime;
-        }
-        return false;
-    };
-
-
-    const handleAddToCartClick = async(customerId) => {
-        if(!customer){
-            toast.error('Please login first before adding a product to the cart');
-            navigate('/login');
-            return;
-        }
-
-        try {
-            const response = await axios.post('/customerCart/addProductToCartCustomer', {
-                customerId,
-                productId,
-                quantity
-            });
-            if(response.status === 200){
-                setCartItems(response.data);
-                toast.success('Product successfully added to cart');
-                setIsModalOpen(true);
-
-            } else{
-                throw new Error('Failed to add product to cart');
-            }
-        } catch (error) {
-            console.error(error);
-            setError(error);
+    //event handler for product relateds
+    const handleProductClick = (relatedProductId) => {
+        if(relatedProductId){
+            setSelectedProductId(relatedProductId);
+            navigate(`/shop/product/details/${relatedProductId}`);
         }
     };
+
+    //event handler function for product size
+    const handleSizeChange = (event) => {
+        const selectedProductId = event.target.value;
+        const selectedSizeUnit = event.target.dataset.sizeUnit;
+
+        if(selectedProductId){
+            setSelectedProductId(selectedProductId);
+            navigate(`/shop/product/details/${selectedProductId}`);
+        }
+
+        if(selectedSizeUnit){
+            setSelectedSizeUnit(selectedSizeUnit);
+        }
+    };
+
 
     const handleQuantityChange = (e) => {
         const value = Math.max(1, parseInt(e.target.value, 10) || 1);
         setQuantity(value);
     };
 
-    const incrementQuantity = () => {
-        setQuantity(prevQuantity => prevQuantity + 1);
-    };
+    const incrementQuantity = () => setQuantity((prev) => prev + 1);
+    const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
-    const decrementQuantity = () => {
-        setQuantity(prevQuantity => (prevQuantity > 1 ? prevQuantity - 1 : 1));
-    };
-
-    useEffect(() => {
-        const fetchProductDetails = async() => {
-            try {
-                const response = await axios.get(`/customerProduct/getProductDetailsCustomer/${productId}`);
-                if(response.status === 200){
-                    setProduct(response.data);
-                } else{
-                    throw new Error('Failed to fetch product details');
-                }
-            } catch (error) {
-                console.error(error);
-                setError(error);
-            } finally{
-                setLoading(false);
-            }
-        };
-    
-        fetchProductDetails();
-    }, [productId]);
-    
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
+    const handleCloseModal = () => setIsModalOpen(false);
 
     if(loading){
         return <div>Loading...</div>;
@@ -114,9 +68,14 @@ function CustomerShopProductDetails() {
     }
 
 
-    //calculate final price and check if discount should be shown
-    const shouldShowDiscount = isDiscountValid() && product.discountPercentage > 0;
-    const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
+    const {shouldShowDiscount, finalPrice} = calculateFinalPriceUtils(customer, product);
+
+    const handleAddToCart = async() => {
+        const success = await handleAddToCartClick(customer?._id, productId, quantity);
+        if(success){
+            setIsModalOpen(true);
+        }
+    };
 
   return (
     <div className='customer-shop-product-details-container'>
@@ -150,11 +109,22 @@ function CustomerShopProductDetails() {
                     <div className='customer-shop-product-details-content-left'>
 
                         <div className='shop-products-left'>
+
                             <ul>
-                                <li><img src={ourProduct1} alt="" /></li>
-                                <li><img src={ourProduct2} alt="" /></li>
-                                <li><img src={ourProduct3} alt="" /></li>
-                                <li><img src={ourProduct4} alt="" /></li>
+                                {
+                                    product?.relatedProducts?.map((relatedProduct, index) => (
+                                        <li 
+                                        key={index} 
+                                        onClick={() => handleProductClick(relatedProduct._id)}
+                                        style={{ cursor: 'pointer' }}
+                                        >
+                                            <img 
+                                            src={`http://localhost:8000/${relatedProduct.imageUrl}`} 
+                                            alt={relatedProduct.productName} 
+                                            />
+                                        </li>
+                                    ))
+                                }
                             </ul>
                         </div>
 
@@ -178,21 +148,36 @@ function CustomerShopProductDetails() {
                         <div className='customer-shop-product-details-content-right-container'>
 
                             <div className='customer-shop-product-details-content-right-header'>
-                                <h1>{product.productName}</h1>
+                                <h1>{`${product.productName} (${product.productSize})`}</h1>
+                                {/* <h4>{product.productSize}</h4> */}
                                 <span>{`Php ${finalPrice}`}</span>
                                 <div className='stars-reviews-content'>
-                                    {renderStars(rating)}
+                                    {/* {renderStars(rating)} */}
                                     <span className='customer-review'>5 Customer Review</span>
                                 </div>
                                 <p>Description</p>
                             </div>
 
                             <div className='customer-shop-product-details-content-right-content'>
+
                                 <span className='size-span'>Size</span>
                                 <div className='customer-shop-product-details-product-size'>
-                                    <button className='product-size active'>L</button>
-                                    <button className='product-size'>GL</button>
-                                    <button className='product-size'>XS</button>
+                                    {
+                                        product.sizesAndUnits.map((size, index) => (
+                                            <select
+                                            key={index}
+                                            className='product-size'
+                                            onChange={handleSizeChange}
+                                            value={selectedProductId === size.productId ? size.productId : ""}
+                                            data-size-unit={size.sizeUnit}
+                                            >
+                                                <option value="" disabled>{size.sizeUnit.slice(0, 1)}</option>
+                                                <option value={size.productId}>
+                                                    {size.productSize}
+                                                </option>
+                                            </select>
+                                        ))
+                                    }
                                 </div>
 
                                 <span className='color-span'>Color</span>
@@ -216,7 +201,7 @@ function CustomerShopProductDetails() {
                                         <button className='plus-quantity' onClick={incrementQuantity}>+</button>
                                     </div>
                                     <button className='add-to-cart' 
-                                    onClick={() => handleAddToCartClick(customer?._id)}
+                                    onClick={handleAddToCart}
                                     >Add To Cart</button>
                                 </div>
 

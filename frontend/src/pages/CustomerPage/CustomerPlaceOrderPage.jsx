@@ -1,75 +1,16 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import '../../CSS/CustomerCSS/CustomerPlaceOrder.css';
 import invoiceIcon from '../../assets/placeorder/placeorder-invoice-icon.png'
 import { useParams } from 'react-router-dom';
-import axios from 'axios';
+import UseOrderDetailsHook from '../../hooks/CustomerHooks/UseOrderDetailsHook';
+import { formatFullDate, getEstimatedDeliveryDate, getStatusClass, orderDate } from '../../utils/OrderUtils';
 
 
 function CustomerPlaceOrderPage() {
     const {customerId, orderId} = useParams();
-    const [order, setOrder] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-
-
-    useEffect(() => {
-        const fetchOrderDetails = async() => {
-        try {
-            const response = await axios.get(`/customerOrder/getOrderCustomer/${customerId}/${orderId}`);
-            setOrder(response.data.order);
-        } catch (error) {
-            console.error(error);
-        }finally {
-            setLoading(false);
-        }
-    };
-    
-        fetchOrderDetails();
-    }, [customerId, orderId]);
-    
-
-    const formatDate = (date) => {
-        const options = {month: 'long', day: 'numeric'};
-        return date.toLocaleDateString(undefined, options);
-    };
-    
-
-    const getOrdinalSuffix = (n) => {
-        const s = ["th", "st", "nd", "rd"];
-        const v = n % 100;
-        return n + (s[(v - 20) % 10] || s[v] || s[0]);
-    };
-
-    const formatFullDate = (date) => {
-        const formattedDate = new Date(date);
-        const day = getOrdinalSuffix(formattedDate.getDate());
-        const month = formattedDate.toLocaleString('default', { month: 'short' });
-        const weekday = formattedDate.toLocaleString('default', { weekday: 'short' });
-
-        return `${weekday}, ${day} ${month}`;
-    };
-
-    const getEstimatedDeliveryDate = (orderDate) => {
-        const preparationTimeMin = 3;
-        const preparationTimeMax = 4;
-        const startDate = new Date(orderDate);
-        const endDate = new Date(orderDate);
-
-        startDate.setDate(startDate.getDate() + preparationTimeMin);
-        endDate.setDate(endDate.getDate() + preparationTimeMax);
-
-        const year = startDate.getFullYear();
-
-        return `${formatDate(startDate)} - ${formatDate(endDate)}, ${year}`;
-    };
+    const {order, loading, error} = UseOrderDetailsHook(customerId, orderId);
 
     const confirmedDate = new Date();
-
-    //order date
-    const orderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
 
     if(loading){
         return <div>Loading...</div>;
@@ -78,8 +19,9 @@ function CustomerPlaceOrderPage() {
     if(error){
         return <div>{error}</div>;
     }
+
     if(!order){
-        return <div>Loading...</div>;
+        return <div>Order not found</div>;
     }
 
     //calculate subtotal
@@ -87,18 +29,8 @@ function CustomerPlaceOrderPage() {
         return acc + item.finalPrice * item.quantity;
     }, 0);
 
-    //shipping cost
     const shippingCost = 50;
-
-    const {shipped, outForDelivery, delivered} = order;
-
-    const getStatusClass = (status) => {
-        if(delivered) return 'delivered';
-        if(outForDelivery) return 'out-for-delivery';
-        if(shipped) return 'shipped';
-        return 'confirmed';
-    };
-
+    const {isShipped, isOutForDelivery, isDelivered} = order;
 
   return (
     <div className='customer-place-order-container'>
@@ -120,25 +52,25 @@ function CustomerPlaceOrderPage() {
         </div>
 
         <div className='customer-place-order-progress-tracker'>
-            <div className={`status confirmed ${getStatusClass('confirmed') === 'confirmed' ? 'active' : ''}`}>
-                <div className={`status-circle ${getStatusClass('confirmed') === 'confirmed' ? 'active' : ''}`}></div>
+            <div className={`status confirmed ${getStatusClass('confirmed', order) === 'confirmed' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('confirmed', order) === 'confirmed' ? 'active' : ''}`}></div>
                 <p>Order Confirmed</p>
                 <span>{formatFullDate(confirmedDate)}</span>
             </div>
-            <div className={`status shipped ${getStatusClass('shipped') === 'shipped' ? 'active' : ''}`}>
-                <div className={`status-circle ${getStatusClass('shipped') === 'shipped' ? 'active' : ''}`}></div>
+            <div className={`status shipped ${getStatusClass('isShipped', order) === 'isShipped' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('isShipped', order) === 'isShipped' ? 'active' : ''}`}></div>
                 <p>Shipped</p>
-                <span>{shipped ? formatFullDate(order.createdAt) : 'N/A'}</span>
+                <span>{isShipped ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
-            <div className={`status out-for-delivery ${getStatusClass('out-for-delivery') === 'out-for-delivery' ? 'active' : ''}`}>
-                <div className={`status-circle ${getStatusClass('out-for-delivery') === 'out-for-delivery' ? 'active' : ''}`}></div>
+            <div className={`status outForDelivery ${getStatusClass('isOutForDelivery', order) === 'isOutForDelivery' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('isOutForDelivery', order) === 'isOutForDelivery' ? 'active' : ''}`}></div>
                 <p>Out For Delivery</p>
-                <span>{outForDelivery ? formatFullDate(order.createdAt) : 'N/A'}</span>
+                <span>{isOutForDelivery ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
-            <div className={`status delivered ${getStatusClass('delivered') === 'delivered' ? 'active' : ''}`}>
-                <div className={`status-circle ${getStatusClass('delivered') === 'delivered' ? 'active' : ''}`}></div>
+            <div className={`status delivered ${getStatusClass('isDelivered', order) === 'isDelivered' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('isDelivered', order) === 'isDelivered' ? 'active' : ''}`}></div>
                 <p>Delivered</p>
-                <span>{delivered ? formatFullDate(order.createdAt) : 'N/A'}</span>
+                <span>{isDelivered ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
         </div>
 

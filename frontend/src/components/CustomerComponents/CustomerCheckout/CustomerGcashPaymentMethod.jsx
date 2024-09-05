@@ -1,29 +1,28 @@
 import React, { useState } from 'react'
 import '../../../CSS/CustomerCSS/CustomerCheckout/CustomerGcashPaymentMethod.css';
 import { toast } from 'react-hot-toast';
-import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-icon.png'
+import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-icon.png';
 
-const CustomerGcashPaymentMethod = ({onClose}) => {
-    const [gcashNumber, setGcashNumber] = useState('');
-    const [image, setImage] = useState(null);
+const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
+    const [gcashPaid, setGcashPaid] = useState('');
+    const [paymentProof, setPaymentProof] = useState(null);
+    const [previewImage, setPreviewImage] = useState(null);
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
         if(file){
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImage(reader.result);
-            };
-            reader.readAsDataURL(file);
+            setPaymentProof(file);
+            setPreviewImage(URL.createObjectURL(file)); //create a URL for the image preview
         }
     };
 
     const handleSubmit = () => {
-        if(gcashNumber && image){
+        if (gcashPaid && paymentProof) {
+            onGcashPayment({ gcashPaid, paymentProof });
             toast.success('Submitted successfully! Please place your order.');
             onClose();
-        } else{
-            toast.error('Please fill in all fields and upload an image.');
+        } else {
+            toast.error('Please fill in all fields and upload a payment proof.');
         }
     };
 
@@ -31,33 +30,42 @@ const CustomerGcashPaymentMethod = ({onClose}) => {
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
             <h2>Gcash Payment</h2>
-            <p>Please enter your Gcash number:</p>
+            <p>Please enter your Gcash payment:</p>
             <input
-            type='number'
-            placeholder='Enter your Gcash number'
-            value={gcashNumber}
-            onChange={(e) => setGcashNumber(e.target.value)}
+                type='number'
+                placeholder='Enter your Gcash paid'
+                value={gcashPaid}
+                onChange={(e) => setGcashPaid(e.target.value)}
             />
             <div className='file-upload'>
                 <label htmlFor='file-input'>
                     <img
-                    src={image || uploadIcon}
+                    src={previewImage || uploadIcon} //display the uploaded image or default icon
                     alt='Upload proof of payment'
                     className='upload-image'
                     />
                 </label>
                 <input
-                id='file-input'
-                type='file'
-                accept='image/*'
-                onChange={handleFileChange}
-                style={{ display: 'none' }}
+                    id='file-input'
+                    type='file'
+                    accept='image/*'
+                    onChange={handleFileChange}
+                    style={{ display: 'none' }}
+                    aria-label='Upload proof of payment'
                 />
-                {image && <p className='file-name'>Selected file</p>}
+                {
+                    paymentProof && (
+                        <p className='file-name'>{paymentProof.name}</p> //display file name
+                    )
+                }
             </div>
             <div className='modal-buttons'>
-                <button className='cancel-button' onClick={onClose}>Cancel</button>
-                <button className='submit-button' onClick={handleSubmit}>Submit</button>
+                <button className='cancel-button' onClick={onClose}>
+                    Cancel
+                </button>
+                <button className='submit-button' onClick={handleSubmit}>
+                    Submit
+                </button>
             </div>
         </div>
     </div>

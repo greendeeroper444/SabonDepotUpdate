@@ -1,14 +1,14 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-export default function UseFetchProducts(selectedCategory) {
+export default function UseFetchProductsHook(selectedCategory) {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const fetchProducts = async (category = '') => {
+    const fetchProducts = async(category = '') => {
         try {
-            const response = await axios.get('/customerProduct/getProductCustomer', {
+            const response = await axios.get('/staffProduct/getProductShopStaff', {
                 params: {category}
             });
             const productData = Array.isArray(response.data) ? response.data : [];
@@ -23,7 +23,6 @@ export default function UseFetchProducts(selectedCategory) {
     useEffect(() => {
         fetchProducts(selectedCategory);
     }, [selectedCategory]);
-  return (
-    <div>UseFetchProducts</div>
-  )
+
+  return {products, loading, error};
 }

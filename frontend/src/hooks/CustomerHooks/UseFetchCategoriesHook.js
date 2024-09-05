@@ -1,7 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 
-export default function UseFetchCategories() {
+export default function UseFetchCategoriesHook() {
     const [categories, setCategories] = useState([]);
 
     const fetchCategories = async() => {

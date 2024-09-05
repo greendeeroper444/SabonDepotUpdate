@@ -25,6 +25,7 @@ app.use('/staffAuth', require('./routers/StaffRouters/StaffAuthRouters'));
 app.use('/staffProduct', require('./routers/StaffRouters/StaffProductRouters'));
 app.use('/staffOrders', require('./routers/StaffRouters/StaffOrdersRouter'));
 app.use('/staffOrderWalkin', require('./routers/StaffRouters/StaffOrdersWalkinRouter'));
+app.use('/staffCart', require('./routers/StaffRouters/StaffCartRouter'));
 
 //admin routes
 app.use('/adminAuth', require('./routers/AdminRouters/AdminAuthRouter'));

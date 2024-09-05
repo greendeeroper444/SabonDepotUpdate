@@ -1,45 +1,16 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import '../../../CSS/CustomerCSS/Home/CustomerOurProduct.css';
-import axios from 'axios';
 import { Link } from 'react-router-dom';
 import { CustomerContext } from '../../../../contexts/CustomerContexts/CustomerAuthContext';
+import UseFetchProductsHook from '../../../hooks/CustomerHooks/UseFetchProductsHook';
+import IsDiscountValidUtils from '../../../utils/IsDiscountValidUtils';
 
 
 function CustomerOurProductsComponent() {
-    const [products, setProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const [selectedCategory, setSelectedCategory] = useState('');
     const {customer} = useContext(CustomerContext);
 
-    //discount valid
-    const isDiscountValid = () => {
-        if(customer && customer.newCustomerExpiresAt){
-            const expireTime = new Date(customer.newCustomerExpiresAt);
-            const currentTime = new Date();
-            return currentTime <= expireTime;
-        }
-        return false;
-    };
-
-
-    //products fetching
-    const fetchProducts = async() => {
-        try {
-
-            const response = await axios.get('/customerProduct/getProductCustomer');
-            const productData = Array.isArray(response.data) ? response.data : [];
-            
-            setProducts(productData);
-            setLoading(false);
-        } catch (error){
-            setError(error);
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+    const {products, loading, error} = UseFetchProductsHook(selectedCategory);
 
 
     if(loading){
@@ -57,7 +28,7 @@ function CustomerOurProductsComponent() {
             <ul>
                 {
                     products.map((product, index) => {
-                        const shouldShowDiscount = isDiscountValid() && product.discountPercentage > 0;
+                        const shouldShowDiscount = IsDiscountValidUtils(customer) && product.discountPercentage > 0;
                         const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
 
                         return (

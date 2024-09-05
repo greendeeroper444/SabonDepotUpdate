@@ -28,6 +28,7 @@ function CustomSidebarResponsiveComponent({customerCloseSidebar}) {
         customerCloseSidebar(); 
     };
     
+    //logout event handler
     const handleLogout = async() => {
         try {
             const response = await axios.post('/customerAuth/logoutCustomer');
@@ -45,13 +46,13 @@ function CustomSidebarResponsiveComponent({customerCloseSidebar}) {
     <div className='customer-sidebar'>
         <div className='customer-sidebar-header'>
             <span onClick={handleLinkClick}>&times;</span>
-            <div>
-                <NavLink to={`/cart/${customer?._id}`} onClick={handleLinkClick}>
-                    <img src={iconCart} className='icon-cart' alt="Cart" />
-                </NavLink>
+            {
+                customer && (
+                    <div>
+                        <NavLink to={`/cart/${customer?._id}`} onClick={handleLinkClick}>
+                            <img src={iconCart} className='icon-cart' alt="Cart" />
+                        </NavLink>
 
-                {
-                    customer && (
                         <li className='customer-sidebar-dropdown-container'>
                             <div className='customer-sidebar-dropdown-trigger' onClick={toggleDropdown}>
                                 <img
@@ -77,9 +78,9 @@ function CustomSidebarResponsiveComponent({customerCloseSidebar}) {
                                 </Link>
                             </div>
                         </li>
-                    )
-                }
-            </div>
+                    </div>
+                )
+            }
         </div>
         <ul className='customer-sidebar-list'>
             <li>

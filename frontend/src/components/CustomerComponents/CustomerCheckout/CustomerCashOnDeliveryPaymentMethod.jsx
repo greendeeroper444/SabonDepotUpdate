@@ -5,7 +5,7 @@ import { toast } from 'react-hot-toast';
 const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => {
     const [step, setStep] = useState(1);
     const [contactNumber, setContactNumber] = useState('');
-    const [amount, setAmount] = useState('');
+    const [partialPayment, setPartialPayment] = useState('');
 
     if(typeof onSetPartialPayment !== 'function'){
         console.error('onSetPartialPayment is not a function');
@@ -22,11 +22,11 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => 
     };
 
     const handleSubmit = () => {
-        if(amount){
-            onSetPartialPayment(amount);
+        if(partialPayment){
+            onSetPartialPayment(partialPayment);
             onClose();
         } else {
-            toast.error('Please enter the payment amount.');
+            toast.error('Please enter the partial payment.');
         }
     };
 
@@ -61,8 +61,8 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => 
                         <input
                         type='number'
                         placeholder='Enter amount (e.g., 300)'
-                        value={amount}
-                        onChange={(e) => setAmount(e.target.value)}
+                        value={partialPayment}
+                        onChange={(e) => setPartialPayment(e.target.value)}
                         className='input-field'
                         />
                         <div className='modal-buttons'>

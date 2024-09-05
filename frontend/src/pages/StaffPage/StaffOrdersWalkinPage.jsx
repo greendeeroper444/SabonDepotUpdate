@@ -8,6 +8,7 @@ import { faAngleLeft, faAngleRight } from '@fortawesome/free-solid-svg-icons';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom'
 import StaffModalOrdersWalkinEditComponent from '../../components/StaffComponents/StaffOrdersWalkin/StaffModalOrdersWalkinEditComponent';
+import { orderDate } from '../../utils/OrderUtils';
 
 function StaffOrdersWalkinPage() {
     const [orderWalkins, setOrderWalkins] = useState([]);
@@ -61,12 +62,6 @@ function StaffOrdersWalkinPage() {
     const handleNavigateWalkin = () => {
         navigate('/staff/payment');
     }
-
-
-    const orderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
     
 
   return (

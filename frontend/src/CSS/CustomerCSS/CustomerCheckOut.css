@@ -101,12 +101,19 @@
 }
   
 .customer-checkout-content .order-total .subtotal,
+.customer-checkout-content .order-total .shipping,
 .customer-checkout-content .order-total .total{
     display: flex;
     justify-content: space-between;
     font-weight: bold;
     margin-bottom: 20px;
 }
+
+.customer-checkout-content .order-total .shipping span:last-child{
+    color: #ff0000;
+    font-size: 16px;
+}
+  
   
 .customer-checkout-content .order-total .total span:last-child{
     color: #f57c00;

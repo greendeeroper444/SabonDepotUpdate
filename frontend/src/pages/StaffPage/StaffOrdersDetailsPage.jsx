@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../../CSS/StaffCSS/StaffOrdersDetails.css';
 import editIcon from '../../assets/staff/stafficons/staff-orders-edit-icon.png'
 import StaffPaymentMethodModal from '../../components/StaffComponents/StaffOrdersDetails/StaffPaymentMethodModal';
+import { getStatusClass, orderDate } from '../../utils/OrderUtils';
 
 function StaffOrdersDetailsPage() {
     const {orderId} = useParams(); 
@@ -33,11 +34,6 @@ function StaffOrdersDetailsPage() {
         }
     };
 
-    const placedOrderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
-
     useEffect(() => {
         const fetchOrderDetails = async() => {
             try {
@@ -55,16 +51,6 @@ function StaffOrdersDetailsPage() {
 
     if(loading) return <div>Loading...</div>;
     if(error) return <div>Error: {error}</div>;
-
-    //determine active status for buttons
-    const {shipped, outForDelivery, delivered} = order;
-
-    const getButtonClass = (status) => {
-        if(delivered) return 'delivered';
-        if(outForDelivery) return 'out-for-delivery';
-        if(shipped) return 'shipped';
-        return 'confirmed';
-    };
 
   return (
     <div className='staff-order-details-container'>
@@ -85,15 +71,15 @@ function StaffOrdersDetailsPage() {
                 <button>Export</button>
                 <button>Create shipping label</button> */}
                 <button onClick={() => setIsModalOpen(true)}>Payment Method</button>
-                <button className={`order-actions-button shipped ${getButtonClass('shipped') === 'shipped' ? 'active' : ''}`} onClick={() => handleStatusUpdate('shipped')}>Shipped</button>
-                <button className={`order-actions-button outForDelivery ${getButtonClass('outForDelivery') === 'outForDelivery' ? 'active' : ''}`} onClick={() => handleStatusUpdate('outForDelivery')}>Out For Delivery</button>
-                <button className={`order-actions-button delivered ${getButtonClass('delivered') === 'delivered' ? 'active' : ''}`} onClick={() => handleStatusUpdate('delivered')}>Delivered</button>
+                <button className={`order-actions-button shipped ${getStatusClass('isShipped', order) === 'isShipped' ? 'active' : ''}`} onClick={() => handleStatusUpdate('isShipped')}>Shipped</button>
+                <button className={`order-actions-button outForDelivery ${getStatusClass('isOutForDelivery', order) === 'isOutForDelivery' ? 'active' : ''}`} onClick={() => handleStatusUpdate('isOutForDelivery')}>Out For Delivery</button>
+                <button className={`order-actions-button delivered ${getStatusClass('isDelivered', order) === 'isDelivered' ? 'active' : ''}`} onClick={() => handleStatusUpdate('isDelivered')}>Delivered</button>
             </div>
         </div>
 
         <div className='order-dates'>
             <p><strong>Paid on:</strong> {order.paidDate ? new Date(order.paidDate).toLocaleDateString() : 'N/A'}</p>
-            <p><strong>Placed on:</strong> {placedOrderDate(order.createdAt)}</p>
+            <p><strong>Placed on:</strong> {orderDate(order.createdAt)}</p>
             <p><strong>Updated:</strong> {new Date(order.updatedAt).toLocaleDateString()}</p>
         </div>
 

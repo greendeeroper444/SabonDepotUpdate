@@ -48,10 +48,10 @@ const uploadProductAdmin = async(req, res) => {
         }
 
         try {
-            const {productName, category, price, quantity, discountPercentage = 0} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productName || !category || !price || !quantity || !imageUrl){
+            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -82,24 +82,26 @@ const uploadProductAdmin = async(req, res) => {
                     });
                 }
 
-                const generateProductCode = () => {
-                    const code1 = Math.floor(Math.random() * 10).toString();
-                    const code2 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-                    const code3 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-                    return `${code1} ${code2} ${code3}`;
-                };
+                // const generateProductCode = () => {
+                //     const code1 = Math.floor(Math.random() * 10).toString();
+                //     const code2 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+                //     const code3 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+                //     return `${code1} ${code2} ${code3}`;
+                // };
 
                 const newProduct = await ProductModel.create({
-                    productCode: generateProductCode(),
+                    productCode,
                     productName,
                     category,
                     price,
                     discountedPrice,
                     quantity,
                     discountPercentage,
+                    imageUrl,
+                    sizeUnit: sizeUnit || null,
+                    productSize: productSize || null,
                     uploaderId: adminId,
                     uploaderType: 'Admin',
-                    imageUrl,
                     createdBy: adminExists.fullName
                 });
 
@@ -164,10 +166,10 @@ const editProductAdmin = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity){
+            if(!productCode || !productName || !category || !price || !quantity || !productSize){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -191,6 +193,8 @@ const editProductAdmin = async(req, res) => {
             product.discountedPrice = discountedPrice;
             product.quantity = quantity;
             product.discountPercentage = discountPercentage;
+            product.sizeUnit = sizeUnit;
+            product.productSize = productSize;
             if(imageUrl){
                 product.imageUrl = imageUrl;
             }

@@ -4,6 +4,7 @@ import axios from 'axios';
 import '../../CSS/AdminCSS/AdminOrdersDetails.css';
 import editIcon from '../../assets/staff/stafficons/staff-orders-edit-icon.png'
 import StaffPaymentMethodModal from '../../components/StaffComponents/StaffOrdersDetails/StaffPaymentMethodModal';
+import { orderDate } from '../../utils/OrderUtils';
 
 function AdminOrdersDetailsPage() {
     const {orderId} = useParams(); 
@@ -11,11 +12,6 @@ function AdminOrdersDetailsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    const placedOrderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
 
     useEffect(() => {
         const fetchOrderDetails = async() => {
@@ -57,7 +53,7 @@ function AdminOrdersDetailsPage() {
 
         <div className='order-dates'>
             <p><strong>Paid on:</strong> {order.paidDate ? new Date(order.paidDate).toLocaleDateString() : 'N/A'}</p>
-            <p><strong>Placed on:</strong> {placedOrderDate(order.createdAt)}</p>
+            <p><strong>Placed on:</strong> {orderDate(order.createdAt)}</p>
             <p><strong>Updated:</strong> {new Date(order.updatedAt).toLocaleDateString()}</p>
         </div>
 

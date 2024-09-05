@@ -3,30 +3,27 @@ import axios from 'axios';
 import '../../CSS/CustomerCSS/CustomerOrders.css';
 import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
 import { Link, useParams } from 'react-router-dom';
+import { orderDate } from '../../utils/OrderUtils';
 
 function CustomerOrdersPage() {
     const [orders, setOrders] = useState([]);
     const {customer} = useContext(CustomerContext);
-    const {customerId, orderId} = useParams();
+    const {customerId} = useParams();
 
     useEffect(() => {
         const fetchOrders = async() => {
-        try {
-            const response = await axios.get(`/customerOrder/getAllOrdersCustomer/${customer._id}`);
-            setOrders(response.data.orders);
-        } catch (error) {
-            console.error(error);
-        }
+            try {
+                const response = await axios.get(`/customerOrder/getAllOrdersCustomer/${customer._id}`);
+                setOrders(response.data.orders);
+            } catch (error) {
+                console.error(error);
+            }
         };
 
         fetchOrders();
     }, [customer._id]);
 
 
-    const orderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
 
   return (
     <div className='customer-orders-container'>

@@ -49,10 +49,10 @@ const uploadProductStaff = async(req, res) => {
         }
 
         try {
-            const {productName, category, price, quantity, discountPercentage = 0} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productName || !category || !price || !quantity || !imageUrl){
+            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -83,24 +83,26 @@ const uploadProductStaff = async(req, res) => {
                     });
                 }
 
-                const generateProductCode = () => {
-                    const code1 = Math.floor(Math.random() * 10).toString();
-                    const code2 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-                    const code3 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
-                    return `${code1} ${code2} ${code3}`;
-                };
+                // const generateProductCode = () => {
+                //     const code1 = Math.floor(Math.random() * 10).toString();
+                //     const code2 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+                //     const code3 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
+                //     return `${code1} ${code2} ${code3}`;
+                // };
 
                 const newProduct = await ProductModel.create({
-                    productCode: generateProductCode(),
+                    productCode,
                     productName,
                     category,
                     price,
                     discountedPrice,
                     quantity,
                     discountPercentage,
+                    imageUrl,
+                    sizeUnit: sizeUnit || null,
+                    productSize: productSize || null,
                     uploaderId: staffId,
                     uploaderType: 'Staff',
-                    imageUrl,
                     createdBy: staffExists.fullName
                 });
 
@@ -206,10 +208,10 @@ const editProductStaff = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity){
+            if(!productCode || !productName || !category || !price || !quantity || !productSize){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -233,6 +235,8 @@ const editProductStaff = async(req, res) => {
             product.discountedPrice = discountedPrice;
             product.quantity = quantity;
             product.discountPercentage = discountPercentage;
+            product.sizeUnit = sizeUnit;
+            product.productSize = productSize;
             if(imageUrl){
                 product.imageUrl = imageUrl;
             }
@@ -274,10 +278,135 @@ const getEditProductStaff = async(req, res) => {
 
 
 
+//add product
+
+const getProductShopStaff = async(req, res) => {
+    const category = req.query.category;
+
+    try {
+        const query = category ? {category: category} : {};
+        const staffProducts = await ProductModel.find(query);
+
+        // Group by productName and then prioritize by sizeUnit and productSize
+        const productMap = new Map();
+
+        staffProducts.forEach(product => {
+            const key = product.productName;
+
+            if(!productMap.has(key)){
+                productMap.set(key, product);
+            } else {
+                const existingProduct = productMap.get(key);
+
+                const sizePriority = {
+                    "Gallons": 3,
+                    "Liters": 2,
+                    "Milliliters": 1
+                };
+
+                const existingSizePriority = sizePriority[existingProduct.sizeUnit] || 0;
+                const newSizePriority = sizePriority[product.sizeUnit] || 0;
+
+                if(
+                    newSizePriority > existingSizePriority ||
+                    (newSizePriority === existingSizePriority && product.productSize > existingProduct.productSize)
+                ){
+                    productMap.set(key, product);
+                }
+            }
+        });
+
+        const prioritizedProducts = Array.from(productMap.values());
+
+        return res.json(prioritizedProducts);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Server error'
+        });
+    }
+};
+
+const getProductDetailsShopStaff = async(req, res) => {
+    const productId = req.params.productId;
+
+    try {
+        const productDetails = await ProductModel.findById(productId);
+        if(!productDetails){
+            return res.status(404).json({ 
+                error: 'Product not found.' 
+            });
+        }
+
+        //get all products with the same productName to fetch available sizes and units
+        const relatedProducts = await ProductModel.find({productName: productDetails.productName});
+
+        //extract available sizes and units
+        const sizesAndUnits = relatedProducts.map(product => ({
+            sizeUnit: product.sizeUnit,
+            productSize: product.productSize,
+            productId: product._id
+        }));
+
+        //find related products (based on category)
+        const moreRelatedProducts = await ProductModel.find({
+            _id: {$ne: productId},  //exclude the current product
+            category: productDetails.category //filter by the same category
+        }).limit(5);
+
+        return res.json({
+            ...productDetails.toObject(),
+            sizesAndUnits: sizesAndUnits,
+            relatedProducts: moreRelatedProducts //iclude related products based on category
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
+
+
+// const getProductDetailsShopStaff = async(req, res) => {
+//     const productId = req.params.productId;
+
+//     try {
+//         const productDetails = await ProductModel.findById(productId);
+//         if(!productDetails){
+//             return res.status(404).json({ 
+//                 error: 'Product not found.' 
+//             });
+//         }
+
+//         //gt all products with the same productName to fetch available sizes and units
+//         const relatedProducts = await ProductModel.find({ productName: productDetails.productName });
+
+//         //extract available sizes and units
+//         const sizesAndUnits = relatedProducts.map(product => ({
+//             sizeUnit: product.sizeUnit,
+//             productSize: product.productSize,
+//             productId: product._id
+//         }));
+
+//         return res.json({
+//             ...productDetails.toObject(),
+//             sizesAndUnits: sizesAndUnits
+//         });
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({ 
+//             message: 'Server error' 
+//         });
+//     }
+// };
+
 module.exports = {
     uploadProductStaff,
     getProductStaff,
     deleteProductStaff,
     editProductStaff,
-    getEditProductStaff
+    getEditProductStaff,
+    getProductShopStaff,
+    getProductDetailsShopStaff
 }

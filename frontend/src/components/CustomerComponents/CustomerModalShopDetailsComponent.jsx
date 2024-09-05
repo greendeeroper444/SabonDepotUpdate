@@ -7,10 +7,15 @@ import Draggable from 'react-draggable';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import PropTypes from 'prop-types'; 
+import { calculateFinalPriceModal, calculateSubtotalModal } from '../../utils/CalculateFinalPriceUtils';
 
 function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartItems, customerId}) {
     const navigate = useNavigate();
 
+    //handle checkout
+    const handleCheckout = () => {
+        navigate(`/checkout/${customerId}`, {state: {cartItems}});
+    };
     
      //delete function
      const handleCartItemDelete = async(cartItemId) => {
@@ -36,21 +41,6 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
         }
     };
 
-    const calculateSubtotal = () => {
-        //check if any item has a discounted price lower than the original price
-        const hasDiscount = cartItems.some(item => item.productId.finalPrice < item.productId.price);
-    
-        //calculate subtotal based on whether a discount is applied
-        const subtotal = cartItems.reduce((acc, cartItem) => {
-            const price = hasDiscount && cartItem.productId.finalPrice
-                ? cartItem.productId.finalPrice
-                : cartItem.productId.price;
-            return acc + (price * cartItem.quantity);
-        }, 0);
-    
-        return subtotal.toFixed(2);
-    };
-    
 
     const handleCartNavigation = () => {
         navigate(`/cart/${customerId}`);
@@ -92,7 +82,7 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                                         <p>
                                             <span>{cartItem.quantity}</span>
                                             <span>X</span> 
-                                            <span>{`Php ${cartItem.finalPrice ? cartItem.finalPrice.toFixed(2) : cartItem.productId.price.toFixed(2)}`}</span>
+                                            <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
                                             {/* <span>=</span>
                                             <span>{`Php ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
                                         </p>
@@ -109,14 +99,14 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                 <div className='customer-modal-footer'>
                     <div className='products-subtotal'>
                         <span>Subtotal</span>
-                        <span>{`Php ${calculateSubtotal()}`}</span>
+                        <span>{`Php ${calculateSubtotalModal(cartItems)}`}</span>
                     </div>
                 </div>
 
                 <footer>
                     <div>
                         <button onClick={handleCartNavigation}>Cart</button>
-                        <button>Checkout</button>
+                        <button onClick={handleCheckout}>Checkout</button>
                     </div>
                 </footer>
             </div>

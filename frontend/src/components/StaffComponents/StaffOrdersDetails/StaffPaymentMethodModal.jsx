@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { toast } from 'react-hot-toast';
 import '../../../CSS/StaffCSS/StaffOrdersDetails/StaffPaymentMethodModal.css';
 import PropTypes from 'prop-types';
+import { orderDate } from '../../../utils/OrderUtils';
 
 
 function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
@@ -12,24 +13,17 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
         onClose();
     };
 
-
-    //order date
-    const orderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
-
     return (
         <div className='staff-payment-method-modal-container'>
             <div className='staff-payment-method-modal-content'>
                 <button className='modal-close' onClick={onClose}>×</button>
                 <div className='modal-body'>
                     <div className='modal-header'>
-                        <div className={`modal-icon ${order.approved ? 'success-icon' : 'pending-icon'}`}>
-                            {order.approved ? '✔️' : '⚠️'}
+                        <div className={`modal-icon ${order.isApproved ? 'success-icon' : 'pending-icon'}`}>
+                            {order.isApproved ? '✔️' : '⚠️'}
                         </div>
-                        <h2>{order.approved ? 'Payment Success!' : 'Pending Payment'}</h2>
-                        <p>{order.approved ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
+                        <h2>{order.isApproved ? 'Payment Success!' : 'Pending Payment'}</h2>
+                        <p>{order.isApproved ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
                     </div>
                     <div className='payment-total'>
                         <h3>Total Payment</h3>
@@ -58,9 +52,9 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                     <button 
                     onClick={handleApprove} 
                     className='approve-button'
-                    disabled={order.approved}
+                    disabled={order.isApproved}
                     >
-                        {order.approved ? 'Approved' : 'Approve'}
+                        {order.isApproved ? 'Approved' : 'Approve'}
                     </button>
                     <button onClick={handleDecline} className='decline-button'>
                         Decline
@@ -82,7 +76,7 @@ StaffPaymentMethodModal.propTypes = {
         billingDetails: PropTypes.shape({
             fullName: PropTypes.string.isRequired,
         }).isRequired,
-        approved: PropTypes.bool.isRequired,
+        isApproved: PropTypes.bool.isRequired,
     }).isRequired,
     handleApprove: PropTypes.func.isRequired,
 };

@@ -24,11 +24,13 @@ export const staffRoutes = [
     '/staff/home',
     '/staff/products',
     '/staff/pos',
+    '/staff/pos/product/details/:productId',
     '/staff/walkin',
     '/staff/payment',
     '/staff/orders',
     '/staff/orders/details/:orderId',
     '/staff/settings/:staffId',
+    '/staff/order-summary/:staffId/:orderId'
 ];
   
 export const isStaffRoute = (path) => {

@@ -7,10 +7,12 @@ import StaffHomePage from '../pages/StaffPage/StaffHomePage'
 import StaffProductsPage from '../pages/StaffPage/StaffProductsPage'
 import StaffPosPage from '../pages/StaffPage/StaffPosPage'
 import StaffOrdersWalkinPage from '../pages/StaffPage/StaffOrdersWalkinPage'
-import StaffPaymentPage from '../pages/StaffPage/StaffPaymentPage'
+// import StaffPaymentPage from '../pages/StaffPage/StaffPaymentPage'
 import StaffOrdersPage from '../pages/StaffPage/StaffOrdersPage'
 import StaffOrdersDetailsPage from '../pages/StaffPage/StaffOrdersDetailsPage'
 import StaffSettingsPage from '../pages/StaffPage/StaffSettingsPage'
+import StaffPosDetailsPage from '../pages/StaffPage/StaffPosDetailsPage'
+import StaffOrderSummaryPage from '../pages/StaffPage/StaffOrderSummaryPage'
 
 function StaffRoutes() {
   return (
@@ -22,9 +24,11 @@ function StaffRoutes() {
                 <Route path='/staff/home' element={<StaffHomePage />} />
                 <Route path='/staff/products' element={<StaffProductsPage />} />
                 <Route path='/staff/pos' element={<StaffPosPage />} />
+                <Route path='/staff/pos/product/details/:productId' element={<StaffPosDetailsPage />} />
                 <Route path='/staff/walkin' element={<StaffOrdersWalkinPage />} />
-                <Route path='/staff/payment' element={<StaffPaymentPage />} />
+                {/* <Route path='/staff/payment' element={<StaffPaymentPage />} /> */}
                 <Route path='/staff/orders' element={<StaffOrdersPage />} />
+                <Route path='/staff/order-summary/:staffId/:orderId' element={<StaffOrderSummaryPage/>} />
                 <Route path='/staff/orders/details/:orderId' element={<StaffOrdersDetailsPage />} />
                 <Route path='/staff/settings/:staffId' element={<StaffSettingsPage />} />
             </Routes>

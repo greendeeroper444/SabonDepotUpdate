@@ -21,8 +21,8 @@ function CustomerCartPage() {
     const handleCheckboxChange = (cartItem) => {
         setSelectedItems(prevSelectedItems =>
             prevSelectedItems.some(item => item._id === cartItem._id)
-                ? prevSelectedItems.filter(item => item._id !== cartItem._id)
-                : [...prevSelectedItems, cartItem]
+            ? prevSelectedItems.filter(item => item._id !== cartItem._id)
+            : [...prevSelectedItems, cartItem]
         );
     };
 

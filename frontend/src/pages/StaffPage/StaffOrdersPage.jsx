@@ -11,6 +11,7 @@ import StaffAllOrders from '../../components/StaffComponents/StaffOrders/StaffAl
 import StaffOnDeliveryOrders from '../../components/StaffComponents/StaffOrders/StaffOnDeliveryOrders';
 import StaffDeliveredOrders from '../../components/StaffComponents/StaffOrders/StaffDeliveredOrders';
 import StaffCanceledOrders from '../../components/StaffComponents/StaffOrders/StaffCanceledOrders';
+import { orderDate } from '../../utils/OrderUtils';
 
 function StaffOrdersPage() {
     const [orders, setOrders] = useState([]);
@@ -35,11 +36,6 @@ function StaffOrdersPage() {
         fetchOrders();
     }, []);
 
-    const orderDate = (dateString) => {
-        const date = new Date(dateString);
-        return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
-    };
-    
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);

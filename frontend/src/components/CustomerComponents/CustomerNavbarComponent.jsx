@@ -18,7 +18,7 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
     const {customer, logout} = useContext(CustomerContext);
     const navigate = useNavigate();
     
-    
+    //confirm logout event handler
     const handleConfirmLogout = async() => {
         try {
             const response = await axios.post('/customerAuth/logoutCustomer');
@@ -107,12 +107,16 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
                         )
                     }
                     <li>
-                        <NavLink
-                        className={({isActive}) => (isActive ? 'link active' : 'link')}
-                        to={`/cart/${customer?._id}`}
-                        >
-                            <img src={iconCart} alt="Cart" />
-                        </NavLink>
+                        {
+                            customer && (
+                                <NavLink
+                                className={({isActive}) => (isActive ? 'link active' : 'link')}
+                                to={`/cart/${customer?._id}`}
+                                >
+                                    <img src={iconCart} alt="Cart" />
+                                </NavLink>
+                            )
+                        }
                     </li>
 
 
