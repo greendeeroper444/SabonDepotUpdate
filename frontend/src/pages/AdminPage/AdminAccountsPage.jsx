@@ -59,7 +59,7 @@ function AdminAccountsPage() {
                     <div className='admin-accounts-card' key={index}>
                         <div className='card-info'>
                             <div className='card-info-name'>
-                            <h3>{account.fullName}</h3>
+                            <h3>{account.firstName}</h3>
                             <span className={`role-badge ${account.role.toLowerCase()}`}>{account.role}</span>
                             </div>
                             <p><strong>Phone no :</strong> {account.contactNumber}</p>

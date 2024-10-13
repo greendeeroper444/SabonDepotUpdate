@@ -12,11 +12,17 @@ function CustomerProfilePage() {
     const {customerId} = useParams();
     const {customer, setCustomer} = useContext(CustomerContext);
     const [formData, setFormData] = useState({
-        fullName: '',
-        nickName: '',
-        gender: 'Other',
-        contactNumber: '',
-        address: ''
+        firstName: '', 
+        lastName: '', 
+        middleInitial: '', 
+        contactNumber: '', 
+        province: '',  
+        city: '',
+        barangay: '',
+        purokStreetSubdivision: '',
+        emailAddress: '',
+        password: '',
+        clientType: ''
     });
     const [profilePicture, setProfilePicture] = useState(customer?.profilePicture || '');
     const [previewImage, setPreviewImage] = useState('');
@@ -58,11 +64,16 @@ function CustomerProfilePage() {
                 setProfilePicture(customerData.profilePicture || '');
 
                 setFormData({
-                    fullName: customerData.fullName || '',
-                    nickName: customerData.nickName || '',
-                    gender: customerData.gender || 'Other',
-                    contactNumber: customerData.contactNumber || '',
-                    address: customerData.address || ''
+                    firstName: customerData.firstName || '', 
+                    lastName: customerData.lastName || '', 
+                    middleInitial: customerData.middleInitial || '', 
+                    contactNumber: customerData.contactNumber || '', 
+                    province: customerData.province || '',  
+                    city: customerData.city || '',
+                    barangay: customerData.barangay || '',
+                    purokStreetSubdivision: customerData.purokStreetSubdivision || '',
+                    emailAddress: customerData.emailAddress || '',
+                    clientType: customerData.clientType || '',
                 });
                 setCustomer(customerData);
             })
@@ -74,11 +85,16 @@ function CustomerProfilePage() {
     //update profile
     const handleUpdateProfile = async() => {
         const formDataToSend = new FormData();
-        formDataToSend.append('fullName', formData.fullName);
-        formDataToSend.append('nickName', formData.nickName);
-        formDataToSend.append('gender', formData.gender);
+        formDataToSend.append('firstName', formData.firstName);
+        formDataToSend.append('lastName', formData.lastName);
+        formDataToSend.append('middleInitial', formData.middleInitial);
         formDataToSend.append('contactNumber', formData.contactNumber);
-        formDataToSend.append('address', formData.address);
+        formDataToSend.append('province', formData.province);
+        formDataToSend.append('city', formData.city);
+        formDataToSend.append('barangay', formData.barangay);
+        formDataToSend.append('purokStreetSubdivision', formData.purokStreetSubdivision);
+        formDataToSend.append('emailAddress', formData.emailAddress);
+        formDataToSend.append('clientType', formData.clientType);
         if(profilePicture){
             formDataToSend.append('profilePicture', profilePicture);
         }
@@ -93,11 +109,16 @@ function CustomerProfilePage() {
 
             setCustomer(updatedCustomer);
             setFormData({
-                fullName: updatedCustomer.fullName,
-                nickName: updatedCustomer.nickName,
-                gender: updatedCustomer.gender,
+                firstName: updatedCustomer.firstName,
+                lastName: updatedCustomer.lastName,
+                middleInitial: updatedCustomer.middleInitial,
                 contactNumber: updatedCustomer.contactNumber,
-                address: updatedCustomer.address
+                province: updatedCustomer.province,
+                city: updatedCustomer.city,
+                barangay: updatedCustomer.barangay,
+                purokStreetSubdivision: updatedCustomer.purokStreetSubdivision,
+                emailAddress: updatedCustomer.emailAddress,
+                clientType: updatedCustomer.clientType
             });
             setProfilePicture(updatedCustomer.profilePicture);
             setPreviewImage('');
@@ -159,7 +180,7 @@ function CustomerProfilePage() {
                         {
                             !!customer && (
                                 <>
-                                    <h2>{customer.fullName}</h2>
+                                    <h2>{customer.firstName} {customer.lastName}</h2>
                                     <p>{customer.emailAddress}</p>
                                 </>
                             )
@@ -173,32 +194,51 @@ function CustomerProfilePage() {
 
                 <div className='field-group'>
                     <div className='field'>
-                        <label>Full Name</label>
+                        <label>First Name</label>
                         <input
                         type="text"
-                        name='fullName'
-                        value={formData.fullName}
+                        name='firstName'
+                        value={formData.firstName}
                         onChange={handleChange}
                         />
                     </div>
                     <div className='field'>
-                        <label>Nick Name</label>
+                        <label>Last Name</label>
                         <input 
                         type="text" 
-                        name='nickName'
-                        value={formData.nickName}
+                        name='lastName'
+                        value={formData.lastName}
                         onChange={handleChange} />
+                    </div>
+                    <div className='field'>
+                        <label>Middle Name</label>
+                        <input
+                        type="text"
+                        name='middleInitial'
+                        value={formData.middleInitial}
+                        onChange={handleChange}
+                        />
                     </div>
                 </div>
 
                 <div className='field-group'>
-                    <div className='field'>
-                        <label>Gender</label>
+                    {/* <div className='field'>
+                        <label>Middle Name</label>
                         <select name="gender" value={formData.gender} onChange={handleChange}>
                             <option value="Male">Male</option>
                             <option value="Female">Female</option>
                             <option value="Other">Other</option>
                         </select>
+                    </div> */}
+                    <div className='field'>
+                        <label>Client Type</label>
+                        <input
+                        type="text"
+                        name='clientType'
+                        value={formData.clientType}
+                        readOnly
+                        onChange={handleChange}
+                        />
                     </div>
                     <div className='field'>
                         <label>Contact Number</label>
@@ -211,22 +251,44 @@ function CustomerProfilePage() {
                     </div>
                 </div>
 
-                <div className='add-contact-number'>
-                    <button className='add-contact-button'>+Add Contact Number</button>
+                <div className='field-group'>
+                    <div className='field'>
+                        <label>Province</label>
+                        <input
+                        type="text"
+                        name='province'
+                        value={formData.province}
+                        onChange={handleChange}
+                        />
+                    </div>
+                    <div className='field'>
+                        <label>City</label>
+                        <input 
+                        type="text" 
+                        name='city'
+                        value={formData.city}
+                        onChange={handleChange} />
+                    </div>
+                    <div className='field'>
+                        <label>Barangay</label>
+                        <input 
+                        type="text" 
+                        name='barangay'
+                        value={formData.barangay}
+                        onChange={handleChange} />
+                    </div>
+                    <div className='field'>
+                        <label>Purok/Street/Subd.</label>
+                        <input 
+                        type="text" 
+                        name='purokStreetSubdivision'
+                        value={formData.purokStreetSubdivision}
+                        onChange={handleChange} />
+                    </div>
                 </div>
 
-                <div className='field'>
-                    <label>Address</label>
-                    <input
-                    type="text"
-                    name='address'
-                    value={formData.address}
-                    onChange={handleChange}
-                    />
-                    {/* <select name="" id="">
-                        <option value="Panabo, Davao del Norte">Panabo, Davao del Norte</option>
-                        <option value="Carmen, Davao del Norte">Carmen, Davao del Norte</option>
-                    </select> */}
+                <div className='add-contact-number'>
+                    <button className='add-contact-button'>+Add Contact Number</button>
                 </div>
 
                 <div className='email-section'>

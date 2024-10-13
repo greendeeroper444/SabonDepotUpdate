@@ -50,7 +50,12 @@ function StaffHomePage() {
                             <td>{order._id}</td>
                             <td>{orderDate(order.deliveredDate)}</td>
                             <td>Online</td>
-                            <td>{order.billingDetails.fullName}</td>
+                            <td>{order.billingDetails.firstName},
+                                <br />
+                                {order.billingDetails.middleInitial},
+                                <br />
+                                {order.billingDetails.lastName}
+                            </td>
                             <td><span className='status complete'>Complete</span></td>
                             <td><span className='payment-status paid'>{order.paymentStatus}</span></td>
                             <td>{`Php ${order.totalAmount.toFixed(2)}`}</td>

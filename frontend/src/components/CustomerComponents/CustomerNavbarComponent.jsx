@@ -148,6 +148,23 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
                                             >
                                                 Orders
                                             </Link>
+                                            {
+                                                customer && 
+                                                [
+                                                    'Retailer', 
+                                                    'Wholesaler', 
+                                                    'Franchiser', 
+                                                    'Dealer'
+                                                ].includes(customer.clientType) && (
+                                                    <Link 
+                                                    to={`/payable/${customer._id}`}  
+                                                    className='dropdown-item'
+                                                    onClick={toggleDropdown}
+                                                    >
+                                                    Payable
+                                                    </Link>
+                                                )
+                                            }
                                             <Link className='dropdown-item' 
                                             onClick={handleLogoutClick}>
                                                 Logout

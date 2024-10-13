@@ -26,7 +26,7 @@ function CustomerCartPage() {
         );
     };
 
-    // Handle checkout
+    //handle checkout
     const handleCheckout = () => {
         navigate(`/checkout/${customerId}`, {state: {selectedItems}});
     };

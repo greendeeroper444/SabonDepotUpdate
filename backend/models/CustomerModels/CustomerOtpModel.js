@@ -2,9 +2,37 @@ const mongoose = require('mongoose');
 
 
 const CustomerOtpScheme = new mongoose.Schema({
-    fullName: { 
-        type: String, 
-        required: true 
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    middleInitial: {
+        type: String,
+        required: true
+    },
+    contactNumber: {
+        type: String,
+        required: true
+    },
+    province: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    barangay: {
+        type: String,
+        required: true
+    },
+    purokStreetSubdivision: {
+        type: String,
+        required: true
     },
     emailAddress: { 
         type: String, 
@@ -13,6 +41,11 @@ const CustomerOtpScheme = new mongoose.Schema({
     password: { 
         type: String, 
         required: true 
+    },
+    clientType: {
+        type: String,
+        enum: ['Consumer', 'Retailer', 'Wholesaler', 'Franchiser', 'Dealer'],
+        required: true,
     },
     otp: { 
         type: String, 

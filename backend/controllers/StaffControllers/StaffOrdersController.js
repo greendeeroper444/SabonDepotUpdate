@@ -110,7 +110,7 @@ const updateOrderStatusStaff = async(req, res) => {
 const getCompleteOrderTransactionStaff = async(req, res) => {
     try {
         const orders = await OrderModel.find({
-            isFullPaidAmount: true,
+            // isFullPaidAmount: true,
             isApproved: true,
             isDelivered: true
         }).sort({createdAt: -1})

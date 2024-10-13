@@ -1,11 +1,5 @@
 import React, { useContext, useState } from 'react'
 import '../../CSS/CustomerCSS/CustomerShopProductDetails.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import ourProduct1 from '../../assets/ourproducts/our-products-1.png'
-import ourProduct2 from '../../assets/ourproducts/our-products-2.png'
-import ourProduct3 from '../../assets/ourproducts/our-products-3.png'
-import ourProduct4 from '../../assets/ourproducts/our-products-4.png'
 import fullStar from '../../assets/shopproductdetails/stars/fullstar.png';
 import halfStar from '../../assets/shopproductdetails/stars/halfstar.png';
 import emptyStar from '../../assets/shopproductdetails/stars/emptystar.png';

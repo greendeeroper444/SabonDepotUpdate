@@ -25,7 +25,31 @@
     flex-direction: column;
     align-items: center;
 }
+
+
+.customer-register-container .customer-register-form .first{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+
+}
+
+.customer-register-container .customer-register-form .second{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+}
+
+.customer-register-container .customer-register-form .form-group.full-width{
+    grid-column: span 3;
+    width: 50%;
+}
   
+
+/* .customer-register-container .customer-register-form .third{
+    display: grid;
+    grid-template-columns: 1fr;
+} */
 .customer-register-container .form-group{
     width: 100%;
     margin-bottom: 25px;
@@ -209,6 +233,14 @@
     .customer-register-vectors{
         width: 100%;
         height: 20%;
+    }
+
+    .customer-register-container .customer-register-form .first{
+        grid-template-columns: 1fr;
+    }
+
+    .customer-register-container .customer-register-form .second{
+        grid-template-columns: 1fr;
     }
 
 }

@@ -52,6 +52,10 @@ const ProductSchema = new mongoose.Schema({
     productSize: {
         type: String, //example: '500 mL', '1 L', etc.
     },
+    isArchived:{
+        type: Boolean,
+        default: false,
+    },
     createdBy: {
         type: String,
         required: true,

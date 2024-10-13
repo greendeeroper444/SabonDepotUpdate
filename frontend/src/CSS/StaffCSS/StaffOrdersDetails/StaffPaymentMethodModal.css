@@ -20,6 +20,8 @@
     position: relative;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
+    height: 500px;
+    overflow-y: auto;
 }
 
 .staff-payment-method-modal-container .modal-close{
@@ -66,6 +68,17 @@
 .staff-payment-method-modal-container .payment-total{
     margin: 20px 0;
 }
+
+.staff-payment-method-modal-container .payment-proof{
+    margin: 20px 0;
+}
+
+.staff-payment-method-modal-container .payment-proof img{
+    width: 350px;
+    height: 350px;
+    object-fit: contain;
+}
+
 
 .staff-payment-method-modal-container .payment-total h3{
     font-size: 18px;

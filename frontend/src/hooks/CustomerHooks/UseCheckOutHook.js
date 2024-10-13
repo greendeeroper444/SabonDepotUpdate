@@ -4,11 +4,14 @@ import toast from 'react-hot-toast';
 
 export default function UseCheckOutHook(customerId, selectedItems, navigate) {
     const [billingDetails, setBillingDetails] = useState({
-        fullName: '',
-        nickName: '',
-        address: '',
-        city: '',
+        firstName: '',
+        lastName: '',
+        middleInitial: '',
         contactNumber: '',
+        province: '',
+        city: '',
+        barangay: '',
+        purokStreetSubdivision: '',
         emailAddress: '',
     });
     const [paymentMethod, setPaymentMethod] = useState('');
@@ -35,10 +38,14 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
                 const customer = response.data.customer;
                 setBillingDetails(prevDetails => ({
                     ...prevDetails,
-                    fullName: customer.fullName,
-                    nickName: customer.nickName,
-                    address: customer.address,
+                    firstName: customer.firstName,
+                    lastName: customer.lastName,
+                    middleInitial: customer.middleInitial,
                     contactNumber: customer.contactNumber,
+                    province: customer.province,
+                    city: customer.city,
+                    barangay: customer.barangay,
+                    purokStreetSubdivision: customer.purokStreetSubdivision,
                     emailAddress: customer.emailAddress,
                 }));
             } catch (error) {

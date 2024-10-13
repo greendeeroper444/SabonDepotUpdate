@@ -1,10 +1,10 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import logoDepot from '../../assets/icons/logo-depot.png';
 import '../../CSS/StaffCSS/StaffNavbar.css';
 import searchIcon from '../../assets/staff/stafficons/staff-navbar-search-icon.png'
 import notificationIcon from '../../assets/admin/adminicons/admin-navbar-notification-icon.png';
 import bottomAngleIcon from '../../assets/admin/adminicons/admin-navbar-bottomangle-icon.png';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
@@ -12,7 +12,29 @@ import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 function StaffNavbarComponent() {
     const {staff} = useContext(StaffContext);
     const navigate = useNavigate();
+    const [dropdownVisible, setDropdownVisible] = useState(false);
+    const [notificationDropdownVisible, setNotificationDropdownVisible] = useState(false);
+    const [notifications, setNotifications] = useState([]);
 
+    const checkProductStock = async() => {
+        try {
+            const response = await axios.get('/staffProduct/getOutOfStockProducts'); 
+            const lowStockProducts = response.data;
+            const newNotifications = lowStockProducts.map(product => 
+                `${product.productName} is almost sold out! Only ${product.quantity} left.`
+            );
+            setNotifications(newNotifications);
+        } catch (error) {
+            console.error('Error fetching out-of-stock products:', error);
+        }
+    };
+
+    useEffect(() => {
+        checkProductStock();
+    }, []);
+
+
+    //event handler for confirmation logout
     const handleConfirmLogout = async() => {
         try {
             const response = await axios.post('/staffAuth/logoutStaff');
@@ -26,11 +48,14 @@ function StaffNavbarComponent() {
         }
     };
 
-    const [dropdownVisible, setDropdownVisible] = useState(false);
-
     const toggleDropdown = () => {
         setDropdownVisible(!dropdownVisible);
     };
+
+    const toggleNotificationDropdown = () => {
+        setNotificationDropdownVisible(!notificationDropdownVisible);
+    };
+
   return (
     <nav className='staff-navbar'>
         <div className='staff-navbar-container'>
@@ -51,8 +76,36 @@ function StaffNavbarComponent() {
                 </form>
 
                 <div className='staff-navbar-profile'>
-                    <img src={notificationIcon} alt="Profile" className='notification-icon' />
-                    <span className='notification-count'>2</span>
+                    <div className='notification-container'>
+                        <img 
+                            src={notificationIcon} 
+                            alt="Profile" 
+                            className='notification-icon' 
+                            onClick={toggleNotificationDropdown}
+                        />
+                        <span className='notification-count'>{notifications.length}</span>
+                        {
+                            notificationDropdownVisible && (
+                                <div className='notification-dropdown'>
+                                    <h4>Notification</h4>
+                                    {
+                                        notifications.length > 0 ? (
+                                            notifications.map((notification, index) => (
+                                                <div key={index} className='notification-items'>
+                                                    <Link to='/staff/products' key={index} className='notification-item'>
+                                                        {notification}
+                                                    </Link>
+                                                </div>
+                                            ))
+                                        ) : (
+                                            <div className='notification-item'>No new notifications</div>
+                                        )
+                                    }
+                                </div>
+                            )
+                        }
+                    </div>
+
                     <div className='profile-info'>
                         {
                             !!staff && (

@@ -6,13 +6,50 @@ const CustomerAuthSchema = new mongoose.Schema({
         type: String,
         default: ''
     },
-    fullName: {
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
+        type: String,
+        required: true
+    },
+    middleInitial: {
+        type: String,
+        required: true
+    },
+    contactNumber: {
+        type: String,
+        required: true
+    },
+    province: {
+        type: String,
+        required: true
+    },
+    city: {
+        type: String,
+        required: true
+    },
+    barangay: {
+        type: String,
+        required: true
+    },
+    purokStreetSubdivision: {
         type: String,
         required: true
     },
     emailAddress: {
         type: String,
         required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    clientType: {
+        type: String,
+        enum: ['Consumer', 'Retailer', 'Wholesaler', 'Franchiser', 'Dealer'],
+        required: true,
     },
     gender: {
         type: String,
@@ -21,18 +58,6 @@ const CustomerAuthSchema = new mongoose.Schema({
     nickName: {
         type: String,
         default: ''
-    },
-    contactNumber: {
-        type: String,
-        default: ''
-    },
-    address: {
-        type: String,
-        default: ''
-    },
-    password: {
-        type: String,
-        required: true
     },
     date: {
         type: Date,
@@ -46,7 +71,9 @@ const CustomerAuthSchema = new mongoose.Schema({
         type: Date,
         required: true,
         default: () => new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 hours from registration
-    }
+    },
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 })
 
 

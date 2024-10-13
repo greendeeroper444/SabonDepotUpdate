@@ -96,6 +96,39 @@
     cursor: pointer;
     position: relative;
 }
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-container{
+    position: relative;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-dropdown{
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    padding: 10px;
+    width: 200px;
+    height: 500px;
+    overflow-y: auto;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-items{
+    cursor: pointer;
+    transition: background-color 0.2s;
+    font-size: 12px;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-items:hover{
+    background-color: #f0f0f0;
+}
+
+.staff-navbar .staff-navbar-container .staff-navbar-profile .notification-item{
+    text-decoration: none;
+    color: black;
+}
 
 .staff-navbar .staff-navbar-container .staff-navbar-profile .notification-icon{
     width: 30px;

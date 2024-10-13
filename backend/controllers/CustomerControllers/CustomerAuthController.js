@@ -1,4 +1,4 @@
-const { hashPassword, comparePassword } = require('../../helpers/HashedAndComparedPassword');
+const { hashPassword, comparePassword, generateRandomPassword } = require('../../helpers/HashedAndComparedPassword');
 const jwt = require('jsonwebtoken');
 const CustomerAuthModel = require('../../models/CustomerModels/CustomerAuthModel');
 const CustomerOtpModel = require('../../models/CustomerModels/CustomerOtpModel');
@@ -7,6 +7,8 @@ require('dotenv').config();
 const multer = require('multer');
 const path = require('path');
 const mongoose = require('mongoose');
+const { SendPasswordResetEmail } = require('../../helpers/SendPasswordResetEmail');
+const crypto = require('crypto')
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -43,7 +45,22 @@ function checkFileType(file, cb){
 
 
 const registerCustomer = async(req, res) => {
-    const {fullName, emailAddress, password} = req.body;
+    const {
+        firstName, 
+        lastName, 
+        middleInitial, 
+        contactNumber, 
+        province,  
+        city,
+        barangay,
+        purokStreetSubdivision,
+        emailAddress, 
+        password,
+        clientType
+    } = req.body;
+
+    //handle empty or undefined clientType
+    const customerClientType = clientType && clientType !== "" ? clientType : 'Consumer';
 
     try {
 
@@ -61,9 +78,17 @@ const registerCustomer = async(req, res) => {
         const expires = new Date(Date.now() + 5 * 60 * 1000);
 
         const otpEntry = new CustomerOtpModel({
-            fullName,
+            firstName, 
+            lastName, 
+            middleInitial, 
+            contactNumber, 
+            province,  
+            city,
+            barangay,
+            purokStreetSubdivision,
             emailAddress,
             password: hashedPassword,
+            clientType: customerClientType,
             otp,
             createdAt: new Date(),
             expires: expires
@@ -123,9 +148,17 @@ const verifyOtpCustomer = async(req, res) => {
 
         //register the customer
         const customer = new CustomerAuthModel({
-            fullName: otpEntry.fullName,
+            firstName: otpEntry.firstName,
+            lastName: otpEntry.lastName,
+            middleInitial: otpEntry.middleInitial,
+            contactNumber: otpEntry.contactNumber,
+            province: otpEntry.province,
+            city: otpEntry.city,
+            barangay: otpEntry.barangay,
+            purokStreetSubdivision: otpEntry.purokStreetSubdivision,
             emailAddress: otpEntry.emailAddress,
             password: otpEntry.password,
+            clientType: otpEntry.clientType,
             isNewCustomer: true,
             newCustomerExpiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
         });
@@ -184,20 +217,15 @@ const loginCustomer = async(req, res) => {
         if(correctPassword){
             jwt.sign({
                 id: customer._id.toString(),
-                profilePicture: customer.profilePicture,
-                fullName: customer.fullName,
-                nickName: customer.nickName,
-                address: customer.address,
-                contact: customer.contactNumber,
-                genter: customer.gender,
-                emailAddress: customer.emailAddress
+                emailAddress: customer.emailAddress,
+                password: customer.password,
             }, process.env.JWT_SECRET, {}, (error, token) => {
                 if(error) throw error
                res.cookie('token', token, {httpOnly: true})
                 res.json({
                     customer,
                     token,
-                    message: `Hi ${customer.fullName.split(' ')[0]}, Welcome to Sabon Depot`
+                    message: `Hi ${customer.firstName}, Welcome to Sabon Depot`
                 })
             })
         };
@@ -312,7 +340,16 @@ const updateProfileCustomer = async(req, res) => {
         try {
             // const {customerId} = req.params;
             const customerId = req.params.customerId;
-            const {fullName, nickName, gender, contactNumber, address} = req.body;
+            const { 
+                firstName, 
+                lastName, 
+                middleInitial, 
+                contactNumber, 
+                province,  
+                city,
+                barangay,
+                purokStreetSubdivision
+            } = req.body;
             
             if(!customerId){
                 return res.status(400).json({ 
@@ -328,11 +365,14 @@ const updateProfileCustomer = async(req, res) => {
             const updatedCustomer = await CustomerAuthModel.findByIdAndUpdate(
                 customerId,
                 {
-                    fullName,
-                    nickName,
-                    gender,
-                    contactNumber,
-                    address,
+                    firstName, 
+                    lastName, 
+                    middleInitial, 
+                    contactNumber, 
+                    province,  
+                    city,
+                    barangay,
+                    purokStreetSubdivision,
                     profilePicture: profilePictureUrl || undefined
                 },
                 {new: true, runValidators: true}
@@ -387,6 +427,91 @@ const getDataUpdateCustomer = async(req, res) => {
 };
 
 
+
+
+
+//reset password function
+const requestPasswordReset = async(req, res) => {
+    const {emailAddress} = req.body;
+
+    try {
+        const customer = await CustomerAuthModel.findOne({emailAddress});
+        if(!customer){
+            return res.status(400).json({
+                error: 'No account found with that email address.'
+            });
+        }
+
+        //generate token
+        const resetToken = crypto.randomBytes(20).toString('hex');
+
+        //set token and expiration (1 hour expiration)
+        customer.resetPasswordToken = resetToken;
+        customer.resetPasswordExpires = Date.now() + 60 * 60 * 1000; //1 hour from now
+
+        await customer.save();
+
+        //send email with reset link
+        const resetLink = `${req.protocol}://${req.get('host')}/customerAuth/resetPassword/${resetToken}`;
+        await SendPasswordResetEmail(customer.emailAddress, resetLink);
+
+        return res.status(200).json({ 
+            message: 'Password reset link sent to your email.' 
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ 
+            message: 'Server error.' 
+        });
+    }
+};
+
+
+const resetPassword = async(req, res) => {
+    const {token} = req.params;
+
+    try {
+        //find the customer with the token and check if it’s still valid
+        const customer = await CustomerAuthModel.findOne({
+            resetPasswordToken: token,
+            resetPasswordExpires: {$gt: Date.now()} //token must still be valid
+        });
+
+        if(!customer){
+            return res.status(400).json({ 
+                error: 'Password reset token is invalid or has expired.' 
+            });
+        }
+
+        //generate a new password
+        const newPassword = generateRandomPassword(10); //generates a 10-character password
+
+        //hash the new password
+        const hashedPassword = await hashPassword(newPassword);
+
+        //update the customer's password and clear the reset token
+        customer.password = hashedPassword;
+        customer.resetPasswordToken = undefined;
+        customer.resetPasswordExpires = undefined;
+
+        await customer.save();
+
+        //optionally, send the new password to the customer's email
+        await SendPasswordResetEmail(customer.emailAddress, `Your new password is: ${newPassword}`);
+
+        return res.status(200).json({ 
+            message: 'Password successfully reset. Check your email for the new password.' 
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            message: 'Server error.' 
+        });
+    }
+};
+
+
+
 module.exports = {
     registerCustomer,
     loginCustomer,
@@ -395,5 +520,7 @@ module.exports = {
     getDataCustomer,
     getOtpDetailsCustomer,
     updateProfileCustomer,
-    getDataUpdateCustomer
+    getDataUpdateCustomer,
+    requestPasswordReset,
+    resetPassword
 }

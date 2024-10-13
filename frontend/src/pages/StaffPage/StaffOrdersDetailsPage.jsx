@@ -89,7 +89,12 @@ function StaffOrdersDetailsPage() {
                     <span>Customer & Order</span> 
                     <img src={editIcon} alt='Edit Icon' className='edit-icon' />
                 </h3>
-                <p><strong>Name:</strong> {order.billingDetails.fullName}</p>
+                <p>
+                    <strong>Name:</strong>
+                    {order.billingDetails.firstName} {' '}
+                    {order.billingDetails.middleInitial} {' '}
+                    {order.billingDetails.lastName} 
+                </p>
                 <p><strong>Email:</strong> {order.billingDetails.emailAddress}</p>
                 <p><strong>Phone:</strong> {order.billingDetails.contactNumber}</p>
                 <p><strong>PO:</strong> {order.poNumber}</p>
@@ -101,14 +106,17 @@ function StaffOrdersDetailsPage() {
                     <span>Shipping Address</span> 
                     <img src={editIcon} alt='Edit Icon' className='edit-icon' />
                 </h3>
+                <p>{order.billingDetails.province}</p>
                 <p>{order.billingDetails.city}</p>
+                <p>{order.billingDetails.barangay}</p>
+                <p>{order.billingDetails.purokStreetSubdivision}</p>
             </div>
             <div className='order-section'>
                 <h3 style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                     <span>Billing Address</span> 
                     <img src={editIcon} alt='Edit Icon' className='edit-icon' />
                 </h3>
-                <p>{order.billingDetails.address}</p>
+                <p>{order.billingDetails.city}</p>
             </div>
         </div>
 

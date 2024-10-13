@@ -27,7 +27,10 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                     </div>
                     <div className='payment-total'>
                         <h3>Total Payment</h3>
-                        <p>{`PHP ${order.outstandingAmount}`}</p>
+                        <p>{`PHP ${order.overallPaid}`}</p>
+                    </div>
+                    <div className='payment-proof'>
+                        <img src={`http://localhost:8000/${order.paymentProof}`}alt="" />
                     </div>
                     <div className='payment-details'>
                         <div className='detail'>
@@ -44,7 +47,13 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                         </div>
                         <div className='detail'>
                             <span>Sender Name</span>
-                            <span>{order.billingDetails.fullName}</span>
+                            <span>
+                                {order.billingDetails.firstName},
+                                <br />
+                                {order.billingDetails.middleInitial}, 
+                                <br />
+                                {order.billingDetails.lastName}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -70,11 +79,14 @@ StaffPaymentMethodModal.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     order: PropTypes.shape({
-        outstandingAmount: PropTypes.number.isRequired,
+        overallPaid: PropTypes.number.isRequired,
+        paymentProof: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
         paymentMethod: PropTypes.string.isRequired,
         billingDetails: PropTypes.shape({
-            fullName: PropTypes.string.isRequired,
+            firstName: PropTypes.string.isRequired,
+            middleInitial: PropTypes.string.isRequired,
+            lastName: PropTypes.string.isRequired,
         }).isRequired,
         isApproved: PropTypes.bool.isRequired,
     }).isRequired,

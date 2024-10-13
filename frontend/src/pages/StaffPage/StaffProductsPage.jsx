@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import '../../CSS/StaffCSS/StaffProducts.css';
 import editIcon from '../../assets/staff/stafficons/staff-orders-edit-icon.png';
-import deleteIcon from '../../assets/staff/stafficons/staff-orders-delete-icon.png';
 import archiveIcon from '../../assets/staff/stafficons/staff-products-archive-icon.png';
 import axios from 'axios';
 import StaffModalProductsAddComponent from '../../components/StaffComponents/StaffModalProducts/StaffModalProductsAddComponent';
-import StaffModalProductsDeleteComponent from '../../components/StaffComponents/StaffModalProducts/StaffModalProductsDeleteComponent';
 import StaffModalProductsEditComponent from '../../components/StaffComponents/StaffModalProducts/StaffModalProductsEditComponent';
 import toast from 'react-hot-toast';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
+import StaffModalArchivedProductComponent from '../../components/StaffComponents/StaffModalProducts/StaffModalArchivedProductComponent';
 
 
 function StaffProductsPage() {
@@ -17,8 +16,9 @@ function StaffProductsPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-    const [productIdToDelete, setProductIdToDelete] = useState(null);
+    const [isArchivedModalOpen, setIsArchiveModalOpen] = useState(false);
+    const [productIdToArchive, setProductIdToArchive] = useState(null);
+    const [isArchived, setIsArchived] = useState(false);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
 
@@ -88,26 +88,30 @@ function StaffProductsPage() {
     };
 
     
-    //delete function
-    const handleConfirmDelete = async() => {
+    //archive function
+    const handleConfirmArchive = async() => {
         try {
-            const response = await axios.delete(`/staffProduct/deleteProductStaff/${productIdToDelete}`);
-            setProducts(products.filter(product => product._id !== productIdToDelete));
-            setIsDeleteModalOpen(false);
-            setProductIdToDelete(null);
-            toast.success(response.data.message);
+            const response = await axios.put(`/staffProduct/archiveProductStaff/${productIdToArchive}`);
+            
+            if(response.status === 200){
+                toast.success(response.data.message);
+                fetchProducts(); //fefresh the product list after archiving
+                setIsArchiveModalOpen(false);
+            }
         } catch (error) {
-            console.log(error)
+            console.error(error);
+            toast.error('Failed to archive the product');
         }
     };
     
-    const handleDeleteProductClick = (productId) => {
-        setProductIdToDelete(productId);
-        setIsDeleteModalOpen(true);
+    const handleArchivedProductClick = (productId, archivedStatus) => {
+        setProductIdToArchive(productId);
+        setIsArchived(archivedStatus);
+        setIsArchiveModalOpen(true);
     };
-    const handleCloseDeleteModal = () => {
-        setIsDeleteModalOpen(false);
-        setProductIdToDelete(null);
+    const handleCloseArchiveModal = () => {
+        setIsArchiveModalOpen(false);
+        setProductIdToArchive(null);
     };
 
 
@@ -153,10 +157,18 @@ function StaffProductsPage() {
         fetchProducts={fetchProducts}
         />
 
-        <StaffModalProductsDeleteComponent
+        {/* <StaffModalProductsDeleteComponent
         isOpen={isDeleteModalOpen} 
         onClose={handleCloseDeleteModal} 
         onConfirm={handleConfirmDelete} 
+        /> */}
+        
+        {/* archive */}
+        <StaffModalArchivedProductComponent
+        isOpen={isArchivedModalOpen} 
+        onClose={handleCloseArchiveModal} 
+        onConfirm={handleConfirmArchive} 
+        isArchived={isArchived}
         />
 
         <StaffModalProductsEditComponent
@@ -198,7 +210,12 @@ function StaffProductsPage() {
                     <tbody>
                         {
                             products.map((product) => (
-                                <tr key={product._id}>
+                                <tr 
+                                key={product._id} 
+                                className={`${product.isArchived ? 'archived-product' : ''} 
+                                ${product.quantity < 10 ? 'low-quantity' : ''} 
+                                ${product.isArchived && product.quantity < 10 ? 'low-quantity archived-product' : ''}`}
+                                >
                                     <td>{product.productCode}</td>
                                     <td>{product.productName}</td>
                                     <td>{product.category}</td>
@@ -214,9 +231,15 @@ function StaffProductsPage() {
                                         >
                                             <img src={editIcon} alt="Edit Icon" />
                                             </button>
-                                        <button className='button-delete-icon' 
-                                        onClick={() => handleDeleteProductClick(product._id)}>
-                                            <img src={archiveIcon} alt="Delete Icon" />
+                                        <button className='button-archived-icon' 
+                                        onClick={() => handleArchivedProductClick(product._id, product.isArchived)}>
+                                            {
+                                                product.isArchived ? (
+                                                    <span>Unarchive</span>
+                                                ) : (
+                                                    <img src={archiveIcon} alt="Archive Icon" />
+                                                )
+                                            }
                                         </button>
                                     </td>
                                 </tr>

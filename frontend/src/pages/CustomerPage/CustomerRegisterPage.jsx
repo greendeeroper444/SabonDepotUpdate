@@ -9,29 +9,71 @@ import { Link, useNavigate } from 'react-router-dom';
 import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
 import axios from 'axios';
 import toast from 'react-hot-toast';
+import { motion } from 'framer-motion';
+
 
 function CustomerRegisterPage() {
     const [showPassword, setShowPassword] = useState(false);
+    const [showPasswordConfirm, setShowPasswordConfirm] = useState(false);
     const navigate = useNavigate();
     const {setCustomer} = useContext(CustomerContext);
     const [data, setData] = useState({
-        fullName: '',
+        firstName: '', 
+        lastName: '', 
+        middleInitial: '', 
+        contactNumber: '', 
+        province: '',  
+        city: '',
+        barangay: '',
+        purokStreetSubdivision: '',
         emailAddress: '',
         password: '',
+        clientType: ''
     });
+    const [step, setStep] = useState(1);
+
+    const handleNextStep = (e) => {
+        e.preventDefault();
+        setStep(step + 1); 
+    };
+
+    const handlePreviousStep = (e) => {
+        e.preventDefault();
+        setStep(step - 1);
+    };
 
 
     const handleRegister = async(e) => {
         e.preventDefault();
-        const {fullName, emailAddress, password} = data;
+        const {
+            firstName, 
+            lastName, 
+            middleInitial, 
+            contactNumber, 
+            province,  
+            city,
+            barangay,
+            purokStreetSubdivision, 
+            emailAddress, 
+            password,
+            clientType
+        } = data;
 
         const loadingToast = toast.loading('Sending OTP email...');
 
         try {
             const response = await axios.post('/customerAuth/registerCustomer', {
-                fullName,
+                firstName, 
+                lastName, 
+                middleInitial, 
+                contactNumber, 
+                province,  
+                city,
+                barangay,
+                purokStreetSubdivision,
                 emailAddress,
-                password
+                password,
+                clientType
             });
 
             //dismiss the waiting toast
@@ -57,6 +99,9 @@ function CustomerRegisterPage() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword);
     };
+    const toggleConfirmPasswordVisibility = () => {
+        setShowPasswordConfirm(!showPasswordConfirm);
+    }
 
   return (
     <>
@@ -65,40 +110,160 @@ function CustomerRegisterPage() {
 
             <br />
             <form action="" className='customer-register-form' onSubmit={handleRegister}>
-                <div className='form-group'>
-                    <label htmlFor="name">Name</label>
-                    <input type="name" className='form-input' id='name'
-                    value={data.fullName} onChange={(e) =>setData({...data, fullName: e.target.value})} />
-                </div>
+                {
+                    step === 1 && (
+                        <motion.span
+                        initial={{ x: '-100%' }} 
+                        animate={{ x: 0 }} 
+                        exit={{ x: '100%' }} 
+                        transition={{ duration: 0.5 }}>
+                            <div className='first'>
+                                <div className='form-group'>
+                                    <label htmlFor="firstName">First Name</label>
+                                    <input type="text" className='form-input' id='firstName'
+                                    value={data.firstName} onChange={(e) =>setData({...data, firstName: e.target.value})} />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="lastName">Last Name</label>
+                                    <input type="text" className='form-input' id='lastName'
+                                    value={data.lastName} onChange={(e) =>setData({...data, lastName: e.target.value})} />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="middleInitial">Middle Name (optional)</label>
+                                    <input type="text" className='form-input' id='middleInitial'
+                                    value={data.middleInitial} onChange={(e) =>setData({...data, middleInitial: e.target.value})} />
+                                </div>
 
-                <div className='form-group'>
-                    <label htmlFor="email">Email Address</label>
-                    <input type="email" className='form-input' id='email'
-                    value={data.emailAddress} onChange={(e) =>setData({...data, emailAddress: e.target.value})} />
-                </div>
-                
-                <div className='form-group'>
-                    <label htmlFor="password">Password</label>
-                    <div className='password-input'>
-                        <input
-                        type={showPassword ? 'text' : 'password'}
-                        className='form-input'
-                        id='password'
-                        value={data.password} onChange={(e) => setData({...data, password: e.target.value})}
-                        />
-                        <FontAwesomeIcon
-                        icon={showPassword ? faEyeSlash : faEye}
-                        onClick={togglePasswordVisibility}
-                        className='password-icon'
-                        />
-                    </div>
-                </div>
-                
-                <div className='form-group'>
-                    <span>By continuing, you agree to our <Link className='terms-of-service'>terms of service.</Link></span>
-                </div>
-                
-                <button type='submit' className='customer-register-button'>Sign up</button>
+                                <div className='form-group'>
+                                    <label htmlFor="clientType">Client Type</label>
+                                    <select className='form-input' id='clientType' value={data.clientType} 
+                                        onChange={(e) => setData({...data, clientType: e.target.value})}>
+                                        <option value="Consumer">Consumer</option>
+                                        <option value="Retailer">Retailer</option>
+                                        <option value="Wholesaler">Wholesaler</option>
+                                        <option value="Franchiser">Franchiser</option>
+                                        <option value="Dealer">Dealer</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type='submit' className='customer-register-button' onClick={handleNextStep}>Next...</button>
+                        </motion.span>
+                    )
+                }
+
+
+
+                {/* second */}
+                {
+                    step === 2 && (
+                        <motion.span
+                        initial={{ x: '100%' }} 
+                        animate={{ x: 0 }} 
+                        exit={{ x: '-100%' }} 
+                        transition={{ duration: 0.5 }}
+                        >
+                            <div className='second'>
+                                <div className='form-group full-width'>
+                                    <label htmlFor="contactNumber">Contact #</label>
+                                    <input type="number" className='form-input' id='contactNumber'
+                                        value={data.contactNumber} 
+                                        onChange={(e) => setData({ ...data, contactNumber: e.target.value })}
+                                    />
+                                </div>
+
+                                <div className='form-group'>
+                                    <label htmlFor="province">Province</label>
+                                    <input type="text" className='form-input' id='province'
+                                        value={data.province} 
+                                        onChange={(e) => setData({ ...data, province: e.target.value })}
+                                    />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="city">City</label>
+                                    <input type="text" className='form-input' id='city'
+                                        value={data.city} 
+                                        onChange={(e) => setData({ ...data, city: e.target.value })}
+                                    />
+                                </div>
+                                <div className='form-group'>
+                                    <label htmlFor="barangay">Barangay</label>
+                                    <input type="text" className='form-input' id='barangay'
+                                        value={data.barangay} 
+                                        onChange={(e) => setData({ ...data, barangay: e.target.value })}
+                                    />
+                                </div>
+                                
+                                <div className='form-group full-width'>
+                                    <label htmlFor="purokStreetSubdivision">Purok/Street/Subd.</label>
+                                    <input type="text" className='form-input' id='purokStreetSubdivision'
+                                        value={data.purokStreetSubdivision} 
+                                        onChange={(e) => setData({ ...data, purokStreetSubdivision: e.target.value })}
+                                    />
+                                </div>
+                            </div>
+
+                            <button type='submit' className='customer-register-button' onClick={handlePreviousStep}>Back</button>
+                            <button type='submit' className='customer-register-button' onClick={handleNextStep}>Next...</button>
+
+                        </motion.span>
+                    )
+                }
+
+                {
+                    step === 3 && (
+                        <motion.span
+                        initial={{ x: '100%' }} 
+                        animate={{ x: 0 }} 
+                        exit={{ x: '-100%' }} 
+                        transition={{ duration: 0.5 }}
+                        >
+                            <div className='form-group'>
+                                <label htmlFor="email">Email Address</label>
+                                <input type="email" className='form-input' id='email'
+                                value={data.emailAddress} onChange={(e) =>setData({...data, emailAddress: e.target.value})} />
+                            </div>
+                            
+                            <div className='form-group'>
+                                <label htmlFor="password">Password</label>
+                                <div className='password-input'>
+                                    <input
+                                    type={showPassword ? 'text' : 'password'}
+                                    className='form-input'
+                                    id='password'
+                                    value={data.password} onChange={(e) => setData({...data, password: e.target.value})}
+                                    />
+                                    <FontAwesomeIcon
+                                    icon={showPassword ? faEyeSlash : faEye}
+                                    onClick={togglePasswordVisibility}
+                                    className='password-icon'
+                                    />
+                                </div>
+                            </div>
+                            
+                            <div className='form-group'>
+                                <label htmlFor="confirmPassword">Confirm Password</label>
+                                <div className='password-input'>
+                                    <input
+                                    type={showPasswordConfirm ? 'text' : 'password'}
+                                    className='form-input'
+                                    id='confirmPassword'
+                                    />
+                                    <FontAwesomeIcon
+                                    icon={showPasswordConfirm ? faEyeSlash : faEye}
+                                    onClick={toggleConfirmPasswordVisibility}
+                                    className='password-icon'
+                                    />
+                                </div>
+                            </div>
+
+                            <div className='form-group'>
+                                <span>By continuing, you agree to our <Link className='terms-of-service'>terms of service.</Link></span>
+                            </div>
+                            <button type='submit' className='customer-register-button' onClick={handlePreviousStep}>Back</button>
+                            <button type='submit' className='customer-register-button'>Sign up</button>
+                        </motion.span>
+                    )
+                }
                 
                 <div className='or-sign-up'>
                     <span className='divider-line'></span>

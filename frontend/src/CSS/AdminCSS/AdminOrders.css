@@ -133,14 +133,19 @@
 }
   
 .admin-orders-container .badge.on-delivery{
-    background-color: #FFF0E6;
-    color: #FE964A;
+    background-color: #FE964A;
 }
   
 .admin-orders-container .badge.under-review{
     background-color: #FFF0F0;
     color: #FD6A6A;
 }
+
+
+.admin-orders-container .badge.confirmed{
+    background-color: #09a730;
+}
+  
   
 .admin-orders-container .badge.delivered{
     background-color: #17a2b8;

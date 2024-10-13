@@ -35,7 +35,13 @@ function StaffAllOrders({orders, handleRowClick, orderDate}) {
                             }
                         </td>
                         <td>{orderDate(order.createdAt)}</td>
-                        <td>{order.billingDetails.fullName}</td>
+                        <td>
+                            {order.billingDetails.firstName},
+                            <br />
+                            {order.billingDetails.middleInitial}, 
+                            <br />
+                            {order.billingDetails.lastName}
+                        </td>
                         <td><span className={`badge ${order.paymentStatus.toLowerCase()}`}>{order.paymentStatus}</span></td>
                         <td><span className={`badge ${order.orderStatus.toLowerCase().replace(' ', '-')}`}>{order.orderStatus}</span></td>
                         <td>{`₱${order.totalAmount.toFixed(2)}`}</td>

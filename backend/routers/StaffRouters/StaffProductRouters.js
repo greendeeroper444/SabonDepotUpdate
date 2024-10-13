@@ -1,5 +1,5 @@
 const express = require('express');
-const { uploadProductStaff, getProductStaff, deleteProductStaff, editProductStaff, getEditProductStaff, getProductShopStaff, getProductDetailsShopStaff } = require('../../controllers/StaffControllers/StaffProductController');
+const { uploadProductStaff, getProductStaff, deleteProductStaff, editProductStaff, getEditProductStaff, getProductShopStaff, getProductDetailsShopStaff, archiveProductStaff, getOutOfStockProducts } = require('../../controllers/StaffControllers/StaffProductController');
 const router = express.Router();
 
 
@@ -12,5 +12,10 @@ router.get('/getEditProductStaff/:productId', getEditProductStaff);
 router.get('/getProductShopStaff', getProductShopStaff);
 router.get('/getProductDetailsShopStaff/:productId', getProductDetailsShopStaff);
 // router.get('/getUniqueCategoriesCustomer', getUniqueCategoriesCustomer);
+
+
+router.put('/archiveProductStaff/:productId', archiveProductStaff);
+
+router.get('/getOutOfStockProducts', getOutOfStockProducts);
 
 module.exports = router;

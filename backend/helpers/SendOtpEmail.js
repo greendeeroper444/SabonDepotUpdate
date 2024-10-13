@@ -9,16 +9,20 @@ const SendOtpEmail = async(email, otp) => {
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
-            }
+            },
+            pool: true, // enable connection pooling
+            maxConnections: 5, // number of parallel connections to make
+            maxMessages: 100, // max number of messages per connection
+            rateLimit: 10 // number of emails per second
         });
 
         const mailOptions = {
-            from: `"Sabon Depot" <${process.env.EMAIL_USER}>`,
+            from: `'Sabon Depot' <${process.env.EMAIL_USER}>`,
             to: email,
             subject: 'Your OTP Code',
             text: `${otp} is your Sabon Depot code.`,
             html: `
-                <div style="font-family: Arial, sans-serif; line-height: 1.6;">
+                <div style='font-family: Arial, sans-serif; line-height: 1.6;'>
                     <h2>OTP Verification</h2>
                     <p>Dear Customer,</p>
                     <p>Your OTP code is: <strong>${otp}</strong></p>

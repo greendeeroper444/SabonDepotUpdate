@@ -11,6 +11,7 @@
     position: fixed;
     top: 50px; 
     left: 0;
+    z-index: 500;
 }
   
 .staff-sidebar .staff-sidebar-list{

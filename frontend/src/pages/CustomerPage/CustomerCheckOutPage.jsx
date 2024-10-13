@@ -45,50 +45,81 @@ function CustomerCheckOutPage() {
                 <h2>Billing details</h2>
                 <div className='form-group'>
                     <div className='form-control'>
-                        <label>Full Name</label>
+                        <label>First Name</label>
                         <input
                         type="text"
-                        name="fullName"
-                        value={billingDetails.fullName}
+                        name="firstName"
+                        value={billingDetails.firstName}
                         onChange={handleInputChange}
                         />
                     </div>
                     <div className='form-control'>
-                        <label>Nick Name</label>
+                        <label>Last Name</label>
                         <input
                         type="text"
-                        name="nickName"
-                        value={billingDetails.nickName}
+                        name="lastName"
+                        value={billingDetails.lastName}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='form-control'>
+                        <label>Middle Name</label>
+                        <input
+                        type="text"
+                        name="middleInitial"
+                        value={billingDetails.middleInitial}
                         onChange={handleInputChange}
                         />
                     </div>
                 </div>
-                <div className='form-control'>
-                    <label>Street address</label>
-                    <input
-                    type="text"
-                    name="address"
-                    value={billingDetails.address}
-                    onChange={handleInputChange}
-                    />
+                <div className='form-group'>
+                    <div className='form-control'>
+                        <label>Province</label>
+                        <input
+                        type="text"
+                        name="province"
+                        value={billingDetails.province}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='form-control'>
+                        <label>City</label>
+                        <input
+                        type="text"
+                        name="city"
+                        value={billingDetails.city}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='form-control'>
+                        <label>Barangay</label>
+                        <input
+                        type="text"
+                        name="barangay"
+                        value={billingDetails.barangay}
+                        onChange={handleInputChange}
+                        />
+                    </div>
                 </div>
-                <div className='form-control'>
-                    <label>City</label>
-                    <input
-                    type="text"
-                    name="city"
-                    value={billingDetails.city}
-                    onChange={handleInputChange}
-                    />
-                </div>
-                <div className='form-control'>
-                    <label>Contact Number</label>
-                    <input
-                    type="text"
-                    name="contactNumber"
-                    value={billingDetails.contactNumber}
-                    onChange={handleInputChange}
-                    />
+                <div className='form-group'>
+                    <div className='form-control'>
+                        <label>Purok/Street/Subdivision</label>
+                        <input
+                        type="text"
+                        name="purokStreetSubdivision"
+                        value={billingDetails.purokStreetSubdivision}
+                        onChange={handleInputChange}
+                        />
+                    </div>
+                    <div className='form-control'>
+                        <label>Contact Number</label>
+                        <input
+                        type="text"
+                        name="contactNumber"
+                        value={billingDetails.contactNumber}
+                        onChange={handleInputChange}
+                        />
+                    </div>
                 </div>
                 <div className='form-control'>
                     <label>Email address</label>
@@ -144,6 +175,19 @@ function CustomerCheckOutPage() {
                         <span>Gcash</span>
                         <p>
                             Make your payment directly into our Gcash account. Please use your Reference ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
+                        </p>
+                    </label>
+                    <label>
+                        <input
+                        type="radio"
+                        name='payment'
+                        value="Cash On Delivery"
+                        checked={paymentMethod === 'Cash On Delivery'}
+                        onChange={handlePaymentChange}
+                        />
+                        <span>Pay Later</span>
+                        <p>
+                            Unlock extended payment periods and innovative financing alternatives targeted to your business.
                         </p>
                     </label>
                     <label>

@@ -5,7 +5,11 @@ const getProductCustomer = async(req, res) => {
     const category = req.query.category;
 
     try {
-        const query = category ? {category: category} : {};
+        // const query = category ? {category: category} : {};
+        const query = {
+            ...(category ? {category: category} : {}),
+            isArchived: false //exclude archived products
+        };
         const customerProducts = await ProductModel.find(query);
 
         //group by productName and then prioritize by sizeUnit and productSize

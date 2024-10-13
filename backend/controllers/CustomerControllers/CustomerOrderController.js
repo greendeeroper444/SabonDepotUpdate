@@ -3,6 +3,7 @@ const CustomerAuthModel = require("../../models/CustomerModels/CustomerAuthModel
 const OrderModel = require("../../models/OrderModel");
 const path = require('path');
 const multer = require('multer');
+const ProductModel = require("../../models/ProductModel");
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -86,11 +87,15 @@ const createOrderCustomer = async(req, res) => {
 
             //validate billing details
             if(
-                !parsedBillingDetails.fullName ||
-                !parsedBillingDetails.emailAddress ||
+                !parsedBillingDetails.firstName ||
+                !parsedBillingDetails.lastName ||
+                !parsedBillingDetails.middleInitial ||
                 !parsedBillingDetails.contactNumber ||
+                !parsedBillingDetails.province ||
                 !parsedBillingDetails.city ||
-                !parsedBillingDetails.address
+                !parsedBillingDetails.barangay ||
+                !parsedBillingDetails.purokStreetSubdivision ||
+                !parsedBillingDetails.emailAddress
             ){
                 return res.status(400).json({
                     message: 'Billing details are required.'
@@ -99,7 +104,7 @@ const createOrderCustomer = async(req, res) => {
 
             //fetch selected cart items for the customer
             const cartItems = await CartModel.find({
-                _id: { $in: selectedItems },
+                _id: {$in: selectedItems},
                 customerId,
             }).populate('productId');
 
@@ -155,7 +160,7 @@ const createOrderCustomer = async(req, res) => {
                     partialPayment
                 }));
             } else{
-                console.log("Received Payment Method:", paymentMethod);
+                console.log('Received Payment Method:', paymentMethod);
                 return res.status(400).json({
                     message: 'Invalid payment method'
                 });
@@ -192,10 +197,17 @@ const createOrderCustomer = async(req, res) => {
                 paymentMethod,
                 billingDetails: parsedBillingDetails,
                 paymentStatus,
-                orderStatus: 'On Delivery',
+                orderStatus: 'Confirmed',
             });
 
             await order.save();
+
+            //update product quantities based on the order
+            await Promise.all(cartItems.map(async (item) => {
+                await ProductModel.findByIdAndUpdate(item.productId._id, {
+                    $inc: {quantity: -item.quantity} //decrease product quantity
+                });
+            }));
 
             //remove selected items from the cart
             await CartModel.deleteMany({
@@ -486,11 +498,11 @@ const getOrderCustomer = async(req, res) => {
 
 
 const getAllOrdersCustomer = async(req, res) => {
-    const { customerId } = req.params;
+    const {customerId} = req.params;
 
     try {
-        const orders = await OrderModel.find({ customerId }).populate('items.productId');
-        res.status(200).json({ orders });
+        const orders = await OrderModel.find({customerId}).populate('items.productId');
+        res.status(200).json({orders});
     } catch (error) {
         console.error(error);
         return res.status(500).json({

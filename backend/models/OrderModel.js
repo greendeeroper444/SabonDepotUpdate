@@ -60,11 +60,14 @@ const OrderSchema = new mongoose.Schema({
         required: true,
     },
     billingDetails: {
-        fullName: {type: String, required: true},
-        nickName: {type: String},
-        address: {type: String, required: true},
-        city: {type: String, required: true},
+        firstName: {type: String, required: true},
+        lastName: {type: String, required: true},
+        middleInitial: {type: String, required: true},
         contactNumber: {type: String, required: true},
+        province: {type: String, required: true},
+        city: {type: String, required: true},
+        barangay: {type: String, required: true},
+        purokStreetSubdivision: {type: String, required: true},
         emailAddress: {type: String, required: true},
     },
     paymentStatus: {
@@ -74,7 +77,14 @@ const OrderSchema = new mongoose.Schema({
     },
     orderStatus: {
         type: String,
-        enum: ['On Delivery', 'Delivered', 'Under Review', 'Cancelled'],
+        enum: [
+            'Confirmed',
+            'Out For Delivery', 
+            'Shipped', 
+            'Delivered', 
+            // 'Under Review', 
+            // 'Cancelled'
+        ],
         default: 'On Delivery',
     },
     isPaidPartial: {
@@ -151,6 +161,18 @@ OrderSchema.pre('save', function(next){
         this.deliveredDate = Date.now();
     }
 
+
+    //order status update based on shipping stages
+    if (this.isDelivered) {
+        this.orderStatus = 'Delivered';
+    } else if (this.isOutForDelivery) {
+        this.orderStatus = 'Out For Delivery';
+    } else if (this.isShipped) {
+        this.orderStatus = 'Shipped';
+    } else {
+        this.orderStatus = 'Confirmed';
+    }
+    
     next();
 });
 

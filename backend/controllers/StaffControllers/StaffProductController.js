@@ -188,7 +188,7 @@ const deleteProductStaff = async(req, res) => {
         await CartModel.deleteMany({productId: req.params.productId});
 
         return res.status(200).json({ 
-            message: 'Product archived successfully' 
+            message: 'Product deleted successfully' 
         });
     } catch (error) {
         console.error(error);
@@ -401,6 +401,77 @@ const getProductDetailsShopStaff = async(req, res) => {
 //     }
 // };
 
+
+
+
+//archived the product
+const archiveProductStaff = async(req, res) => {
+    // try {
+    //     const {productId} = req.params;
+
+    //     //find the product by ID and update the isArchived field
+    //     const archivedProduct = await ProductModel.findByIdAndUpdate(
+    //         productId, 
+    //         {isArchived: true}, //update the isArchived field to true
+    //         {new: true} //return the updated product
+    //     );
+
+    //     if(!archivedProduct){
+    //         return res.status(404).json({
+    //             message: 'Product not found'
+    //         });
+    //     }
+
+    //     return res.status(200).json({
+    //         message: 'Product archived successfully',
+    //         product: archivedProduct
+    //     });
+    // } catch (error) {
+    //     console.error(error);
+    //     return res.status(500).json({
+    //         message: 'Server error'
+    //     });
+    // }
+
+    try {
+        const {productId} = req.params;
+
+        const product = await ProductModel.findById(productId);
+        if(!product){
+            return res.status(404).json({
+                message: 'Product not found'
+            });
+        }
+
+        //toggle the isArchived field
+        product.isArchived = !product.isArchived;
+        await product.save();
+
+        return res.status(200).json({ 
+            message: product.isArchived ? 'Product archived successfully' : 'Product unarchived successfully',
+            product
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
+
+
+//to get or notify the low quantity of product.
+const getOutOfStockProducts = async(req, res) => {
+    try {
+        const outOfStockProducts = await ProductModel.find({quantity: {$lt: 10}});
+        return res.json(outOfStockProducts);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
 module.exports = {
     uploadProductStaff,
     getProductStaff,
@@ -408,5 +479,7 @@ module.exports = {
     editProductStaff,
     getEditProductStaff,
     getProductShopStaff,
-    getProductDetailsShopStaff
+    getProductDetailsShopStaff,
+    archiveProductStaff,
+    getOutOfStockProducts
 }
