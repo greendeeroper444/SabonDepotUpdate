@@ -118,19 +118,18 @@
     text-align: center;
 }
 
+
+/* payment status */
 .staff-orders-container .badge.partial{
-    background-color: #f7f5e7;
-    color: #afa40c;
+    background-color: #afa40c;
 }
   
 .staff-orders-container .badge.paid{
-    background-color: #E7F7EF;
-    color: #0CAF60;
+    background-color: #0CAF60;
 }
 
 .staff-orders-container .badge.pending{
-    background-color: #F4F0FF;
-    color: #8C62FF;
+    background-color: #8C62FF;
 }
   
   
@@ -138,27 +137,43 @@
     background-color: #dc3545;
 }
   
-.staff-orders-container .badge.on-delivery{
-    background-color: #FFF0E6;
-    color: #FE964A;
+
+/* order status */
+.staff-orders-container .badge.unconfirmed{
+    background-color: #FFF0F0;
+    color: #2e2c2c;
 }
-  
-.staff-orders-container .badge.under-review{
+
+.staff-orders-container .badge.confirmed{
     background-color: #FFF0F0;
     color: #FD6A6A;
 }
-  
-.staff-orders-container .badge.delivered{
-    background-color: #17a2b8;
+
+.staff-orders-container .badge.shipped{
+    background-color: #f0fff7;
+    color: #17b86d;
 }
+
+.staff-orders-container .badge.out-for-delivery{
+    background-color: #FFF0E6;
+    color: #FE964A;
+}
+
+.staff-orders-container .badge.delivered{
+    background-color: #f9f0ff;
+    color: #6f42c1;
+}
+
+.staff-orders-container .badge.walk-in{
+    background-color: #6f42c1;
+}
+
   
 .staff-orders-container .badge.cancelled{
     background-color: #6c757d;
 }
   
-.staff-orders-container .badge.walk-in{
-    background-color: #6f42c1;
-}
+
 
 
 

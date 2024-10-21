@@ -43,7 +43,8 @@ const approveOrderStaff = async(req, res) => {
     try {
         const {orderId} = req.params;
         const order = await OrderModel.findByIdAndUpdate(orderId, { 
-            isApproved: true 
+            isApproved: true,
+            orderStatus: 'Confirmed' 
         }, {new: true});
 
         if(!order){
@@ -80,13 +81,23 @@ const updateOrderStatusStaff = async(req, res) => {
             isDelivered: status === 'isDelivered' ? true : false,
         };
 
-        // Set the date fields based on the status
-        if(status === 'isShipped'){
+        // set the date fields based on the status
+        // if(status === 'isShipped'){
+        //     updateFields.shippedDate = Date.now();
+        // } else if(status === 'isOutForDelivery'){
+        //     updateFields.outForDeliveryDate = Date.now();
+        // } else if(status === 'isDelivered'){
+        //     updateFields.deliveredDate = Date.now();
+        // }
+        if (status === 'isShipped') {
             updateFields.shippedDate = Date.now();
-        } else if(status === 'isOutForDelivery'){
+            updateFields.orderStatus = 'Shipped'; 
+        } else if (status === 'isOutForDelivery') {
             updateFields.outForDeliveryDate = Date.now();
-        } else if(status === 'isDelivered'){
+            updateFields.orderStatus = 'Out For Delivery';
+        } else if (status === 'isDelivered') {
             updateFields.deliveredDate = Date.now();
+            updateFields.orderStatus = 'Delivered';
         }
         
         const order = await OrderModel.findByIdAndUpdate(orderId, updateFields, {new: true});
@@ -225,7 +236,7 @@ const createOrderStaff = async(req, res) => {
     try {
         const {staffId, orderId} = req.params;
 
-        // Check if the staff exists
+        //check if the staff exists
         const staffExists = await StaffAuthModel.findById(staffId);
         if(!staffExists){
             return res.status(400).json({

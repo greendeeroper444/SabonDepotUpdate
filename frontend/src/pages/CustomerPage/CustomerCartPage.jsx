@@ -26,6 +26,23 @@ function CustomerCartPage() {
         );
     };
 
+    //update quantity in the cart
+    const handleQuantityChange = async(cartItem, newQuantity) => {
+        if(newQuantity < 1) return;
+        try {
+            const response = await axios.put(`/customerCart/updateProductQuantity/${cartItem._id}`, {
+                quantity: newQuantity 
+            });
+            setCartItems(cartItems.map(item =>
+                item._id === cartItem._id ? {...item, quantity: newQuantity} : item
+            ));
+            toast.success(response.data.message);
+        } catch (error) {
+            console.error(error);
+            toast.error('Failed to update quantity');
+        }
+    };
+
     //handle checkout
     const handleCheckout = () => {
         navigate(`/checkout/${customerId}`, {state: {selectedItems}});
@@ -136,7 +153,12 @@ function CustomerCartPage() {
                                             </td>
                                             <td>{`Php ${cartItem.finalPrice.toFixed(2)}`}</td>
                                             <td>
-                                                <input type="number" className='input-quantity' defaultValue={cartItem.quantity} />
+                                                <input
+                                                type="number"
+                                                className='input-quantity'
+                                                value={cartItem.quantity}
+                                                onChange={(e) => handleQuantityChange(cartItem, parseInt(e.target.value))}
+                                                />
                                             </td>
                                             <td>{`Php ${(cartItem.finalPrice) * cartItem.quantity.toFixed(2)}`}</td>
                                             <td>

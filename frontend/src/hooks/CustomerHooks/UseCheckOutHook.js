@@ -13,6 +13,7 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
         barangay: '',
         purokStreetSubdivision: '',
         emailAddress: '',
+        clientType: '',
     });
     const [paymentMethod, setPaymentMethod] = useState('');
     const [total, setTotal] = useState(0);
@@ -47,6 +48,7 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
                     barangay: customer.barangay,
                     purokStreetSubdivision: customer.purokStreetSubdivision,
                     emailAddress: customer.emailAddress,
+                    clientType: customer.clientType,
                 }));
             } catch (error) {
                 console.error(error);

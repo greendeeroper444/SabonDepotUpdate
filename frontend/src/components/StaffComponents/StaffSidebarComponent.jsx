@@ -12,6 +12,8 @@ import { NavLink } from 'react-router-dom';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 import paymentIcon from '../../assets/staff/stafficons/staff-sidebar-payment-icon.png';
 import paymentIconColor from '../../assets/staff/stafficons/staff-sidebar-payment-icon-color.png';
+import accountsIcon from '../../assets/admin/adminicons/admin-sidebar-accounts-icon.png';
+import accountsIconWhite from '../../assets/admin/adminicons/admin-sidebar-accounts-icon-white.png';
 
 
 function StaffSidebarComponent() {
@@ -49,11 +51,11 @@ function StaffSidebarComponent() {
         <div className='staff-sidebar'>
             <ul className='staff-sidebar-list' ref={menuRef}>
                 <li>
-                    <NavLink to='/staff/home' className='staff-sidebar-item' activeClassName='active'>
+                    <NavLink to='/staff/dashboard' className='staff-sidebar-item' activeClassName='active'>
                         <img src={homeIcon} alt="Home" className='sidebar-icon' />
                         <img src={homeIconColor} alt="Home" className='sidebar-icon-active' />
-                        <div>HOME</div>
-                        <span className='tooltip'>HOME</span>
+                        <div>Dashboard</div>
+                        <span className='tooltip'>Dashboard</span>
                     </NavLink>
                 </li>
                 <li>
@@ -69,8 +71,8 @@ function StaffSidebarComponent() {
                     <NavLink to='/staff/pos' className='staff-sidebar-item' activeClassName='active'>
                         <img src={paymentIcon} alt="Payment" className='sidebar-icon' />
                         <img src={paymentIconColor} alt="Payment" className='sidebar-icon-active' />
-                        <div>POS</div>
-                        <span className='tooltip'>POS</span>
+                        <div>DIRECT ORDERS</div>
+                        <span className='tooltip'>DIRECT ORDERS</span>
                     </NavLink>
                 </li>
             
@@ -107,9 +109,26 @@ function StaffSidebarComponent() {
                                         <div>WALK IN</div>
                                     </NavLink>
                                 </li>
+                                <li>
+                                    <NavLink
+                                    to='/staff/refill'
+                                    className='staff-sidebar-submenu-item'
+                                    activeClassName='active'
+                                    onClick={() => handleItemClick('TRANSACTION')}
+                                    >
+                                        <div>Refill</div>
+                                    </NavLink>
+                                </li>
                             </ul>
                         )
                     }
+                </li>
+                <li>
+                <NavLink className='staff-sidebar-item' activeClassName='active'>
+                    <img src={accountsIcon} alt="Accounts" className='sidebar-icon' />
+                    <img src={accountsIconWhite} alt="Acounts" className='sidebar-icon-active' />
+                    <span>ACCOUNTS</span>
+                </NavLink>
                 </li>
                 <li>
                     <NavLink to={`/staff/settings/${staff?._id}`} className='staff-sidebar-item' activeClassName='active'>

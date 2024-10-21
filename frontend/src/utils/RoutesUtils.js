@@ -21,7 +21,8 @@ export const isAdminRoute = (path) => {
   
   //staff page routes
 export const staffRoutes = [
-    '/staff/home',
+    '/staff/dashboard',
+    // '/staff/home',
     '/staff/products',
     '/staff/pos',
     '/staff/pos/product/details/:productId',

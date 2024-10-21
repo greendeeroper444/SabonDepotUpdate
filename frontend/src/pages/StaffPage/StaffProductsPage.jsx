@@ -217,12 +217,14 @@ function StaffProductsPage() {
                                 ${product.isArchived && product.quantity < 10 ? 'low-quantity archived-product' : ''}`}
                                 >
                                     <td>{product.productCode}</td>
-                                    <td>{product.productName}</td>
+                                    <td className='product-image-name'>
+                                        <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />{' '}{product.productName}
+                                    </td>
                                     <td>{product.category}</td>
                                     <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td>
                                     <td>{`₱${product.price.toFixed(2)}`}</td>
                                     <td>{product.quantity}</td>
-                                    <td className={product.quantity > 0 ? 'in-stock' : 'out-of-stock'}>
+                                    <td className={product.quantity > 10 ? 'in-stock' : 'out-of-stock'}>
                                         {product.quantity > 0 ? 'In-stock' : 'Out of stock'}
                                     </td>
                                     <td className='actions-tbody'>

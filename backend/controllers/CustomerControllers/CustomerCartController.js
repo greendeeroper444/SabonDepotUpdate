@@ -234,10 +234,52 @@ const removeProductFromCartCustomer = async(req, res) => {
 };
 
 
+const updateProductQuantity = async(req, res) => {
+    const {cartItemId} = req.params;
+    const {quantity} = req.body;
+    const token = req.cookies.token;
+
+    if(!token){
+        return res.json({
+            error: 'Unauthorized - Missing token'
+        });
+    }
+
+    jwt.verify(token, process.env.JWT_SECRET, {}, async(err, decodedToken) => {
+        if(err){
+            return res.json({
+                error: 'Unauthorized - Invalid token'
+            });
+        }
+
+        try {
+            const cartItem = await CartModel.findById(cartItemId);
+            if(!cartItem){
+                return res.status(404).json({ 
+                    error: 'Cart item not found' 
+                });
+            }
+
+            cartItem.quantity = quantity;
+            await cartItem.save();
+            res.json({ 
+                message: 'Quantity updated successfully', 
+                cartItem 
+            });
+        } catch (error) {
+            console.log(error);
+            return res.status(500).json({
+                message: 'Server error' 
+            });
+        }
+    });
+};
+
 module.exports = {
     addProductToCartCustomer,
     getProductCartCustomer,
-    removeProductFromCartCustomer
+    removeProductFromCartCustomer,
+    updateProductQuantity
 }
 
 

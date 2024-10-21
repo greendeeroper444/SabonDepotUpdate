@@ -7,9 +7,12 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import CustomerCashOnDeliveryPaymentMethod from '../../components/CustomerComponents/CustomerCheckout/CustomerCashOnDeliveryPaymentMethod';
 import CustomerGcashPaymentMethod from '../../components/CustomerComponents/CustomerCheckout/CustomerGcashPaymentMethod';
 import UseCheckOutHook from '../../hooks/CustomerHooks/UseCheckOutHook';
+import { useContext } from 'react';
+import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
 
 function CustomerCheckOutPage() {
     const navigate = useNavigate();
+    const {customer} = useContext(CustomerContext);
     const {customerId} = useParams();
     const location = useLocation();
     const selectedItems = location.state?.selectedItems || location.state?.cartItems || [];
@@ -120,6 +123,16 @@ function CustomerCheckOutPage() {
                         onChange={handleInputChange}
                         />
                     </div>
+                    <div className='form-control'>
+                        <label>Client Type</label>
+                        <input
+                        type="text"
+                        name="clientType"
+                        value={billingDetails.clientType}
+                        onChange={handleInputChange}
+                        readOnly
+                        />
+                    </div>
                 </div>
                 <div className='form-control'>
                     <label>Email address</label>
@@ -177,19 +190,28 @@ function CustomerCheckOutPage() {
                             Make your payment directly into our Gcash account. Please use your Reference ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
                         </p>
                     </label>
-                    <label>
-                        <input
-                        type="radio"
-                        name='payment'
-                        value="Cash On Delivery"
-                        checked={paymentMethod === 'Cash On Delivery'}
-                        onChange={handlePaymentChange}
-                        />
-                        <span>Pay Later</span>
-                        <p>
-                            Unlock extended payment periods and innovative financing alternatives targeted to your business.
-                        </p>
-                    </label>
+                    {
+                        customer && [
+                            'Retailer', 
+                            'Wholesaler', 
+                            'Franchiser', 
+                            'Dealer'
+                        ].includes(customer.clientType) && (
+                            <label>
+                                <input
+                                type="radio"
+                                name='payment'
+                                value="Pay Later"
+                                checked={paymentMethod === 'Pay Later'}
+                                onChange={handlePaymentChange}
+                                />
+                                <span>Pay Later</span>
+                                <p>
+                                    Unlock extended payment periods and innovative financing alternatives targeted to your business.
+                                </p>
+                            </label>
+                        )
+                    }
                     <label>
                         <input
                         type="radio"

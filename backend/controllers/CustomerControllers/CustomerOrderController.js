@@ -4,6 +4,7 @@ const OrderModel = require("../../models/OrderModel");
 const path = require('path');
 const multer = require('multer');
 const ProductModel = require("../../models/ProductModel");
+const SalesOverviewModel = require("../../models/SalesOverviewModel");
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -56,6 +57,13 @@ const handleCodPayment = async({totalAmountWithShipping, partialPayment}) => {
     return {paymentStatus, outstandingAmount};
 };
 
+const handlePayLaterPayment = async({ totalAmountWithShipping }) => {
+    const outstandingAmount = totalAmountWithShipping; 
+    const paymentStatus = 'Unpaid';
+
+    return { paymentStatus, outstandingAmount };
+};
+
 const createOrderCustomer = async(req, res) => {
     upload(req, res, async (err) => {
         if(err){
@@ -95,7 +103,8 @@ const createOrderCustomer = async(req, res) => {
                 !parsedBillingDetails.city ||
                 !parsedBillingDetails.barangay ||
                 !parsedBillingDetails.purokStreetSubdivision ||
-                !parsedBillingDetails.emailAddress
+                !parsedBillingDetails.emailAddress ||
+                !parsedBillingDetails.clientType
             ){
                 return res.status(400).json({
                     message: 'Billing details are required.'
@@ -159,6 +168,10 @@ const createOrderCustomer = async(req, res) => {
                     totalAmountWithShipping,
                     partialPayment
                 }));
+            }else if (paymentMethod === 'Pay Later') {
+                ({paymentStatus, outstandingAmount} = await handlePayLaterPayment({
+                    totalAmountWithShipping
+                }));
             } else{
                 console.log('Received Payment Method:', paymentMethod);
                 return res.status(400).json({
@@ -197,7 +210,7 @@ const createOrderCustomer = async(req, res) => {
                 paymentMethod,
                 billingDetails: parsedBillingDetails,
                 paymentStatus,
-                orderStatus: 'Confirmed',
+                orderStatus: 'Unconfirmed',
             });
 
             await order.save();
@@ -207,6 +220,30 @@ const createOrderCustomer = async(req, res) => {
                 await ProductModel.findByIdAndUpdate(item.productId._id, {
                     $inc: {quantity: -item.quantity} //decrease product quantity
                 });
+
+
+
+                //update salesoverview model
+                const salesOverview = await SalesOverviewModel.findOne({productId: item.productId._id});
+                if(salesOverview){
+                    //update existing record
+                    salesOverview.totalProduct += 1;
+                    salesOverview.totalSales += item.finalPrice * item.quantity;
+                    salesOverview.quantitySold += item.quantity;
+                    salesOverview.lastSoldAt = Date.now();
+                    await salesOverview.save();
+                } else{
+                    //create a new record
+                    await SalesOverviewModel.create({
+                        productId: item.productId._id,
+                        productName: item.productId.productName,
+                        totalSales: item.finalPrice * item.quantity,
+                        quantitySold: item.quantity,
+                        sizeUnit: item.productId.sizeUnit,
+                        productSize: item.productId.productSize,
+                        lastSoldAt: Date.now(),
+                    });
+                }
             }));
 
             //remove selected items from the cart

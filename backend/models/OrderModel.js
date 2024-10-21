@@ -69,6 +69,7 @@ const OrderSchema = new mongoose.Schema({
         barangay: {type: String, required: true},
         purokStreetSubdivision: {type: String, required: true},
         emailAddress: {type: String, required: true},
+        clientType: {type: String, required: true},
     },
     paymentStatus: {
         type: String,
@@ -78,14 +79,15 @@ const OrderSchema = new mongoose.Schema({
     orderStatus: {
         type: String,
         enum: [
+            'Unconfirmed',
             'Confirmed',
-            'Out For Delivery', 
             'Shipped', 
+            'Out For Delivery', 
             'Delivered', 
             // 'Under Review', 
             // 'Cancelled'
         ],
-        default: 'On Delivery',
+        default: 'Unconfirmed',
     },
     isPaidPartial: {
         type: Boolean,
@@ -170,7 +172,7 @@ OrderSchema.pre('save', function(next){
     } else if (this.isShipped) {
         this.orderStatus = 'Shipped';
     } else {
-        this.orderStatus = 'Confirmed';
+        this.orderStatus = 'Unconfirmed';
     }
     
     next();

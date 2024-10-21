@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../CSS/CustomerCSS/CustomerModalShopDetails.css';
 import cancelIcon from '../../assets/modals/modal-icon-cancel.png';
 import cancelIcon2 from '../../assets/modals/modal-icon-cancel-2.png';
@@ -11,6 +11,34 @@ import { calculateFinalPriceModal, calculateSubtotalModal } from '../../utils/Ca
 
 function StaffModalPosContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
     const navigate = useNavigate();
+    const [quantity, setQuantity] = useState(1);
+    const [selectedProductId, setSelectedProductId] = useState(null);
+    const [selectedSizeUnit, setSelectedSizeUnit] = useState(null);
+
+    //handle quantity changes
+    const handleQuantityChange = (e) => {
+        const value = Math.max(1, parseInt(e.target.value, 10) || 1);
+        setQuantity(value);
+    };
+
+    const incrementQuantity = () => setQuantity((prev) => prev + 1);
+    const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
+
+    //handle product size selection
+    const handleSizeChange = (event) => {
+        const selectedProductId = event.target.value;
+        const selectedSizeUnit = event.target.dataset.sizeUnit;
+
+        if (selectedProductId) {
+            setSelectedProductId(selectedProductId);
+            navigate(`/staff/pos/product/details/${selectedProductId}`);
+        }
+
+        if (selectedSizeUnit) {
+            setSelectedSizeUnit(selectedSizeUnit);
+        }
+    };
+
 
     //handle checkout
     const handleCheckout = async () => {
@@ -137,27 +165,29 @@ function StaffModalPosContentDetailsComponent({isOpen, onClose, cartItems, setCa
                 </div>
 
                 <div className='customer-modal-content'>
-                     {
+                    {
                         Array.isArray(cartItems) && cartItems.length === 0 ? (
                             <div className='no-items-message'>No items in this cart</div>
                         ) : (
                             Array.isArray(cartItems) && cartItems.map((cartItem) => (
-                                <div key={cartItem._id} className='customer-modal-content-group'>
-                                    <img src={`http://localhost:8000/${cartItem.productId.imageUrl}`} alt="" className='customer-modal-product-items' />
-                                    <div className='customer-modal-product-items-content'>
-                                        <span>{cartItem.productId.productName}</span>
-                                        <p>
-                                            <span>{cartItem.quantity}</span>
-                                            <span>X</span> 
-                                            <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
-                                            {/* <span>=</span>
-                                            <span>{`Php ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
-                                        </p>
+                                cartItem.productId ? (
+                                    <div key={cartItem._id} className='customer-modal-content-group'>
+                                        <img src={`http://localhost:8000/${cartItem.productId.imageUrl}`} alt="" className='customer-modal-product-items' />
+                                        <div className='customer-modal-product-items-content'>
+                                            <span>{cartItem.productId.productName}</span>
+                                            <p>
+                                                <span>{cartItem.quantity}</span>
+                                                <span>X</span> 
+                                                <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
+                                                {/* <span>=</span>
+                                                <span>{`Php ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
+                                            </p>
+                                        </div>
+                                        <span className='customer-modal-cancel-items' onClick={() => handleCartItemDelete(cartItem._id)}>
+                                            <img src={cancelIcon2} alt="Cancel Icon" />
+                                        </span>
                                     </div>
-                                    <span className='customer-modal-cancel-items' onClick={() => handleCartItemDelete(cartItem._id)}>
-                                        <img src={cancelIcon2} alt="Cancel Icon" />
-                                    </span>
-                                </div>
+                                ) : null
                             ))
                         )
                     }

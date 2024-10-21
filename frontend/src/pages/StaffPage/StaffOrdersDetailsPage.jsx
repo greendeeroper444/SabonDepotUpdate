@@ -5,6 +5,7 @@ import '../../CSS/StaffCSS/StaffOrdersDetails.css';
 import editIcon from '../../assets/staff/stafficons/staff-orders-edit-icon.png'
 import StaffPaymentMethodModal from '../../components/StaffComponents/StaffOrdersDetails/StaffPaymentMethodModal';
 import { getStatusClass, orderDate } from '../../utils/OrderUtils';
+import toast from 'react-hot-toast';
 
 function StaffOrdersDetailsPage() {
     const {orderId} = useParams(); 
@@ -29,6 +30,8 @@ function StaffOrdersDetailsPage() {
             const response = await axios.put(`/staffOrders/approveOrderStaff/${orderId}`);
             setOrder(response.data);
             setIsModalOpen(false);
+
+            toast.success('Your order has been confirmed.');
         } catch (error) {
             setError(error.message);
         }

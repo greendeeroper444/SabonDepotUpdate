@@ -13,6 +13,7 @@ import StaffOrdersDetailsPage from '../pages/StaffPage/StaffOrdersDetailsPage'
 import StaffSettingsPage from '../pages/StaffPage/StaffSettingsPage'
 import StaffPosDetailsPage from '../pages/StaffPage/StaffPosDetailsPage'
 import StaffOrderSummaryPage from '../pages/StaffPage/StaffOrderSummaryPage'
+import StaffDashboardPage from '../pages/StaffPage/StaffDashboardPage'
 
 function StaffRoutes() {
   return (
@@ -21,7 +22,8 @@ function StaffRoutes() {
         <StaffSidebarComponent />
         <div className='staff-main-container'>
             <Routes>
-                <Route path='/staff/home' element={<StaffHomePage />} />
+                <Route path='/staff/dashboard' element={<StaffDashboardPage />} />
+                {/* <Route path='/staff/home' element={<StaffHomePage />} /> */}
                 <Route path='/staff/products' element={<StaffProductsPage />} />
                 <Route path='/staff/pos' element={<StaffPosPage />} />
                 <Route path='/staff/pos/product/details/:productId' element={<StaffPosDetailsPage />} />

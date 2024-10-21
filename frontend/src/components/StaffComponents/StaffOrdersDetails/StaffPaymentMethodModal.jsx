@@ -25,13 +25,29 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                         <h2>{order.isApproved ? 'Payment Success!' : 'Pending Payment'}</h2>
                         <p>{order.isApproved ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
                     </div>
-                    <div className='payment-total'>
-                        <h3>Total Payment</h3>
-                        <p>{`PHP ${order.overallPaid}`}</p>
-                    </div>
-                    <div className='payment-proof'>
-                        <img src={`http://localhost:8000/${order.paymentProof}`}alt="" />
-                    </div>
+                    {
+                        order.overallPaid !== 0 && (
+                            <div className='payment-total'>
+                                <h3>Total Payment</h3>
+                                <p>{`PHP ${order.overallPaid}`}</p>
+                            </div>
+                        )
+                    }
+                    {
+                        order.outstandingAmount !== 0 && (
+                            <div className='payment-total'>
+                                <h3>Total Debt</h3>
+                                <p>{`PHP ${order.outstandingAmount}`}</p>
+                            </div>
+                        )
+                    }
+                                        {
+                        order.paymentProof && (
+                            <div className='payment-proof'>
+                                <img src={`http://localhost:8000/${order.paymentProof}`}alt="" />
+                            </div>
+                        )
+                    }
                     <div className='payment-details'>
                         <div className='detail'>
                             <span>Ref Number</span>
@@ -80,6 +96,7 @@ StaffPaymentMethodModal.propTypes = {
     onClose: PropTypes.func.isRequired,
     order: PropTypes.shape({
         overallPaid: PropTypes.number.isRequired,
+        outstandingAmount: PropTypes.number.isRequired,
         paymentProof: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
         paymentMethod: PropTypes.string.isRequired,

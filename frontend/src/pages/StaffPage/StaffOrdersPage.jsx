@@ -12,6 +12,9 @@ import StaffOnDeliveryOrders from '../../components/StaffComponents/StaffOrders/
 import StaffDeliveredOrders from '../../components/StaffComponents/StaffOrders/StaffDeliveredOrders';
 import StaffCanceledOrders from '../../components/StaffComponents/StaffOrders/StaffCanceledOrders';
 import { orderDate } from '../../utils/OrderUtils';
+import StaffConfirmedOrders from '../../components/StaffComponents/StaffOrders/StaffConfirmedOrders';
+import StaffUnconfirmedOrders from '../../components/StaffComponents/StaffOrders/StaffUnconfirmedOrders';
+import StaffShippedOrders from '../../components/StaffComponents/StaffOrders/StaffShippedOrders';
 
 function StaffOrdersPage() {
     const [orders, setOrders] = useState([]);
@@ -45,12 +48,18 @@ function StaffOrdersPage() {
         switch (activeTab) {
             case 'All Orders':
                 return <StaffAllOrders orders={orders} handleRowClick={handleRowClick} orderDate={orderDate} />;
-            case 'On Delivery':
-                return <StaffOnDeliveryOrders orders={orders.filter(order => order.orderStatus === 'On Delivery')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Unconfirmed':
+                return <StaffUnconfirmedOrders orders={orders.filter(order => order.orderStatus === 'Unconfirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Confirmed':
+                return <StaffConfirmedOrders orders={orders.filter(order => order.orderStatus === 'Confirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Shipped':
+                return <StaffShippedOrders orders={orders.filter(order => order.orderStatus === 'Shipped')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Out For Delivery':
+                return <StaffOnDeliveryOrders orders={orders.filter(order => order.orderStatus === 'Out For Delivery')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Delivered':
                 return <StaffDeliveredOrders orders={orders.filter(order => order.orderStatus === 'Delivered')} handleRowClick={handleRowClick} orderDate={orderDate} />;
-            case 'Canceled':
-                return <StaffCanceledOrders orders={orders.filter(order => order.orderStatus === 'Canceled')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            // case 'Canceled':
+            //     return <StaffCanceledOrders orders={orders.filter(order => order.orderStatus === 'Canceled')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             default:
                 return null;
         }
@@ -62,9 +71,12 @@ function StaffOrdersPage() {
         <div className='staff-orders-header'>
             <ul className='staff-orders-nav'>
                 <li className={activeTab === 'All Orders' ? 'active' : ''} onClick={() => handleTabClick('All Orders')}>All Orders</li>
-                <li className={activeTab === 'On Delivery' ? 'active' : ''} onClick={() => handleTabClick('On Delivery')}>On Delivery</li>
+                <li className={activeTab === 'Unconfirmed' ? 'active' : ''} onClick={() => handleTabClick('Unconfirmed')}>Unconfirmed</li>
+                <li className={activeTab === 'Confirmed' ? 'active' : ''} onClick={() => handleTabClick('Confirmed')}>Confirmed</li>
+                <li className={activeTab === 'Shipped' ? 'active' : ''} onClick={() => handleTabClick('Shipped')}>Shipped</li>
+                <li className={activeTab === 'Out For Delivery' ? 'active' : ''} onClick={() => handleTabClick('Out For Delivery')}>On Delivery</li>
                 <li className={activeTab === 'Delivered' ? 'active' : ''} onClick={() => handleTabClick('Delivered')}>Delivered</li>
-                <li className={activeTab === 'Canceled' ? 'active' : ''} onClick={() => handleTabClick('Canceled')}>Canceled</li>
+                {/* <li className={activeTab === 'Canceled' ? 'active' : ''} onClick={() => handleTabClick('Canceled')}>Canceled</li> */}
             </ul>
         </div>
 

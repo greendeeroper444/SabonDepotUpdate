@@ -77,6 +77,8 @@ function CustomerShopProductDetails() {
         }
     };
 
+    const uniqueSizeUnits = [...new Set(product.sizesAndUnits.map(size => size.sizeUnit))];
+
   return (
     <div className='customer-shop-product-details-container'>
 
@@ -163,22 +165,29 @@ function CustomerShopProductDetails() {
                                 <span className='size-span'>Size</span>
                                 <div className='customer-shop-product-details-product-size'>
                                     {
-                                        product.sizesAndUnits.map((size, index) => (
+                                        uniqueSizeUnits.map((sizeUnit, unitIndex) => (
                                             <select
-                                            key={index}
+                                            key={unitIndex}
                                             className='product-size'
                                             onChange={handleSizeChange}
-                                            value={selectedProductId === size.productId ? size.productId : ""}
-                                            data-size-unit={size.sizeUnit}
+                                            value={selectedSizeUnit === sizeUnit ? selectedProductId : ""}
+                                            data-size-unit={sizeUnit}
                                             >
-                                                <option value="" disabled>{size.sizeUnit.slice(0, 1)}</option>
-                                                <option value={size.productId}>
-                                                    {size.productSize}
-                                                </option>
+                                                <option value="" disabled>{sizeUnit}</option>
+                                                {
+                                                    product.sizesAndUnits
+                                                    .filter(size => size.sizeUnit === sizeUnit)
+                                                    .map((size, sizeIndex) => (
+                                                        <option key={sizeIndex} value={size.productId}>
+                                                            {size.productSize}
+                                                        </option>
+                                                    ))
+                                                }
                                             </select>
                                         ))
                                     }
                                 </div>
+
 
                                 <span className='color-span'>Color</span>
                                 <div className='customer-shop-product-details-product-color'>

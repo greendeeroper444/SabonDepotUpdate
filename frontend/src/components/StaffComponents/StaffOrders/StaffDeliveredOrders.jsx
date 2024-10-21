@@ -1,8 +1,14 @@
 import React from 'react'
+import OrdersTable from './OrdersTable'
 
-function StaffDeliveredOrders() {
+function StaffDeliveredOrders({orders, handleRowClick, orderDate}) {
   return (
-    <div>StaffDeliveredOrders</div>
+    <OrdersTable
+        orders={orders} 
+        handleRowClick={handleRowClick} 
+        orderDate={orderDate} 
+        noOrdersMessage='No delivered yet' 
+    />
   )
 }
 

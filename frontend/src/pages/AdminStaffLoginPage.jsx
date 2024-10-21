@@ -76,7 +76,7 @@ function AdminStaffLoginPage() {
                 });
                 setStaff(response.data.staff);
 
-                navigate('/staff/home');
+                navigate('/staff/dashboard');
                 toast.success(response.data.message);
             }
         } catch (error) {
