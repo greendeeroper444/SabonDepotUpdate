@@ -173,7 +173,7 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
                                                                 //update the state after marking as read
                                                                 setNotifications((prevNotifications) =>
                                                                     prevNotifications.map((n) =>
-                                                                        n._id === notification._id ? { ...n, isRead: true } : n
+                                                                        n._id === notification._id ? {...n, isRead: true} : n
                                                                     )
                                                                 );
                                                             }

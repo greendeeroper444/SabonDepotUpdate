@@ -114,42 +114,42 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
     if (!isOpen) return null;
 
   return (
-    <div className="customer-modal-overlay">
+    <div className='customer-modal-overlay'>
         <Draggable>
-            <div className="customer-modal-container">
-                <div className="customer-modal-header">
-                    <div className="shopping-cart-content">
+            <div className='customer-modal-container'>
+                <div className='customer-modal-header'>
+                    <div className='shopping-cart-content'>
                         <h2>Shopping Cart</h2>
-                        <div className="customer-modal-header-line"></div>
+                        <div className='customer-modal-header-line'></div>
                     </div>
-                    <span className="customer-modal-close" onClick={onClose}>
-                        <img src={cancelIcon} alt="Close Icon" />
+                    <span className='customer-modal-close' onClick={onClose}>
+                        <img src={cancelIcon} alt='Close Icon' />
                     </span>
                 </div>
 
-                <div className="customer-modal-content">
+                <div className='customer-modal-content'>
                     {Array.isArray(cartItems) && cartItems.length === 0 ? (
-                        <div className="no-items-message">No items in this cart</div>
+                        <div className='no-items-message'>No items in this cart</div>
                     ) : (
                         Array.isArray(cartItems) &&
                         cartItems.map((cartItem) =>
                             cartItem.productId ? (
-                                <div key={cartItem._id} className="customer-modal-content-group">
+                                <div key={cartItem._id} className='customer-modal-content-group'>
                                     <img
                                         src={`http://localhost:8000/${cartItem.productId.imageUrl}`}
-                                        alt=""
-                                        className="customer-modal-product-items"
+                                        alt=''
+                                        className='customer-modal-product-items'
                                     />
-                                    <div className="customer-modal-product-items-content">
+                                    <div className='customer-modal-product-items-content'>
                                         <span>{cartItem.productId.productName}</span>
 
                                         {/* dropdown for size options */}
                                         <select
-                                            className="size-select"
+                                            className='size-select'
                                             value={sizeSelection[cartItem._id] || ''}
                                             onChange={(e) => handleSizeChange(cartItem._id, e.target.value)}
                                         >
-                                            <option value="" disabled>
+                                            <option value='' disabled>
                                                 {cartItem.productId.sizeUnit}
                                             </option>
                                             <option value={cartItem.productId.productSize}>
@@ -159,21 +159,21 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
 
                                         <p>
                                             <input
-                                                type="number"
+                                                type='number'
                                                 value={cartItem.quantity}
-                                                min="1"
+                                                min='1'
                                                 onChange={(e) => handleQuantityChange(cartItem._id, parseInt(e.target.value))}
-                                                className="input-quantity-update"
+                                                className='input-quantity-update'
                                             />
                                             <span>X</span>
                                             <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
                                         </p>
                                     </div>
                                     <span
-                                        className="customer-modal-cancel-items"
+                                        className='customer-modal-cancel-items'
                                         onClick={() => handleCartItemDelete(cartItem._id)}
                                     >
-                                        <img src={cancelIcon2} alt="Cancel Icon" />
+                                        <img src={cancelIcon2} alt='Cancel Icon' />
                                     </span>
                                 </div>
                             ) : null
@@ -181,8 +181,8 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                     )}
                 </div>
 
-                <div className="customer-modal-footer">
-                    <div className="products-subtotal">
+                <div className='customer-modal-footer'>
+                    <div className='products-subtotal'>
                         <span>Subtotal</span>
                         <span>{`Php ${calculateSubtotalModal(cartItems)}`}</span>
                     </div>
