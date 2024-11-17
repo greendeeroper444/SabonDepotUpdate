@@ -2,8 +2,8 @@ const AdminInventoryReportModel = require("../models/AdminModels/AdminInventoryR
 const SalesReportModel = require("../models/AdminModels/AdminSalesReportModel");
 const ProductModel = require("../models/ProductModel");
 
-// Utility function to generate daily inventory report
-const generateInventoryReport = async () => {
+//utility function to generate daily inventory report
+const generateInventoryReport = async() => {
     const products = await ProductModel.find({ isArchived: false });
     const reportDate = new Date().setHours(0, 0, 0, 0);
     
@@ -20,8 +20,8 @@ const generateInventoryReport = async () => {
     console.log("Daily inventory report created successfully.");
 };
 
-// Utility function to generate daily sales report
-const generateSalesReport = async () => {
+//utility function to generate daily sales report
+const generateSalesReport = async() => {
     const products = await ProductModel.find({ isArchived: false });
     const reportDate = new Date().setHours(0, 0, 0, 0);
 

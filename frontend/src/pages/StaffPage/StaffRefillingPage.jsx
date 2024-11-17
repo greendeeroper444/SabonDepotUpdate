@@ -12,7 +12,7 @@ import { Link } from 'react-router-dom';
 
 function StaffRefillingPage() {
     const [selectedCategory, setSelectedCategory] = useState('');
-    const { staff } = useContext(StaffContext);
+    const {staff} = useContext(StaffContext);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
     const [orderWalkins, setOrderWalkins] = useState([]);
@@ -20,8 +20,8 @@ function StaffRefillingPage() {
     const [error, setError] = useState(null);
 
     const categories = UseFetchCategoriesHook();
-    const { products, loading: productsLoading, error: productsError } = UseFetchProductsHook(selectedCategory);
-    const { cartItems, setCartItems, handleAddToCartClick } = UseCartHook(staff);
+    const {products, loading: productsLoading, error: productsError} = UseFetchProductsHook(selectedCategory);
+    const {cartItems, setCartItems, handleAddToCartClick} = UseCartHook(staff);
 
     // Display/get orders walk-in data
     const fetchOrderWalkins = async () => {
@@ -39,9 +39,9 @@ function StaffRefillingPage() {
         fetchOrderWalkins();
     }, []);
 
-    const handleAddToCart = async (productId) => {
+    const handleAddToCart = async(productId) => {
         const success = await handleAddToCartClick(staff?._id, productId, 1);
-        if (success) {
+        if(success){
             setSelectedProductId(productId);
             setIsModalOpen(true);
         }
@@ -52,45 +52,48 @@ function StaffRefillingPage() {
         setSelectedProductId(null);
     };
 
-    if (loading || productsLoading) {
+    if(loading || productsLoading){
         return <p>Loading...</p>;
     }
 
-    if (error || productsError) {
+    if(error || productsError){
         return <div>Error: {error?.message || productsError.message}</div>;
     }
 
-    return (
-        <div className='staff-payment-container'>
-            <div className='customer-shop-content-container'>
-                <div className='customer-shop-content-header'>
-                    <div className='customer-shop-content-header-left'>
-                        <div>
-                            <select
-                                name="category"
-                                id="category"
-                                value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
-                            >
-                                <option value="">All Products</option>
-                                {categories.map((category) => (
+  return (
+    <div className='staff-payment-container'>
+        <div className='customer-shop-content-container'>
+            <div className='customer-shop-content-header'>
+                <div className='customer-shop-content-header-left'>
+                    <div>
+                        <select
+                            name="category"
+                            id="category"
+                            value={selectedCategory}
+                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        >
+                            <option value="">All Products</option>
+                            {
+                                categories.map((category) => (
                                     <option key={category} value={category}>{category}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div>
-                            <span>Showing {products.length} results</span>
-                        </div>
+                                ))
+                            }
+                        </select>
                     </div>
-                    <div className='customer-shop-content-header-section-right'>
-                        <span>Show</span>
-                        <button>16</button>
+                    <div>
+                        <span>Showing {products.length} results</span>
                     </div>
                 </div>
+                <div className='customer-shop-content-header-section-right'>
+                    <span>Show</span>
+                    <button>16</button>
+                </div>
+            </div>
 
-                <div className='shop-products-content'>
-                    <ul>
-                        {products.map((product, index) => {
+            <div className='shop-products-content'>
+                <ul>
+                    {
+                        products.map((product, index) => {
                             const shouldShowDiscount = IsDiscountValidUtils(staff) && product.discountPercentage > 0;
                             const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
 
@@ -99,14 +102,18 @@ function StaffRefillingPage() {
                                     <div>
                                         <div className='product-image-container'>
                                             <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />
-                                            {index === products.length - 1 && (
-                                                <div className='new-badge'>New</div>
-                                            )}
-                                            {shouldShowDiscount && (
-                                                <div className='discount-badge'>
-                                                    {product.discountPercentage}% OFF
-                                                </div>
-                                            )}
+                                            {
+                                                index === products.length - 1 && (
+                                                    <div className='new-badge'>New</div>
+                                                )
+                                            }
+                                            {
+                                                shouldShowDiscount && (
+                                                    <div className='discount-badge'>
+                                                        {product.discountPercentage}% OFF
+                                                    </div>
+                                                )
+                                            }
                                         </div>
                                         <div className='details-list'>
                                             <h5>{product.productName}</h5>
@@ -119,28 +126,29 @@ function StaffRefillingPage() {
                                     </div>
                                 </li>
                             );
-                        })}
-                    </ul>
+                        })
+                    }
+                </ul>
 
-                    <div className='customer-shop-content-pagination'>
-                        <button className='page-item active'>1</button>
-                        <button className='page-item'>2</button>
-                        <button className='page-item'>3</button>
-                        <button className='page-item'>Next</button>
-                    </div>
+                <div className='customer-shop-content-pagination'>
+                    <button className='page-item active'>1</button>
+                    <button className='page-item'>2</button>
+                    <button className='page-item'>3</button>
+                    <button className='page-item'>Next</button>
                 </div>
-
-                {/* Modal to show when item is added to cart */}
-                <StaffModalWalkinContentDetailsComponent
-                    isOpen={isModalOpen}
-                    onClose={handleCloseModal}
-                    cartItems={cartItems}
-                    setCartItems={setCartItems}
-                    staffId={staff?._id}
-                />
             </div>
+
+            {/* Modal to show when item is added to cart */}
+            <StaffModalWalkinContentDetailsComponent
+                isOpen={isModalOpen}
+                onClose={handleCloseModal}
+                cartItems={cartItems}
+                setCartItems={setCartItems}
+                staffId={staff?._id}
+            />
         </div>
-    );
+    </div>
+  )
 }
 
-export default StaffRefillingPage;
+export default StaffRefillingPage

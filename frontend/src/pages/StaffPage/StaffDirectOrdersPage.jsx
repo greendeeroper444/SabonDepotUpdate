@@ -15,16 +15,16 @@ function StaffDirectOrdersPage() {
     const [selectedProductId, setSelectedProductId] = useState(null);
     
     const categories = UseFetchCategoriesHook();
-    const { products, loading, error } = UseFetchProductsHook(selectedCategory);
-    const { staff } = useContext(StaffContext);
-    const { cartItems, setCartItems, handleAddToCartClick } = UseCartHook(staff);
+    const {products, loading, error} = UseFetchProductsHook(selectedCategory);
+    const {staff} = useContext(StaffContext);
+    const {cartItems, setCartItems, handleAddToCartClick} = UseCartHook(staff);
 
-    if (loading) return <div>Loading...</div>;
-    if (error) return <div>Error: {error.message}</div>;
+    if(loading) return <div>Loading...</div>;
+    if(error) return <div>Error: {error.message}</div>;
 
     const handleAddToCart = async (productId) => {
         const success = await handleAddToCartClick(staff?._id, productId, 1);
-        if (success) {
+        if(success){
             setSelectedProductId(productId);
             setIsModalOpen(true);
         }

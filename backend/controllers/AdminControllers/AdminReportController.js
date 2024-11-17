@@ -3,7 +3,7 @@ const AdminInventoryReportModel = require("../../models/AdminModels/AdminInvento
 const SalesReportModel = require("../../models/AdminModels/AdminSalesReportModel");
 const ProductModel = require("../../models/ProductModel");
 
-const getInventoryReport = async (productId, productName, sizeUnit, productSize, category, orderQuantity, isOrder = false) => {
+const getInventoryReport = async(productId, productName, sizeUnit, productSize, category, orderQuantity, isOrder = false) => {
     const reportDate = new Date();
     reportDate.setHours(0, 0, 0, 0);
 
@@ -20,23 +20,23 @@ const getInventoryReport = async (productId, productName, sizeUnit, productSize,
         }
     });
 
-    if (existingReport) {
+    if(existingReport){
         //update existing report if it's already created for today
         existingReport.productName = productName;
         existingReport.sizeUnit = sizeUnit;
         existingReport.productSize = productSize;
         existingReport.category = category;
 
-        if (isOrder) {
+        if(isOrder){
             //subtract the ordered quantity from the current quantity
             existingReport.quantity -= orderQuantity;
-        } else {
+        } else{
             //set quantity directly if not an order (e.g., inventory update)
             existingReport.quantity = orderQuantity;
         }
 
         await existingReport.save();
-    } else {
+    } else{
         //if no report exists for today, create a new report
         const currentProduct = await ProductModel.findById(productId).select('quantity');
         const initialQuantity = isOrder 
@@ -76,7 +76,7 @@ const getInventoryReportsAdmin = async(req, res) => {
 
 
 
-const getSalesReport = async (
+const getSalesReport = async(
     productId,
     productName,
     sizeUnit,
@@ -91,7 +91,7 @@ const getSalesReport = async (
 
         //find the product to retrieve inventory details
         const product = await ProductModel.findById(productId);
-        if (!product) {
+        if(!product){
             throw new Error("Product not found");
         }
 
@@ -101,12 +101,12 @@ const getSalesReport = async (
             reportDate: today,
         });
 
-        if (salesReport) {
+        if(salesReport){
             //update the existing sales report for today
             salesReport.unitsSold += unitsSold;
             salesReport.totalRevenue += product.price * unitsSold;
             salesReport.inventoryLevel = product.quantity;
-        } else {
+        } else{
             //create a new sales report entry for today
             salesReport = new SalesReportModel({
                 productId,
@@ -127,7 +127,7 @@ const getSalesReport = async (
 
         return true;
     } catch (error) {
-        console.error('Error generating sales report:', error);
+        console.error(error);
         return false;
     }
 };

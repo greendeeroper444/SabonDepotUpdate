@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import '../../../../CSS/CustomerCSS/CustomerModalShopDetails.css';
 import cancelIcon from '../../../../assets/modals/modal-icon-cancel.png';
 import cancelIcon2 from '../../../../assets/modals/modal-icon-cancel-2.png';
@@ -9,14 +9,14 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { calculateFinalPriceModal, calculateSubtotalModal } from '../../../../utils/CalculateFinalPriceUtils';
 
-function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, setCartItems, staffId }) {
+function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
     const navigate = useNavigate();
 
-    const [sizeSelection, setSizeSelection] = useState({}); // to track selected sizes for each product
+    const [sizeSelection, setSizeSelection] = useState({}); //to track selected sizes for each product
 
     //handle quantity change
-    const handleQuantityChange = async (cartItemId, newQuantity) => {
-        if (newQuantity < 1) return; // Prevent setting quantity below 1
+    const handleQuantityChange = async(cartItemId, newQuantity) => {
+        if (newQuantity < 1) return;
 
         try {
             const response = await axios.put('/staffCart/updateProductQuantityStaff', {
@@ -24,7 +24,7 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
                 quantity: newQuantity,
             });
 
-            if (response.data.success) {
+            if(response.data.success){
                 const updatedCartItems = cartItems.map(item =>
                     item._id === cartItemId ? { ...item, quantity: newQuantity } : item
                 );
@@ -38,9 +38,9 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
         }
     };
 
-    // Handle checkout
-    const handleCheckout = async () => {
-        if (cartItems.length === 0) {
+    //handle checkout
+    const handleCheckout = async() => {
+        if(cartItems.length === 0){
             toast.error('Cart is empty!');
             return;
         }
@@ -59,7 +59,7 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
 
             const response = await axios.post('/staffOrderWalkin/addOrderWalkinStaff', orderData);
 
-            if (response.data.success) {
+            if(response.data.success){
                 const orderId = response.data.orderId;
                 toast.success(`Order created successfully! Order ID: ${orderId}`);
                 setCartItems([]);
@@ -74,14 +74,14 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
         }
     };
 
-    // Delete function
-    const handleCartItemDelete = async (cartItemId) => {
+    //delete function
+    const handleCartItemDelete = async(cartItemId) => {
         try {
             const response = await axios.delete(`/staffCart/removeProductFromCartStaff/${cartItemId}`);
-            if (response.data.success) {
+            if(response.data.success){
                 toast.success(response.data.message);
                 fetchCartItems();
-            } else {
+            } else{
                 throw new Error('Failed to delete product from cart');
             }
         } catch (error) {
@@ -89,7 +89,7 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
         }
     };
 
-    const fetchCartItems = async () => {
+    const fetchCartItems = async() => {
         try {
             const response = await axios.get(`/staffCart/getProductCartStaff/${staffId}`);
             setCartItems(response.data);
@@ -99,7 +99,7 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
     };
 
     useEffect(() => {
-        if (isOpen && staffId) {
+        if(isOpen && staffId){
             fetchCartItems();
         }
     }, [isOpen, staffId]);
@@ -113,90 +113,90 @@ function StaffModalWalkinContentDetailsComponent({ isOpen, onClose, cartItems, s
 
     if (!isOpen) return null;
 
-    return (
-        <div className="customer-modal-overlay">
-            <Draggable>
-                <div className="customer-modal-container">
-                    <div className="customer-modal-header">
-                        <div className="shopping-cart-content">
-                            <h2>Shopping Cart</h2>
-                            <div className="customer-modal-header-line"></div>
-                        </div>
-                        <span className="customer-modal-close" onClick={onClose}>
-                            <img src={cancelIcon} alt="Close Icon" />
-                        </span>
+  return (
+    <div className="customer-modal-overlay">
+        <Draggable>
+            <div className="customer-modal-container">
+                <div className="customer-modal-header">
+                    <div className="shopping-cart-content">
+                        <h2>Shopping Cart</h2>
+                        <div className="customer-modal-header-line"></div>
                     </div>
-
-                    <div className="customer-modal-content">
-                        {Array.isArray(cartItems) && cartItems.length === 0 ? (
-                            <div className="no-items-message">No items in this cart</div>
-                        ) : (
-                            Array.isArray(cartItems) &&
-                            cartItems.map((cartItem) =>
-                                cartItem.productId ? (
-                                    <div key={cartItem._id} className="customer-modal-content-group">
-                                        <img
-                                            src={`http://localhost:8000/${cartItem.productId.imageUrl}`}
-                                            alt=""
-                                            className="customer-modal-product-items"
-                                        />
-                                        <div className="customer-modal-product-items-content">
-                                            <span>{cartItem.productId.productName}</span>
-
-                                            {/* dropdown for size options */}
-                                            <select
-                                                className="size-select"
-                                                value={sizeSelection[cartItem._id] || ''}
-                                                onChange={(e) => handleSizeChange(cartItem._id, e.target.value)}
-                                            >
-                                                <option value="" disabled>
-                                                    {cartItem.productId.sizeUnit}
-                                                </option>
-                                                <option value={cartItem.productId.productSize}>
-                                                    {cartItem.productId.productSize}
-                                                </option>
-                                            </select>
-
-                                            <p>
-                                                <input
-                                                    type="number"
-                                                    value={cartItem.quantity}
-                                                    min="1"
-                                                    onChange={(e) => handleQuantityChange(cartItem._id, parseInt(e.target.value))}
-                                                    className="input-quantity-update"
-                                                />
-                                                <span>X</span>
-                                                <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
-                                            </p>
-                                        </div>
-                                        <span
-                                            className="customer-modal-cancel-items"
-                                            onClick={() => handleCartItemDelete(cartItem._id)}
-                                        >
-                                            <img src={cancelIcon2} alt="Cancel Icon" />
-                                        </span>
-                                    </div>
-                                ) : null
-                            )
-                        )}
-                    </div>
-
-                    <div className="customer-modal-footer">
-                        <div className="products-subtotal">
-                            <span>Subtotal</span>
-                            <span>{`Php ${calculateSubtotalModal(cartItems)}`}</span>
-                        </div>
-                    </div>
-
-                    <footer>
-                        <div>
-                            <button onClick={handleCheckout}>Checkout</button>
-                        </div>
-                    </footer>
+                    <span className="customer-modal-close" onClick={onClose}>
+                        <img src={cancelIcon} alt="Close Icon" />
+                    </span>
                 </div>
-            </Draggable>
-        </div>
-    );
+
+                <div className="customer-modal-content">
+                    {Array.isArray(cartItems) && cartItems.length === 0 ? (
+                        <div className="no-items-message">No items in this cart</div>
+                    ) : (
+                        Array.isArray(cartItems) &&
+                        cartItems.map((cartItem) =>
+                            cartItem.productId ? (
+                                <div key={cartItem._id} className="customer-modal-content-group">
+                                    <img
+                                        src={`http://localhost:8000/${cartItem.productId.imageUrl}`}
+                                        alt=""
+                                        className="customer-modal-product-items"
+                                    />
+                                    <div className="customer-modal-product-items-content">
+                                        <span>{cartItem.productId.productName}</span>
+
+                                        {/* dropdown for size options */}
+                                        <select
+                                            className="size-select"
+                                            value={sizeSelection[cartItem._id] || ''}
+                                            onChange={(e) => handleSizeChange(cartItem._id, e.target.value)}
+                                        >
+                                            <option value="" disabled>
+                                                {cartItem.productId.sizeUnit}
+                                            </option>
+                                            <option value={cartItem.productId.productSize}>
+                                                {cartItem.productId.productSize}
+                                            </option>
+                                        </select>
+
+                                        <p>
+                                            <input
+                                                type="number"
+                                                value={cartItem.quantity}
+                                                min="1"
+                                                onChange={(e) => handleQuantityChange(cartItem._id, parseInt(e.target.value))}
+                                                className="input-quantity-update"
+                                            />
+                                            <span>X</span>
+                                            <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
+                                        </p>
+                                    </div>
+                                    <span
+                                        className="customer-modal-cancel-items"
+                                        onClick={() => handleCartItemDelete(cartItem._id)}
+                                    >
+                                        <img src={cancelIcon2} alt="Cancel Icon" />
+                                    </span>
+                                </div>
+                            ) : null
+                        )
+                    )}
+                </div>
+
+                <div className="customer-modal-footer">
+                    <div className="products-subtotal">
+                        <span>Subtotal</span>
+                        <span>{`Php ${calculateSubtotalModal(cartItems)}`}</span>
+                    </div>
+                </div>
+
+                <footer>
+                    <div>
+                        <button onClick={handleCheckout}>Checkout</button>
+                    </div>
+                </footer>
+            </div>
+        </Draggable>
+    </div>
+  )
 }
 
 StaffModalWalkinContentDetailsComponent.propTypes = {
@@ -219,6 +219,6 @@ StaffModalWalkinContentDetailsComponent.propTypes = {
     ).isRequired,
     setCartItems: PropTypes.func.isRequired,
     staffId: PropTypes.string.isRequired,
-};
+}
 
-export default StaffModalWalkinContentDetailsComponent;
+export default StaffModalWalkinContentDetailsComponent

@@ -186,7 +186,7 @@ function AdminWorkinProgressPage() {
 
         <div className='admin-finished-product-header'>
             <div className='admin-finished-product-header-controls'>
-                <div>Works in Progress Inventory </div>
+                <div>Work in Progress Inventory </div>
             </div>
             <div className='admin-finished-product-container'>
             <table className='admin-finished-product-header-table'>

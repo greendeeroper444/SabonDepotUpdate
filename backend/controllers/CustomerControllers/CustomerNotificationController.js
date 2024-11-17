@@ -1,7 +1,7 @@
 const NotificationModel = require("../../models/NotificationModel");
 
 
-const getNotifications = async (req, res) => {
+const getNotifications = async(req, res) => {
     try {
         const {customerId} = req.params;
         const notifications = await NotificationModel.find({customerId}).sort({createdAt: -1});
@@ -15,7 +15,7 @@ const getNotifications = async (req, res) => {
 };
 
 
-const markNotificationAsRead = async (req, res) => {
+const markNotificationAsRead = async(req, res) => {
     try {
         const {notificationId} = req.params;
         const updatedNotification = await NotificationModel.findByIdAndUpdate(
@@ -24,7 +24,7 @@ const markNotificationAsRead = async (req, res) => {
             {new: true}
         );
 
-        if (!updatedNotification) {
+        if(!updatedNotification){
             return res.status(404).json({ 
                 message: 'Notification not found' 
             });

@@ -11,38 +11,42 @@ const getAllAccountsAdmin = async(req, res) => {
         const staffWithRole = staff.map(staff => ({...staff, clientType: 'Staff'}));
     
         res.json({
-          customers,
-          staff: staffWithRole
+            customers,
+            staff: staffWithRole
         });
     } catch (error) {
         res.status(500).json({
-        error: 'Server error'
+            error: 'Server error'
         });
     }
 }
 
 
-const getAllAccountDetailsAdmin = async (req, res) => {
-    const { id } = req.params;
+const getAllAccountDetailsAdmin = async(req, res) => {
+    const {id} = req.params;
 
     try {
         let account = await CustomerAuthModel.findById(id).lean();
         
-        if (!account) {
-            // If not found in CustomerAuthModel, search in StaffAuthModel
+        if(!account){
+            //if not found in CustomerAuthModel, search in StaffAuthModel
             account = await StaffAuthModel.findById(id).lean();
-            if (account) account.clientType = 'Staff';
-        } else {
-            account.clientType = 'Consumer'; // Label for customers
+            if(account) account.clientType = 'Staff';
+        } else{
+            account.clientType = 'Consumer'; //label for customers
         }
 
-        if (!account) {
-            return res.status(404).json({ error: 'Account not found' });
+        if(!account){
+            return res.status(404).json({ 
+                error: 'Account not found' 
+            });
         }
 
         res.json(account);
     } catch (error) {
-        res.status(500).json({ error: 'Server error' });
+        res.status(500).json({ 
+            error: 'Server error' 
+        });
     }
 };
 
