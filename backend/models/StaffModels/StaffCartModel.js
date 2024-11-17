@@ -12,12 +12,19 @@ const StaffCartSchema = new mongoose.Schema({
         required: true,
         ref: 'Product'
     },
+    productName: { type: String }, 
     quantity: {
         type: Number,
         required: true,
     },
     finalPrice: { 
         type: Number 
+    },
+    sizeUnit: {
+        type: String, //example: 'Milliliters (mL)', 'Liters (L)', 'Gallons (gal)'
+    },
+    productSize: {
+        type: String, //example: '500 mL', '1 L', etc.
     },
     createdAt: {
         type: Date,

@@ -13,7 +13,7 @@ import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 import paymentIcon from '../../assets/staff/stafficons/staff-sidebar-payment-icon.png';
 import paymentIconColor from '../../assets/staff/stafficons/staff-sidebar-payment-icon-color.png';
 import accountsIcon from '../../assets/admin/adminicons/admin-sidebar-accounts-icon.png';
-import accountsIconWhite from '../../assets/admin/adminicons/admin-sidebar-accounts-icon-white.png';
+import accountsIconGreen from '../../assets/admin/adminicons/admin-sidebar-accounts-icon-green.png';
 
 
 function StaffSidebarComponent() {
@@ -68,7 +68,7 @@ function StaffSidebarComponent() {
                 </li>
 
                 <li>
-                    <NavLink to='/staff/pos' className='staff-sidebar-item' activeClassName='active'>
+                    <NavLink to='/staff/direct-orders' className='staff-sidebar-item' activeClassName='active'>
                         <img src={paymentIcon} alt="Payment" className='sidebar-icon' />
                         <img src={paymentIconColor} alt="Payment" className='sidebar-icon-active' />
                         <div>DIRECT ORDERS</div>
@@ -116,7 +116,7 @@ function StaffSidebarComponent() {
                                     activeClassName='active'
                                     onClick={() => handleItemClick('TRANSACTION')}
                                     >
-                                        <div>Refill</div>
+                                        <div>REFILL</div>
                                     </NavLink>
                                 </li>
                             </ul>
@@ -124,11 +124,12 @@ function StaffSidebarComponent() {
                     }
                 </li>
                 <li>
-                <NavLink className='staff-sidebar-item' activeClassName='active'>
-                    <img src={accountsIcon} alt="Accounts" className='sidebar-icon' />
-                    <img src={accountsIconWhite} alt="Acounts" className='sidebar-icon-active' />
-                    <span>ACCOUNTS</span>
-                </NavLink>
+                    <NavLink to='/staff/accounts' className='staff-sidebar-item' activeClassName='active'>
+                        <img src={accountsIcon} alt="Accounts" className='sidebar-icon' />
+                        <img src={accountsIconGreen} alt="Acounts" className='sidebar-icon-active' />
+                        <div>ACCOUNTS</div>
+                        <span className='tooltip'>ACCOUNTS</span>
+                    </NavLink>
                 </li>
                 <li>
                     <NavLink to={`/staff/settings/${staff?._id}`} className='staff-sidebar-item' activeClassName='active'>

@@ -1,30 +1,8 @@
-const SalesOverviewModel = require("../../models/SalesOverviewModel");
 const cron = require('node-cron');
+const { BestSellingModel, TotalSaleModel } = require('../../models/SalesOverviewModel');
+const OrderModel = require('../../models/OrderModel');
 
-// const getBestSellingProducts = async (req, res) => {
-//     try {
-//         //fetch top-selling products, sort by quantitySold (desc) or totalSales (desc)
-//         const bestSellingProducts = await SalesOverviewModel.find()
-//             .populate('productId') // Populate with product data from ProductModel
-//             .sort({ quantitySold: -1 }) // Sort by most units sold
-//             .limit(10); // Limit to top 10 best sellers, adjust as needed
 
-//         //if no best-selling products found
-//         if (!bestSellingProducts.length) {
-//             return res.status(404).json({
-//                 message: 'No best-selling products found',
-//             });
-//         }
-
-//         //respond with the best-selling products
-//         return res.status(200).json(bestSellingProducts);
-//     } catch (error) {
-//         console.error(error);
-//         return res.status(500).json({
-//             message: 'Server error',
-//         });
-//     }
-// };
 cron.schedule('0 0 * * *', async() => {
     try {
         const yesterday = new Date();
@@ -33,7 +11,7 @@ cron.schedule('0 0 * * *', async() => {
         const today = new Date();
 
         //fetch all sales that occurred within the last 24 hours
-        const sales = await SalesOverviewModel.aggregate([
+        const sales = await TotalSaleModel.aggregate([
             {
                 $match: {
                     lastSoldAt: {
@@ -44,15 +22,15 @@ cron.schedule('0 0 * * *', async() => {
             },
             {
                 $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$lastSoldAt" } },
-                    totalSales: { $sum: "$totalSales" },
-                    totalQuantity: { $sum: "$quantitySold" },
+                    _id: {$dateToString: {format: '%Y-%m-%d', date: '$lastSoldAt' }},
+                    totalSales: {$sum: '$totalSales'},
+                    totalQuantity: {$sum: '$quantitySold'},
                 }
             }
         ]);
 
         //create or update daily sales
-        if (sales.length > 0) {
+        if(sales.length > 0){
             //save or update the total daily sales to a new collection or field
             console.log('Sales recorded:', sales);
         }
@@ -65,25 +43,25 @@ cron.schedule('0 0 * * *', async() => {
 const getBestSellingProducts = async(req, res) => {
     try {
         //fetch best-selling products sorted by quantitySold
-        const bestSellingProducts = await SalesOverviewModel.find()
+        const bestSellingProducts = await BestSellingModel.find()
             .populate('productId')
-            .sort({ quantitySold: -1 })
+            .sort({quantitySold: -1})
             .limit(10);
 
-        //fetch daily sales data aggregated by date
-        const salesData = await SalesOverviewModel.aggregate([
-            {
-                $group: {
-                    _id: { $dateToString: { format: "%Y-%m-%d", date: "$lastSoldAt" } }, //group by date
-                    totalSales: { $sum: "$totalSales" }, //dum the totalSales for each date
-                },
-            },
-            { $sort: { _id: 1 } }, //dort by date ascending
-        ]);
+        // //fetch daily sales data aggregated by date
+        // const salesData = await BestSellingModel.aggregate([
+        //     {
+        //         $group: {
+        //             _id: {$dateToString: {format: '%Y-%m-%d', date: '$lastSoldAt'}}, //group by date
+        //             totalSales: {$sum: '$totalSales'}, //dum the totalSales for each date
+        //         },
+        //     },
+        //     {$sort: {_id: 1}}, //dort by date ascending
+        // ]);
 
         return res.status(200).json({
             bestSellingProducts,
-            salesData,
+            // salesData,
         });
     } catch (error) {
         console.error(error);
@@ -92,6 +70,65 @@ const getBestSellingProducts = async(req, res) => {
         });
     }
 };
+
+
+const getTotalProductSales = async(req,res) => {
+    try {
+        //aggregate daily sales data
+        const salesData = await TotalSaleModel.aggregate([
+            {
+                $group: {
+                    _id: {$dateToString: {format: '%Y-%m-%d', date: '$updatedAt'}}, //group by day
+                    totalSales: {$sum: '$totalSales'},
+                    totalQuantity: {$sum: '$quantitySold'},
+                }
+            },
+            {$sort: {_id: 1}} //sort by date ascending
+        ]);
+
+        return res.status(200).json({salesData});
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+}
+
+
+
+
+const getDeliveredPendingCanceled = async(req, res) => {
+    try {
+        //count delivered orders where isDelivered is true
+        const deliveredCount = await OrderModel.countDocuments({isDelivered: true});
+
+        //count pending orders where isDelivered, isApproved, isShipped, and isOutForDelivery are all false
+        const pendingCount = await OrderModel.countDocuments({ 
+            isDelivered: false, 
+            isApproved: false, 
+            isShipped: false, 
+            isOutForDelivery: false 
+        });
+
+        //count canceled orders where isCanceled is true
+        const canceledCount = await OrderModel.countDocuments({isCanceled: true});
+
+        res.json({
+            delivered: deliveredCount,
+            pending: pendingCount,
+            canceled: canceledCount
+        });
+    } catch (error) {
+        res.status(500).json({
+            message: 'Error counting delivered, pending, and canceled orders',
+            error
+        });
+    }
+};
+
 module.exports = {
     getBestSellingProducts,
-};
+    getTotalProductSales,
+    getDeliveredPendingCanceled
+}

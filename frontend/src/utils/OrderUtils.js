@@ -37,6 +37,15 @@ export const orderDate = (dateString) => {
     return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric', year: 'numeric'});
 };
 
+// export const monthDay = (dateString) => {
+//     const date = new Date(dateString);
+//     return date.toLocaleDateString('en-US', {month: 'long', day: 'numeric'});
+// };
+export const monthDay = (dateString) => { 
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {month: 'short', day: 'numeric'}).replace(' ', ' - ');
+};
+
 export const getStatusClass = (status, order) => {
     if(order.isDelivered) return 'isDelivered';
     if(order.isOutForDelivery) return 'isOutForDelivery';

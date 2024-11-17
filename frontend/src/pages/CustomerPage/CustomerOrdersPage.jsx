@@ -28,7 +28,7 @@ function CustomerOrdersPage() {
   return (
     <div className='customer-orders-container'>
         <h1>Your Orders <span>({orders.length})</span></h1>
-        <div className='customer-orders-filters'>
+        {/* <div className='customer-orders-filters'>
             <button>Orders</button>
             <button>Not Yet Shipped</button>
             <button>Cancelled Orders</button>
@@ -37,7 +37,7 @@ function CustomerOrdersPage() {
                 <option>Past 6 Month</option>
                 <option>Past Year</option>
             </select>
-        </div>
+        </div> */}
         {
             orders.map((order) => (
                 <div key={order._id} className='customer-orders-order'>
@@ -51,7 +51,7 @@ function CustomerOrdersPage() {
                     <div className='order-details'>
                         <span>{orderDate(order.createdAt)}</span>
                         <span>${order.totalAmount.toFixed(2)}</span>
-                        <span>{customer.fullName}</span>
+                        <span>{customer.firstName}</span>
                         <span>#{order._id}</span>
                         {/* <span>
                             <a href='#'>View order details</a> | <a href='#'>View invoice</a>
@@ -67,10 +67,22 @@ function CustomerOrdersPage() {
                                     <img src={`http://localhost:8000/${item.productId.imageUrl}`} alt={item.productId.productName} />
                                     <div className='item-details'>
                                         <h3>{item.productId.productName}</h3>
-                                        <span>Delivered {new Date(item.deliveredAt).toLocaleDateString()}</span>
-                                        <button>Buy it again</button>
+                                        <span>
+                                        {order.orderStatus} 
+                                        {' '}
+                                        {
+                                            order.orderStatus === 'Shipped' && order.shippedDate
+                                            ? new Date(order.shippedDate).toLocaleDateString()
+                                            : order.orderStatus === 'Out For Delivery' && order.outForDeliveryDate
+                                            ? new Date(order.outForDeliveryDate).toLocaleDateString()
+                                            : order.orderStatus === 'Delivered' && order.deliveredDate
+                                            ? new Date(order.deliveredDate).toLocaleDateString()
+                                            : ''
+                                        }
+                                        </span>
+                                        {/* <button>Buy it again</button> */}
                                         <button>View your item</button>
-                                        <button>Track package</button>
+                                        {/* <button>Track package</button> */}
                                     </div>
                                 </Link>
                             ))

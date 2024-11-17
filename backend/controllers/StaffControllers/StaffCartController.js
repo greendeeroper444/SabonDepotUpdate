@@ -159,6 +159,41 @@ const addProductToCartStaff = async(req, res) => {
 
 
 
+// const getProductCartStaff = async(req, res) => {
+//     const staffId = req.params.staffId;
+//     const token = req.cookies.token;
+
+//     if(!token){
+//         return res.json({ 
+//             error: 'Unauthorized - Missing token' 
+//         });
+//     }
+
+//     jwt.verify(token, process.env.JWT_SECRET, {}, async(err, decodedToken) => {
+//         if(err){
+//             return res.json({ 
+//                 error: 'Unauthorized - Invalid token' 
+//             });
+//         }
+
+//         if(decodedToken.id !== staffId){
+//             return res.json({ 
+//                 error: 'Unauthorized - Invalid customer ID'
+//             });
+//         }
+
+//         try {
+//             //fetch cart items for the customer
+//             const cartItems = await StaffCartModel.find({staffId}).populate('productId');
+//             res.json(cartItems);
+//         } catch (error) {
+//             console.log(error);
+//             return res.status(500).json({ 
+//                 message: 'Server error' 
+//             });
+//         }
+//     });
+// };
 const getProductCartStaff = async(req, res) => {
     const staffId = req.params.staffId;
     const token = req.cookies.token;
@@ -178,13 +213,17 @@ const getProductCartStaff = async(req, res) => {
 
         if(decodedToken.id !== staffId){
             return res.json({ 
-                error: 'Unauthorized - Invalid customer ID'
+                error: 'Unauthorized - Invalid customer ID' 
             });
         }
 
         try {
-            //fetch cart items for the customer
-            const cartItems = await StaffCartModel.find({staffId}).populate('productId');
+            //fetch cart items with populated product details, including sizeUnit and productSize
+            const cartItems = await StaffCartModel.find({staffId})
+                .populate({
+                    path: 'productId',
+                    select: 'productName price imageUrl sizeUnit productSize'
+                });
             res.json(cartItems);
         } catch (error) {
             console.log(error);
@@ -194,7 +233,6 @@ const getProductCartStaff = async(req, res) => {
         }
     });
 };
-
 
 const removeProductFromCartStaff= async(req, res) => {
     const {cartItemId} = req.params;
@@ -227,8 +265,48 @@ const removeProductFromCartStaff= async(req, res) => {
         }
     });
 };
+
+
+
+
+const updateProductQuantityStaff = async(req, res) => {
+    const {cartItemId, quantity} = req.body;
+
+    try {
+        //find the cart item and update the quantity
+        const updatedItem = await StaffCartModel.findByIdAndUpdate(
+            cartItemId,
+            {quantity},
+            {new: true}
+        );
+
+        if(!updatedItem){
+            return res.status(404).json({ 
+                success: false,
+                message: 'Cart item not found'
+            });
+        }
+
+        res.json({ 
+            success: true, 
+            message: 'Quantity updated successfully', 
+            item: updatedItem 
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            success: false, 
+            message: 'Internal server error' 
+        });
+    }
+};
+
+
+// const updateProductSizeUnitAndProductSizeStaff 
+
 module.exports = {
     addProductToCartStaff,
     getProductCartStaff,
-    removeProductFromCartStaff
+    removeProductFromCartStaff,
+    updateProductQuantityStaff
 }

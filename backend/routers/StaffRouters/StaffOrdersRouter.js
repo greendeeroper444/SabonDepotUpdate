@@ -9,8 +9,8 @@ router.get('/getOrderDetailsStaff/:orderId', getOrderDetailsStaff);
 router.put('/approveOrderStaff/:orderId', approveOrderStaff);
 router.put('/updateOrderStatusStaff/:orderId', updateOrderStatusStaff); 
 router.get('/getCompleteOrderTransactionStaff', getCompleteOrderTransactionStaff);
-router.post('/createOrderStaff', createOrderStaff);
-router.get('/getPosOrdersStaff/:staffId/:orderId?', getPosOrdersStaff);
+// router.post('/createOrderStaff', createOrderStaff);
+// router.get('/getPosOrdersStaff/:staffId/:orderId?', getPosOrdersStaff);
 // router.get('/getOrderCustomer/:customerId/:orderId', getOrderCustomer)
 // router.get('/getAllOrdersCustomer/:customerId', getAllOrdersCustomer)
 

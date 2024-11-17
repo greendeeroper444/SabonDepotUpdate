@@ -4,6 +4,8 @@ const ProductModel = require('../../models/ProductModel');
 const StaffAuthModel = require('../../models/StaffModels/StaffAuthModel');
 const jwt = require('jsonwebtoken');
 const CartModel = require('../../models/CartModel');
+const { getInventoryReport } = require('../AdminControllers/AdminReportController');
+const mongoose = require('mongoose');
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -49,7 +51,7 @@ const uploadProductStaff = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
             if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize){
@@ -103,14 +105,19 @@ const uploadProductStaff = async(req, res) => {
                     productSize: productSize || null,
                     uploaderId: staffId,
                     uploaderType: 'Staff',
+                    expirationDate,
                     createdBy: staffExists.fullName
                 });
+
+
+                await getInventoryReport(newProduct._id, productName, sizeUnit, productSize, category, quantity)
 
                 return res.json({
                     message: 'Product added successfully!',
                     newProduct
                 });
             });
+
         } catch (error) {
             console.error(error);
             return res.status(500).json({
@@ -208,10 +215,10 @@ const editProductStaff = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !productSize){
+            if(!productCode || !productName || !category || !price || !quantity || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -237,11 +244,14 @@ const editProductStaff = async(req, res) => {
             product.discountPercentage = discountPercentage;
             product.sizeUnit = sizeUnit;
             product.productSize = productSize;
+            product.expirationDate = expirationDate;
             if(imageUrl){
                 product.imageUrl = imageUrl;
             }
 
             const updatedProduct = await product.save();
+
+            await getInventoryReport(product._id, productName, expirationDate, productSize, category, quantity)
 
             return res.json({
                 message: 'Product updated successfully!',
@@ -329,6 +339,10 @@ const getProductShopStaff = async(req, res) => {
 
 const getProductDetailsShopStaff = async(req, res) => {
     const productId = req.params.productId;
+
+    if (!mongoose.Types.ObjectId.isValid(productId)) {
+        return res.status(400).json({ error: 'Invalid product ID' });
+    }
 
     try {
         const productDetails = await ProductModel.findById(productId);

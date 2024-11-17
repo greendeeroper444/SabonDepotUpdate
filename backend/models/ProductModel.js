@@ -56,6 +56,10 @@ const ProductSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    expirationDate: {
+        type: Date,
+        default: Date.now
+    },
     createdBy: {
         type: String,
         required: true,

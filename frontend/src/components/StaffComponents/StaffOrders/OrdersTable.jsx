@@ -1,6 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react'
+import editIcon from '../../../assets/staff/stafficons/staff-orders-edit-icon.png';
+import deleteIcon from '../../../assets/staff/stafficons/staff-orders-delete-icon.png';
+import { AdminContext } from '../../../../contexts/AdminContexts/AdminAuthContext';
+import { StaffContext } from '../../../../contexts/StaffContexts/StaffAuthContext';
 
 function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
+    const {admin} = useContext(AdminContext);
+    const {staff} = useContext(StaffContext);
+
+    const handlePropagationClick = (e) => {
+        e.stopPropagation();
+    };
+
   return (
     <table className='staff-orders-table'>
         <thead>
@@ -12,7 +23,7 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
                 <th>Payment</th>
                 <th>Status</th>
                 <th>Price</th>
-                {/* <th> </th> */}
+                <th></th>
             </tr>
         </thead>
         <tbody>
@@ -28,7 +39,7 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
                     <tr
                     key={order._id}
                     className='clickable-row'
-                    onClick={() => handleRowClick(order._id)}
+                    onClick={!!staff ? () => handleRowClick(order._id) : undefined} 
                     >
                         <td><input type='checkbox' onClick={(e) => e.stopPropagation()} /></td>
                         <td>
@@ -55,6 +66,14 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
                         {/* <td>
                         <img src={editIcon} alt="Edit Icon" className='edit-icon' />
                         </td> */}
+                        {/* {
+                            !!admin  && (
+                                <td>
+                                    <img src={editIcon} alt="Edit Icon" className='edit-icon' onClick={handlePropagationClick} />
+                                    <img src={deleteIcon} alt="Delete Icon" className='delete-icon' onClick={handlePropagationClick} />
+                                </td>
+                            )
+                        } */}
                     </tr>
                     ))
                 )

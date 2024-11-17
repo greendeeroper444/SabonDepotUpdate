@@ -1,0 +1,29 @@
+.admin-account-details{
+    padding: 50px 0;
+}
+  
+.account-details-table{
+    width: 100%;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+}
+  
+.account-details-table thead{
+    background-color: #f1f1f1;
+}
+  
+.account-details-table th, .account-details-table td{
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+  
+.account-details-table th{
+    font-weight: bold;
+    color: #555;
+}
+  
+.account-details-table tr:nth-child(even){
+    background-color: #f9f9f9;
+}
+  

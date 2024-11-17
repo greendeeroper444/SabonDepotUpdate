@@ -21,7 +21,7 @@ function StaffNavbarComponent() {
             const response = await axios.get('/staffProduct/getOutOfStockProducts'); 
             const lowStockProducts = response.data;
             const newNotifications = lowStockProducts.map(product => 
-                `${product.productName} is almost sold out! Only ${product.quantity} left.`
+                `${product.productName} (${product.sizeUnit.slice(0, 1)} - ${product.productSize}) is almost sold out! Only ${product.quantity} left.`
             );
             setNotifications(newNotifications);
         } catch (error) {
@@ -55,6 +55,11 @@ function StaffNavbarComponent() {
     const toggleNotificationDropdown = () => {
         setNotificationDropdownVisible(!notificationDropdownVisible);
     };
+
+    const handleNotificationClick = () => {
+        setNotificationDropdownVisible(false);
+    };
+
 
   return (
     <nav className='staff-navbar'>
@@ -92,7 +97,12 @@ function StaffNavbarComponent() {
                                         notifications.length > 0 ? (
                                             notifications.map((notification, index) => (
                                                 <div key={index} className='notification-items'>
-                                                    <Link to='/staff/products' key={index} className='notification-item'>
+                                                    <Link 
+                                                    to='/staff/products' 
+                                                    key={index} 
+                                                    className='notification-item'
+                                                    onClick={handleNotificationClick}
+                                                    >
                                                         {notification}
                                                     </Link>
                                                 </div>

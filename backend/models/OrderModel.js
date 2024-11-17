@@ -113,6 +113,15 @@ const OrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    // //updated new
+    // isCanceled: {
+    //     type: Boolean,
+    //     default: false,
+    // },
+    // //updated new
+    // canceledDate {
+    //     type: Date,
+    // },
     shippedDate: {
         type: Date,
     },

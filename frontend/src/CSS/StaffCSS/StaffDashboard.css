@@ -1,59 +1,160 @@
-.dashboard-container{
+.staff-dashboard-container{
     padding: 20px;
     font-family: Arial, sans-serif;
 }
 
-.dashboard-header{
+.staff-dashboard-container .sales-overview{
     display: flex;
-    justify-content: space-between;
+    gap: 20px;
+    justify-content: center;
     align-items: center;
 }
 
-.dashboard-title{
-    font-size: 20px;
-    font-weight: bold;
+.staff-dashboard-container .sales-graph{
+    flex: 3;
+}
+
+.staff-dashboard-container .order-status-cards{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.staff-dashboard-container .sales-title{
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.staff-dashboard-container .sales-summary{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.staff-dashboard-container .sales-summary h3{
+    font-size: 2em;
     margin: 0;
 }
 
-.search-container{
+.staff-dashboard-container .percentage-change{
+    color: green;
+    font-weight: bold;
+    background-color: #e0ffe0;
+    padding: 2px 8px;
+    border-radius: 5px;
+    font-size: 0.9em;
+}
+
+.staff-dashboard-container .total-sales{
+    color: #777;
+    font-size: 0.9em;
+}
+
+.staff-dashboard-container .card{
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+    border-radius: 10px;
+    color: #000;
+    position: relative;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    height: auto;
+    justify-content: space-between;
+}
+
+.staff-dashboard-container .card-header{
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.staff-dashboard-container .card-content{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 1.5rem;
+    margin-top: 5px;
+}
+
+.staff-dashboard-container .card-info{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.staff-dashboard-container .card-info p{
+    margin: 0;
+    font-weight: normal;
+    font-size: 15px;
+}
+
+.staff-dashboard-container .card-info h2{
+    font-size: 1.5rem;
+    margin: 0;
+}
+
+.staff-dashboard-container .card-icon{
+    font-size: 1.5rem;
+}
+
+.staff-dashboard-container .card-menu{
+    cursor: pointer;
+}
+
+.staff-dashboard-container .success-card{
+    background: linear-gradient(135deg, #A5D6A7, #388E3C);
+}
+
+.staff-dashboard-container .pending-card{
+    background: linear-gradient(135deg, #FFF3CD, #FFCC00);
+}
+
+.staff-dashboard-container .canceled-card{
+    background: linear-gradient(135deg, #FADBD8, #C23616);
+}
+
+
+.staff-dashboard-container .search-container{
     display: flex;
     align-items: center;
 }
 
-.search-input{
+.staff-dashboard-container .search-input{
     padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     margin-right: 10px;
 }
 
-.filter-button{
+.staff-dashboard-container .filter-button{
     background: none;
     border: none;
     cursor: pointer;
 }
 
-.filter-button .fas.fa-filter{
+.staff-dashboard-container .filter-button .fas.fa-filter{
     font-size: 18px;
 }
 
-.product-table{
+.staff-dashboard-container .product-table{
     width: 100%;
     border-collapse: collapse;
     margin-top: 20px;
 }
 
-.product-table th, .product-table td{
+.staff-dashboard-container .product-table th, .product-table td{
     padding: 10px;
     text-align: left;
     border: 1px solid #ccc;
 }
 
-.product-table th{
+.staff-dashboard-container .product-table th{
     background-color: #EBEBEB;
     font-weight: bold;
 }
 
-.product-table td{
+.staff-dashboard-container .product-table td{
   background-color: #fff;
 }

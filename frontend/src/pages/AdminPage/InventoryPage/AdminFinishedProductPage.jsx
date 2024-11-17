@@ -7,6 +7,8 @@ import AdminModalProductsAddComponent from '../../../components/AdminComponents/
 import AdminModalProductsDeleteComponent from '../../../components/AdminComponents/AdminModalProducts/AdminModalProductsDeleteComponent';
 import AdminModalProductsEditComponent from '../../../components/AdminComponents/AdminModalProducts/AdminModalProductsEditComponent';
 import toast from 'react-hot-toast';
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
 
 
 function AdminFinishedProductPage() {
@@ -18,7 +20,75 @@ function AdminFinishedProductPage() {
     const [productIdToDelete, setProductIdToDelete] = useState(null);
     const [isEditModalOpen, setIsEditModalOpen] = useState(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
+    const [summaryData, setSummaryData] = useState({
+        categoryCount: 0,
+        totalProducts: 0,
+        totalUnitsProduced: 0,
+        totalValue: 0,
+        lowStockCount: 0,
+        notInStock: 0
+    });
 
+    useEffect(() => {
+        const fetchSummaryData = async() => {
+            try {
+                const response = await axios.get('/adminProduct/getProductSummaryAdmin');
+                setSummaryData(response.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchSummaryData();
+    }, []);
+
+
+     //generate PDF report
+     const handleGenerateReport = () => {
+        const doc = new jsPDF();
+    
+        //title
+        doc.setFontSize(18);
+        doc.setTextColor(34, 31, 197);
+        doc.setFont(undefined, 'bold');
+        doc.text('CLEAN-UP SOLUTIONS ENTERPRISES, INC.', 14, 16);
+    
+        //subtitle
+        doc.setFontSize(14);
+        doc.setTextColor(197, 31, 41);
+        doc.setFont(undefined, 'bold');
+        doc.text('PRICE MONITORING SHEET', 14, 24);
+    
+        //date
+        const now = new Date();
+        const formattedDate = new Intl.DateTimeFormat('en-US', { 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+        }).format(now);
+        const upperCaseDate = formattedDate.toUpperCase();
+        doc.setFontSize(8);
+        doc.setTextColor(0, 0, 0);
+        doc.setFont(undefined, 'bold');
+        doc.text(`AS OF ${upperCaseDate}`, 14, 32);
+    
+        //table
+        doc.autoTable({
+            startY: 40,
+            head: [['Product Code', 'Product', 'Category', 'Price']],
+            body: products.map(product => [
+                product.productCode,
+                product.productName,
+                product.category,
+                product.price.toFixed(2)
+            ]),
+            styles: {fontSize: 12, halign: 'center'},
+            headStyles: {fillColor: [0, 0, 139]},
+        });
+    
+        //save the PDF
+        doc.save('product_report.pdf');
+    };
 
     //edit function
     const handleEditProductClick = async(productId) => {
@@ -64,13 +134,18 @@ function AdminFinishedProductPage() {
     const fetchProducts = async() => {
         try {
             const response = await axios.get('/adminProduct/getProductAdmin');
-            setProducts(response.data);
+            
+            //sort products by quantity in ascending order
+            const sortedProducts = response.data.sort((a, b) => a.quantity - b.quantity);
+            
+            setProducts(sortedProducts);
             setLoading(false);
-        } catch (error){
+        } catch (error) {
             setError(error);
             setLoading(false);
         }
     };
+
 
     useEffect(() => {
         fetchProducts();
@@ -117,13 +192,13 @@ function AdminFinishedProductPage() {
             <div className='admin-finished-product-header-controls'>
                 <div>Overall Inventory</div>
             </div>
+            <div className='admin-finished-product-container'>
             <table className='admin-finished-product-header-table'>
                 <thead>
                     <tr>
                         <th>Categories</th>
                         <th>Total Products</th>
-                        <th></th>
-                        <th>Top Selling</th>
+                        <th>Total Units Produced</th>
                         <th></th>
                         <th>Low Stocks</th>
                         <th></th>
@@ -131,22 +206,32 @@ function AdminFinishedProductPage() {
                 </thead>
                 <tbody>
                     <tr>
-                        <td>14</td>
-                        <td>868</td>
-                        <td>Php 2500.00</td>
-                        <td>5</td>
-                        <td>Php2500.00</td>
-                        <td>12</td>
-                        <td>2</td>
+                        <td>{summaryData.categoryCount}</td>
+                        <td>{summaryData.totalProducts}</td>
+                        <td>{summaryData.totalUnitsProduced}</td>
+                        <td>Php {summaryData.totalValue.toFixed(2)}</td>
+                        <td>{summaryData.lowStockCount}</td>
+                        <td>{summaryData.notInStock}</td>
+                    </tr>
+                    <tr className='subtext'>
+                        <td>Last 7 days</td>
+                        <td>Last 7 days</td>
+                        <td>Last 7 days</td>
+                        <td>Total</td>
+                        <td>Ordered</td>
+                        <td>Not in stock</td>
                     </tr>
                 </tbody>
             </table>
+            </div>
+
         </div>
 
         <div className='admin-finished-product-controls'>
             <div>Products</div>
             <div>
                 <button onClick={handleAddProductClick}>Add Product</button>
+                <button onClick={handleGenerateReport}>Print</button>
             </div>
         </div>
 
@@ -159,26 +244,36 @@ function AdminFinishedProductPage() {
                 <table className='admin-finished-product-table'>
                     <thead>
                         <tr>
-                            <th>PRODUCT CODE</th>
-                            <th>PRODUCT NAME</th>
-                            <th>CATEGORY</th>
-                            <th>PRICE</th>
-                            <th>QUANTITY</th>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
                             <th>Availability</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
                         {
                             products.map((product) => (
-                                <tr key={product._id}>
+                                <tr 
+                                key={product._id} 
+                                className={`${product.isArchived ? 'archived-product' : ''} 
+                                ${product.quantity < 10 ? 'low-quantity' : ''} 
+                                ${product.quantity === 0 ? 'out-of-quantity' : ''}
+                                ${product.isArchived && product.quantity < 10 ? 'low-quantity archived-product' : ''}`}
+                                >
                                     <td>{product.productCode}</td>
-                                    <td>{product.productName}</td>
+                                    <td className='product-image-name'>
+                                        <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />{' '}{product.productName}
+                                    </td>
                                     <td>{product.category}</td>
-                                    <td>{`₱ ${product.price}.00`}</td>
+                                    <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td>
+                                    <td>{`₱${product.price.toFixed(2)}`}</td>
                                     <td>{product.quantity}</td>
-                                    <td className={product.quantity > 0 ? 'in-stock' : 'out-of-stock'}>
-                                        {product.quantity > 0 ? 'In-stock' : 'Out of stock'}
+                                    <td className={product.quantity > 0 ? (product.quantity > 10 ? 'in-stock' : 'low-stock') : 'out-of-stock'}>
+                                        {product.quantity > 0 ? (product.quantity > 10 ? 'In stock' : 'Low stock') : 'Out of stock'}
                                     </td>
                                     <td className='actions-tbody'>
                                         <button className='button-edit-icon'
@@ -186,7 +281,7 @@ function AdminFinishedProductPage() {
                                         >
                                             <img src={editIcon} alt="Edit Icon" />
                                             </button>
-                                        <button className='button-delete-icon' 
+                                            <button className='button-delete-icon' 
                                         onClick={() => handleDeleteProductClick(product._id)}>
                                             <img src={deleteIcon} alt="Delete Icon" />
                                         </button>

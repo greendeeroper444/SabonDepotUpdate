@@ -15,11 +15,17 @@ import { orderDate } from '../../utils/OrderUtils';
 import StaffConfirmedOrders from '../../components/StaffComponents/StaffOrders/StaffConfirmedOrders';
 import StaffUnconfirmedOrders from '../../components/StaffComponents/StaffOrders/StaffUnconfirmedOrders';
 import StaffShippedOrders from '../../components/StaffComponents/StaffOrders/StaffShippedOrders';
+import DatePicker from 'react-multi-date-picker';
 
 function StaffOrdersPage() {
     const [orders, setOrders] = useState([]);
     const [activeTab, setActiveTab] = useState('All Orders');
     const navigate = useNavigate();
+    const [selectedDates, setSelectedDates] = useState([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(10);
+    const [searchQuery, setSearchQuery] = useState('');
+
 
     const handleRowClick = (orderId) => {
         navigate(`/staff/orders/details/${orderId}`);
@@ -42,27 +48,82 @@ function StaffOrdersPage() {
 
     const handleTabClick = (tab) => {
         setActiveTab(tab);
+        setCurrentPage(1);
     };
 
+    //function to handle date change
+    const handleDateChange = (dates) => {
+        setSelectedDates(dates);
+    };
+
+    const handleSearch = (e) => {
+        e.preventDefault();
+        setCurrentPage(1);
+    };
+
+    const filteredOrders = orders.filter(order => {
+        const { productName } = order.items[0] || {};
+        const { firstName, middleInitial, lastName } = order.billingDetails;
+
+        const searchTerm = searchQuery.toLowerCase();
+        return (
+            (productName && productName.toLowerCase().includes(searchTerm)) ||
+            (firstName && firstName.toLowerCase().includes(searchTerm)) ||
+            (middleInitial && middleInitial.toLowerCase().includes(searchTerm)) ||
+            (lastName && lastName.toLowerCase().includes(searchTerm))
+        );
+    });
+
+    const paginatedOrders = (selectedOrders) => {
+        const startIndex = (currentPage - 1) * itemsPerPage;
+        const endIndex = startIndex + itemsPerPage;
+        return selectedOrders.slice(startIndex, endIndex);
+    };
+
+
     const renderTabContent = () => {
+        let displayedOrders = searchQuery ? filteredOrders : orders;
+        displayedOrders = selectedDates.length ? displayedOrders.filter(order => {
+            const orderDateValue = new Date(order.createdAt).toDateString();
+            return selectedDates.some(date => date.toDate().toDateString() === orderDateValue);
+        }) : displayedOrders;
+
+        displayedOrders = paginatedOrders(displayedOrders);
+
         switch (activeTab) {
             case 'All Orders':
-                return <StaffAllOrders orders={orders} handleRowClick={handleRowClick} orderDate={orderDate} />;
+                return <StaffAllOrders orders={displayedOrders} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Unconfirmed':
-                return <StaffUnconfirmedOrders orders={orders.filter(order => order.orderStatus === 'Unconfirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+                return <StaffUnconfirmedOrders orders={displayedOrders.filter(order => order.orderStatus === 'Unconfirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Confirmed':
-                return <StaffConfirmedOrders orders={orders.filter(order => order.orderStatus === 'Confirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+                return <StaffConfirmedOrders orders={displayedOrders.filter(order => order.orderStatus === 'Confirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Shipped':
-                return <StaffShippedOrders orders={orders.filter(order => order.orderStatus === 'Shipped')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+                return <StaffShippedOrders orders={displayedOrders.filter(order => order.orderStatus === 'Shipped')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Out For Delivery':
-                return <StaffOnDeliveryOrders orders={orders.filter(order => order.orderStatus === 'Out For Delivery')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+                return <StaffOnDeliveryOrders orders={displayedOrders.filter(order => order.orderStatus === 'Out For Delivery')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Delivered':
-                return <StaffDeliveredOrders orders={orders.filter(order => order.orderStatus === 'Delivered')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+                return <StaffDeliveredOrders orders={displayedOrders.filter(order => order.orderStatus === 'Delivered')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             // case 'Canceled':
             //     return <StaffCanceledOrders orders={orders.filter(order => order.orderStatus === 'Canceled')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             default:
                 return null;
         }
+    };
+
+
+
+    const totalPages = Math.ceil(orders.length / itemsPerPage);
+
+    const goToNextPage = () => {
+        setCurrentPage((prevPage) => Math.min(prevPage + 1, totalPages));
+    };
+
+    const goToPreviousPage = () => {
+        setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+    };
+
+    const changePage = (page) => {
+        setCurrentPage(page);
     };
 
   return (
@@ -81,15 +142,29 @@ function StaffOrdersPage() {
         </div>
 
         <div className='staff-orders-search'>
-            <form action="">
+            <form onSubmit={handleSearch}>
                 <button type="submit" className='search-button'>
                     <img src={searchIcon} alt="Search Icon" />
                 </button>
-                <input type="text" placeholder='Search by ID, product, or others...' className='search-input' />
+                <input 
+                type="text" 
+                placeholder='Search by ID, product, or others...' 
+                className='search-input' 
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                />
             </form>
-            <div className='date-range'>
-                <img src={calendarIcon} alt="Calendar Icon" />
-                <span>April 11 - April 24</span>
+            <div className='date-picker-container'>
+                <img src={calendarIcon} alt='Calendar Icon' />
+                <DatePicker
+                value={selectedDates}
+                onChange={handleDateChange}
+                placeholder='Select dates'
+                multiple
+                format='MMM DD'
+                className='date-picker-input'
+                maxDate={new Date()}
+                />
             </div>
         </div>
 
@@ -99,18 +174,30 @@ function StaffOrdersPage() {
         <div className='staff-orders-footer'>
             <div className='show-result'>
                 <span>Show result: </span>
-                <select>
-                    <option>6</option>
+                <select value={itemsPerPage} onChange={(e) => setItemsPerPage(Number(e.target.value))}>
+                    <option value={6}>6</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
                 </select>
             </div>
             <div className='pagination'>
-                <span><FontAwesomeIcon icon={faAngleLeft} /></span>
-                <span className='active'>1</span>
-                <span>2</span>
-                <span>3</span>
-                <span>...</span>
-                <span>20</span>
-                <span><FontAwesomeIcon icon={faAngleRight} /></span>
+                <span onClick={goToPreviousPage}>
+                    <FontAwesomeIcon icon={faAngleLeft} />
+                </span>
+                {
+                    [...Array(totalPages)].map((_, index) => (
+                        <span
+                        key={index + 1}
+                        className={currentPage === index + 1 ? 'active' : ''}
+                        onClick={() => changePage(index + 1)}
+                        >
+                            {index + 1}
+                        </span>
+                    ))
+                }
+                <span onClick={goToNextPage}>
+                    <FontAwesomeIcon icon={faAngleRight} />
+                </span>
             </div>
         </div>
     </div>

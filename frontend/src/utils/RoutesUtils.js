@@ -4,9 +4,11 @@ export const adminRoutes = [
     '/admin/orders',
     '/admin/orders/details/:orderId',
     '/admin/inventory/finished-product',
+    '/admin/inventory/workin-progress',
     '/admin/accounts',
     '/admin/reports/inventory-report',
     '/admin/reports/sales-report',
+    '/admin/accounts/:id'
 ];
   
 export const isAdminRoute = (path) => {
@@ -24,14 +26,15 @@ export const staffRoutes = [
     '/staff/dashboard',
     // '/staff/home',
     '/staff/products',
-    '/staff/pos',
-    '/staff/pos/product/details/:productId',
+    '/staff/direct-orders',
+    '/staff/direct-orders/details/:productId',
     '/staff/walkin',
     '/staff/payment',
     '/staff/orders',
     '/staff/orders/details/:orderId',
     '/staff/settings/:staffId',
-    '/staff/order-summary/:staffId/:orderId'
+    '/staff/order-summary/:staffId/:orderId',
+    '/staff/accounts',
 ];
   
 export const isStaffRoute = (path) => {
@@ -69,6 +72,7 @@ export const customerRoutes = [
     '/cart/:customerId',
     '/checkout/:customerId',
     '/place-order/:customerId/:orderId',
+    '/payable/:customerId'
 ];
   
 export const isCustomerRoute = (path) => {

@@ -102,9 +102,11 @@
 
 .staff-modal-products-add-container .staff-modal-products-add-content .label-text{
     display: flex;
+    padding: 10px 20px;
     margin-bottom: 20px;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    gap: 80px;
 }
   
   
@@ -112,11 +114,13 @@
     display: block;
     margin-bottom: 10px;
     font-weight: bold;
+    flex: 0 0 150px;
 }
 
 .staff-modal-products-add-container .staff-modal-products-add-content .label-text div{
-    margin-right: 150px;
+    flex: 1;
 }
+
 
 .staff-modal-products-add-container .staff-modal-products-add-content .label-text input,
 .staff-modal-products-add-container .staff-modal-products-add-content .label-text select{
@@ -127,20 +131,6 @@
     background-color: #f0f0f0;
     box-sizing: border-box;
     margin-top: 10px;
-}
-
-.staff-modal-products-add-container .staff-modal-products-add-content .label-text{
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.staff-modal-products-add-container .staff-modal-products-add-content .label-text label{
-    flex: 0 0 150px;
-}
-
-.staff-modal-products-add-container .staff-modal-products-add-content .label-text div{
-    flex: 1;
 }
 
   

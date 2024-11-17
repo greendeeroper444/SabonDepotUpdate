@@ -14,7 +14,8 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         quantity: '',
         discountPercentage: '',
         productSize: '',
-        sizeUnit: ''
+        sizeUnit: '',
+        expirationDate: ''
     });
 
     const handleEditProductAdmin = async(e) => {
@@ -29,6 +30,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         formData.append('discountPercentage', dataInput.discountPercentage);
         formData.append('productSize', dataInput.productSize);
         formData.append('sizeUnit', dataInput.sizeUnit);
+        formData.append('expirationDate', dataInput.expirationDate);
         if(selectedImage && typeof selectedImage !== 'string'){
             formData.append('image', selectedImage);
         }
@@ -50,7 +52,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
 
     useEffect(() => {
         if(selectedProduct){
-            const {productCode, productName, category, price, quantity, imageUrl, discountPercentage, productSize, sizeUnit} = selectedProduct;
+            const {productCode, productName, category, price, quantity, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate} = selectedProduct;
             setDataInput({
                 productCode: productCode || '',
                 productName: productName || '',
@@ -59,7 +61,8 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 quantity: quantity || '',
                 discountPercentage: discountPercentage || '',
                 productSize: productSize || '',
-                sizeUnit: sizeUnit || ''
+                sizeUnit: sizeUnit || '',
+                expirationDate: expirationDate ? new Date(expirationDate).toISOString().split('T')[0] : ''
             });
             setSelectedImage(imageUrl || null);
         }
@@ -178,7 +181,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 </div>
             </div>
             <div className='label-text'>
-                <label>PRODUCT CODE :</label>
+                <label>PRODUCT CODE:</label>
                 <div>
                     <input type="text"
                     value={dataInput.productCode}
@@ -187,7 +190,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 </div>
             </div>
             <div className='label-text'>
-                <label>PRODUCT NAME :</label>
+                <label>PRODUCT NAME:</label>
                 <div>
                     <input type="text"
                     value={dataInput.productName}
@@ -196,7 +199,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 </div>
             </div>
             <div className='label-text'>
-                <label>CATEGORY :</label>
+                <label>CATEGORY:</label>
                 <div>
                     <select 
                     value={dataInput.category} 
@@ -235,7 +238,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 )
             }
             <div className='label-text'>
-                <label>PRICE :</label>
+                <label>PRICE:</label>
                 <div>
                     <input type="number"
                     value={dataInput.price}
@@ -244,7 +247,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 </div>
             </div>
             <div className='label-text'>
-                <label>QUANTITY :</label>
+                <label>QUANTITY:</label>
                 <div>
                     <input type="number"
                     value={dataInput.quantity}
@@ -253,12 +256,22 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 </div>
             </div>
             <div className='label-text'>
-                <label>DISCOUNT PERCENTAGE :</label>
+                <label>DISCOUNT PERCENTAGE:</label>
                 <div>
                     <input
                         type="number"
                         value={dataInput.discountPercentage}
                         onChange={(e) => setDataInput({...dataInput, discountPercentage: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>EXPIRATION DATE:</label>
+                <div>
+                    <input
+                    type="date"
+                    value={dataInput.expirationDate}
+                    onChange={(e) => setDataInput({...dataInput, expirationDate: e.target.value})}
                     />
                 </div>
             </div>

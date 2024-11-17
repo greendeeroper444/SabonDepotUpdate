@@ -14,8 +14,8 @@ function StaffOrderSummaryPage() {
         try {
             //use orderId if available, otherwise fetch all orders for staffId
             const response = orderId
-                ? await axios.get(`/staffOrders/getPosOrdersStaff/${staffId}/${orderId}`)
-                : await axios.get(`/staffOrders/getPosOrdersStaff/${staffId}`);
+                ? await axios.get(`/staffOrderWalkin/getOrderWalkinStaff/${staffId}/${orderId}`)
+                : await axios.get(`/staffOrderWalkin/getOrderWalkinStaff/${staffId}`);
 
             setOrders(orderId ? [response.data.order] : response.data.orders);
         } catch (error) {

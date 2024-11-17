@@ -116,12 +116,26 @@ function StaffProductsPage() {
 
 
     //display/get product data
+    // const fetchProducts = async() => {
+    //     try {
+    //         const response = await axios.get('/staffProduct/getProductStaff');
+    //         setProducts(response.data);
+    //         setLoading(false);
+    //     } catch (error){
+    //         setError(error);
+    //         setLoading(false);
+    //     }
+    // };
     const fetchProducts = async() => {
         try {
             const response = await axios.get('/staffProduct/getProductStaff');
-            setProducts(response.data);
+            
+            //sort products by quantity in ascending order
+            const sortedProducts = response.data.sort((a, b) => a.quantity - b.quantity);
+            
+            setProducts(sortedProducts);
             setLoading(false);
-        } catch (error){
+        } catch (error) {
             setError(error);
             setLoading(false);
         }
@@ -197,14 +211,14 @@ function StaffProductsPage() {
                 <table className='staff-products-table'>
                     <thead>
                         <tr>
-                            <th>PRODUCT CODE</th>
-                            <th>PRODUCT NAME</th>
-                            <th>CATEGORY</th>
-                            <th>PRODUCT SIZE</th>
-                            <th>PRICE</th>
-                            <th>QUANTITY</th>
+                            <th>Product Code</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Size</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
                             <th>Availability</th>
-                            <th></th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -214,6 +228,7 @@ function StaffProductsPage() {
                                 key={product._id} 
                                 className={`${product.isArchived ? 'archived-product' : ''} 
                                 ${product.quantity < 10 ? 'low-quantity' : ''} 
+                                ${product.quantity === 0 ? 'out-of-quantity' : ''}
                                 ${product.isArchived && product.quantity < 10 ? 'low-quantity archived-product' : ''}`}
                                 >
                                     <td>{product.productCode}</td>
@@ -224,8 +239,8 @@ function StaffProductsPage() {
                                     <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td>
                                     <td>{`₱${product.price.toFixed(2)}`}</td>
                                     <td>{product.quantity}</td>
-                                    <td className={product.quantity > 10 ? 'in-stock' : 'out-of-stock'}>
-                                        {product.quantity > 0 ? 'In-stock' : 'Out of stock'}
+                                    <td className={product.quantity > 0 ? (product.quantity > 10 ? 'in-stock' : 'low-stock') : 'out-of-stock'}>
+                                        {product.quantity > 0 ? (product.quantity > 10 ? 'In stock' : 'Low stock') : 'Out of stock'}
                                     </td>
                                     <td className='actions-tbody'>
                                         <button className='button-edit-icon'

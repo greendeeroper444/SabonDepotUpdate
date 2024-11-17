@@ -1,0 +1,79 @@
+.customer-payable-page{
+    padding: 20px;
+}
+  
+.customer-payable-page .customer-payable-page h1{
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+  
+.customer-payable-page .transaction-header{
+    background-color: #f9f9f9;
+    padding: 10px;
+    border: 1px solid #ddd;
+    margin-bottom: 20px;
+}
+  
+.customer-payable-page .payable-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+  
+.customer-payable-page .payable-table th, .payable-table td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+  
+.customer-payable-page .payable-table th{
+    background-color: #f4f4f4;
+}
+  
+.customer-payable-page .product-image, .proof-image{
+    width: 50px;
+    height: 50px;
+}
+  
+.customer-payable-page .status{
+    padding: 5px 10px;
+    border-radius: 5px;
+    color: #fff;
+}
+  
+
+  
+.customer-payable-page .total-amount{
+    font-size: 18px;
+    font-weight: bold;
+    text-align: right;
+}
+  
+.customer-payable-page .status{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 5px 15px;
+    font-size: 14px;
+    font-weight: bold;
+    border-radius: 15px;
+    text-transform: capitalize;
+}
+  
+.customer-payable-page .status.paid{
+    background-color: #d4f8d4;
+    color: #28a745;
+    border: 1px solid #28a745;
+}
+  
+.customer-payable-page .status.unpaid{
+    background-color: #f8d7da;
+    color: #dc3545;
+    border: 1px solid #dc3545;
+}
+  
+.customer-payable-page .status-icon{
+    margin-right: 5px;
+    font-size: 16px;
+}
+  

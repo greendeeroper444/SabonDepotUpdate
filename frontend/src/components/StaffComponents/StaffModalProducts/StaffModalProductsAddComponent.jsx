@@ -15,6 +15,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         discountPercentage: '',
         productSize: '',
         sizeUnit: '',
+        expirationDate: '',
     })
 
     const handleFileInputClick = () => {
@@ -32,9 +33,9 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
 
     const handleUploadProductStaff = async(e) => {
         e.preventDefault();
-        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit} = dataInput;
+        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
 
-        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit){
+        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit || !expirationDate){
             toast.error('Please input all fields');
             return;
         }
@@ -50,7 +51,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         formData.append('image', selectedImage);
         formData.append('productSize', productSize);
         formData.append('sizeUnit', sizeUnit);
-
+        formData.append('expirationDate', expirationDate);
 
         try {
             const response = await axios.post('/staffProduct/uploadProductStaff', formData, {
@@ -70,7 +71,8 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                     quantity: '',
                     discountPercentage: '',
                     productSize: '',
-                    sizeUnit: ''
+                    sizeUnit: '',
+                    expirationDate: ''
                 })
                 toast.success(response.data.message);
                 onClose();
@@ -185,7 +187,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>PRODUCT NAME :</label>
+                <label>PRODUCT NAME:</label>
                 <div>
                     <input type="text"
                     value={dataInput.productName} 
@@ -194,7 +196,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>PRODUCT CATEGORY :</label>
+                <label>PRODUCT CATEGORY:</label>
                 <div>
                     <select 
                     value={dataInput.category} 
@@ -233,7 +235,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 )
             }
             <div className='label-text'>
-                <label>PRICE :</label>
+                <label>PRICE:</label>
                 <div>
                     <input type="number"
                     value={dataInput.price} 
@@ -242,7 +244,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>QUANTITY :</label>
+                <label>QUANTITY:</label>
                 <div>
                     <input type="number"
                     value={dataInput.quantity} 
@@ -251,12 +253,22 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>DISCOUNT PERCENTAGE :</label>
+                <label>DISCOUNT PERCENTAGE:</label>
                 <div>
                     <input
                     type="number"
                     value={dataInput.discountPercentage}
                     onChange={(e) => setDataInput({...dataInput, discountPercentage: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>EXPIRATION DATE:</label>
+                <div>
+                    <input
+                    type="date"
+                    value={dataInput.expirationDate}
+                    onChange={(e) => setDataInput({...dataInput, expirationDate: e.target.value})}
                     />
                 </div>
             </div>

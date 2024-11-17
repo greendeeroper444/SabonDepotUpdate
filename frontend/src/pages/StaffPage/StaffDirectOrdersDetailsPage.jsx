@@ -9,10 +9,10 @@ import { useNavigate, useParams } from 'react-router-dom';
 import UseFetchProductDetailsHook from '../../hooks/CustomerHooks/UseFetchProductDetailsHook';
 import UseCartHook from '../../hooks/StaffHooks/UseCartHook';
 import calculateFinalPriceUtils from '../../utils/CalculateFinalPriceUtils';
-import StaffModalPosContentDetailsComponent from '../../components/StaffComponents/StaffModalPosContentDetailsComponent';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
+import StaffModalWalkinContentDetailsComponent from '../../components/StaffComponents/StaffPos/modals/StaffModalWalkinContentDetailsComponent';
 
-function StaffPosDetailsPage() {
+function StaffDirectOrdersDetailsPage() {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [quantity, setQuantity] = useState(1);
     const {productId} = useParams();
@@ -77,7 +77,7 @@ function StaffPosDetailsPage() {
   return (
     <div className='customer-shop-product-details-container'>
 
-        <StaffModalPosContentDetailsComponent
+        <StaffModalWalkinContentDetailsComponent
         isOpen={isModalOpen} 
         onClose={handleCloseModal} 
         cartItems={cartItems}
@@ -229,4 +229,4 @@ const renderStars = (rating) => {
     )
 }
 
-export default StaffPosDetailsPage
+export default StaffDirectOrdersDetailsPage

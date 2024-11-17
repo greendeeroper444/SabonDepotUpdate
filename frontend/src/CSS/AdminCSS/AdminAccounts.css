@@ -55,6 +55,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    cursor: pointer;
 }
   
 .admin-accounts-container .admin-accounts-card .card-info-name{
@@ -134,3 +135,23 @@
         width: 75%;
     }
 } */
+
+.role-badge.consumer{
+    background-color: #28a745;
+}
+
+.role-badge.retailer{
+    background-color: #007bff;
+}
+
+.role-badge.wholesaler{
+    background-color: #ffcc00;
+}
+
+.role-badge.franchiser{
+    background-color: #ff5733;
+}
+
+.role-badge.dealer{
+    background-color: #6f42c1;
+}

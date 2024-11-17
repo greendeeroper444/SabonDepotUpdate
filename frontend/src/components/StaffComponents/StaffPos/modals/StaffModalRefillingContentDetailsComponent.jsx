@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import '../../CSS/CustomerCSS/CustomerModalShopDetails.css';
-import cancelIcon from '../../assets/modals/modal-icon-cancel.png';
-import cancelIcon2 from '../../assets/modals/modal-icon-cancel-2.png';
+import '../../../../CSS/CustomerCSS/CustomerModalShopDetails.css';
+import cancelIcon from '../../../../assets/modals/modal-icon-cancel.png';
+import cancelIcon2 from '../../../../assets/modals/modal-icon-cancel-2.png';
 import { useNavigate } from 'react-router-dom';
 import Draggable from 'react-draggable';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import PropTypes from 'prop-types'; 
-import { calculateFinalPriceModal, calculateSubtotalModal } from '../../utils/CalculateFinalPriceUtils';
+import { calculateFinalPriceModal, calculateSubtotalModal } from '../../../../utils/CalculateFinalPriceUtils';
 
-function StaffModalPosContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
+function StaffModalRefillingContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
     const navigate = useNavigate();
     const [quantity, setQuantity] = useState(1);
     const [selectedProductId, setSelectedProductId] = useState(null);
@@ -29,20 +29,20 @@ function StaffModalPosContentDetailsComponent({isOpen, onClose, cartItems, setCa
         const selectedProductId = event.target.value;
         const selectedSizeUnit = event.target.dataset.sizeUnit;
 
-        if (selectedProductId) {
+        if(selectedProductId){
             setSelectedProductId(selectedProductId);
             navigate(`/staff/pos/product/details/${selectedProductId}`);
         }
 
-        if (selectedSizeUnit) {
+        if(selectedSizeUnit){
             setSelectedSizeUnit(selectedSizeUnit);
         }
     };
 
 
     //handle checkout
-    const handleCheckout = async () => {
-        if (cartItems.length === 0) {
+    const handleCheckout = async() => {
+        if(cartItems.length === 0){
             toast.error('Cart is empty!');
             return;
         }
@@ -59,20 +59,16 @@ function StaffModalPosContentDetailsComponent({isOpen, onClose, cartItems, setCa
                 totalAmount: calculateSubtotalModal(cartItems),
             };
     
-            const response = await axios.post('/staffOrders/createOrderStaff', orderData);
+            const response = await axios.post('/staffOrderWalkin/addOrderWalkinStaff', orderData);
     
-            if (response.data.success) {
-                // Retrieve the orderId from the response
+            if(response.data.success){
                 const orderId = response.data.orderId;
-    
-                // Display success toast
                 toast.success(`Order created successfully! Order ID: ${orderId}`);
-    
-                // Clear cart and navigate to the order summary page with the orderId in the URL
+
                 setCartItems([]); 
                 onClose(); 
                 navigate(`/staff/order-summary/${staffId}/${orderId}`);
-            } else {
+            } else{
                 toast.error(response.data.message || 'Failed to create the order.');
             }
         } catch (error) {
@@ -212,7 +208,7 @@ function StaffModalPosContentDetailsComponent({isOpen, onClose, cartItems, setCa
 }
 
 //define props tyoe for  the component
-StaffModalPosContentDetailsComponent.propTypes = {
+StaffModalRefillingContentDetailsComponent.propTypes = {
     isOpen: PropTypes.bool.isRequired,
     onClose: PropTypes.func.isRequired,
     cartItems: PropTypes.arrayOf(PropTypes.shape({
@@ -230,4 +226,4 @@ StaffModalPosContentDetailsComponent.propTypes = {
     staffId: PropTypes.string.isRequired,
 };
 
-export default StaffModalPosContentDetailsComponent
+export default StaffModalRefillingContentDetailsComponent

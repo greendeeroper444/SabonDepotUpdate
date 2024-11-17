@@ -3,6 +3,7 @@ const path = require('path');
 const ProductModel = require('../../models/ProductModel');
 const jwt = require('jsonwebtoken');
 const AdminAuthModel = require('../../models/AdminModels/AdminAuthModel');
+const { getInventoryReport } = require('./AdminReportController');
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -48,10 +49,10 @@ const uploadProductAdmin = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize){
+            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -102,8 +103,11 @@ const uploadProductAdmin = async(req, res) => {
                     productSize: productSize || null,
                     uploaderId: adminId,
                     uploaderType: 'Admin',
+                    expirationDate,
                     createdBy: adminExists.fullName
                 });
+
+                await getInventoryReport(newProduct._id, productName, sizeUnit, productSize, category, quantity)
 
                 return res.json({
                     message: 'Product added successfully!',
@@ -166,10 +170,10 @@ const editProductAdmin = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !productSize){
+            if(!productCode || !productName || !category || !price || !quantity || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -195,11 +199,16 @@ const editProductAdmin = async(req, res) => {
             product.discountPercentage = discountPercentage;
             product.sizeUnit = sizeUnit;
             product.productSize = productSize;
+            product.expirationDate = expirationDate;
             if(imageUrl){
                 product.imageUrl = imageUrl;
             }
 
             const updatedProduct = await product.save();
+
+
+            await getInventoryReport(product._id, productName, sizeUnit, productSize, category, quantity);
+
 
             return res.json({
                 message: 'Product updated successfully!',
@@ -234,10 +243,107 @@ const getEditProductAdmin = async(req, res) => {
 };
 
 
+
+// const getStatisticsAdmin = async(req, res) => {
+//     try {
+//         //count distinct categories
+//         const categoryCount = await ProductModel.distinct('category').countDocuments();
+
+//         //count total products
+//         const totalProducts = await ProductModel.countDocuments();
+
+//         //sum of all units produced (quantity field)
+//         const totalUnitsProduced = await ProductModel.aggregate([
+//             {$group: {_id: null, totalQuantity: {$sum: '$quantity'}}}
+//         ]);
+
+//         //count of low stock items (quantity < 10)
+//         const lowStockCount = await ProductModel.countDocuments({quantity: {$lt: 10}});
+
+//         res.json({
+//             categoryCount,
+//             totalProducts,
+//             totalUnitsProduced: totalUnitsProduced[0]?.totalQuantity || 0,
+//             lowStockCount
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             message: 'Server error'
+//         });
+//     }
+// };
+const getProductSummaryAdmin = async(req, res) => {
+    try {
+
+        //get the count of unique categories
+        const categories = await ProductModel.distinct('category');
+        const categoryCount = categories.length;
+
+        //get the total number of products
+        const totalProducts = await ProductModel.countDocuments();
+
+        //calculate the total value (sum of price * quantity for each product)
+        const totalValueResult = await ProductModel.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalValue: {$sum: {$multiply: ['$price', '$quantity']}}
+                }
+            }
+        ]);
+        const totalValue = totalValueResult[0]?.totalValue || 0;
+
+        //get the total units produced (sum of all product quantities)
+        const totalUnitsProduced = await ProductModel.aggregate([
+            {
+                $group: {
+                    _id: null,
+                    totalQuantity: {$sum: '$quantity'}
+                }
+            }
+        ]);
+
+        //get the count of products with low stock (quantity < 10)
+        const lowStockCount = await ProductModel.countDocuments({quantity: {$lt: 10}});
+        const notInStock = await ProductModel.countDocuments({ quantity: 0 });
+
+        res.json({
+            categoryCount,
+            totalProducts,
+            totalUnitsProduced: totalUnitsProduced[0]?.totalQuantity || 0,
+            totalValue,
+            lowStockCount,
+            notInStock
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
+
+//to get or notify the low quantity of product.
+const getOutOfStockProductsAdmin = async(req, res) => {
+    try {
+        const outOfStockProducts = await ProductModel.find({quantity: {$lt: 10}});
+        return res.json(outOfStockProducts);
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
+
 module.exports = {
     uploadProductAdmin,
     getProductAdmin,
     deleteProductAdmin,
     editProductAdmin,
-    getEditProductAdmin
+    getEditProductAdmin,
+    // getStatisticsAdmin,
+    getProductSummaryAdmin,
+    getOutOfStockProductsAdmin
 }

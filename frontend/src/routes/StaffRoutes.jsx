@@ -3,17 +3,17 @@ import { StaffContextProvider } from '../../contexts/StaffContexts/StaffAuthCont
 import StaffNavbarComponent from '../components/StaffComponents/StaffNavbarComponent'
 import StaffSidebarComponent from '../components/StaffComponents/StaffSidebarComponent'
 import { Route, Routes } from 'react-router-dom'
-import StaffHomePage from '../pages/StaffPage/StaffHomePage'
 import StaffProductsPage from '../pages/StaffPage/StaffProductsPage'
-import StaffPosPage from '../pages/StaffPage/StaffPosPage'
 import StaffOrdersWalkinPage from '../pages/StaffPage/StaffOrdersWalkinPage'
 // import StaffPaymentPage from '../pages/StaffPage/StaffPaymentPage'
 import StaffOrdersPage from '../pages/StaffPage/StaffOrdersPage'
 import StaffOrdersDetailsPage from '../pages/StaffPage/StaffOrdersDetailsPage'
 import StaffSettingsPage from '../pages/StaffPage/StaffSettingsPage'
-import StaffPosDetailsPage from '../pages/StaffPage/StaffPosDetailsPage'
 import StaffOrderSummaryPage from '../pages/StaffPage/StaffOrderSummaryPage'
 import StaffDashboardPage from '../pages/StaffPage/StaffDashboardPage'
+import StaffAccountsPage from '../pages/StaffPage/StaffAccountsPage'
+import StaffDirectOrdersPage from '../pages/StaffPage/StaffDirectOrdersPage'
+import StaffDirectOrdersDetailsPage from '../pages/StaffPage/StaffDirectOrdersDetailsPage'
 
 function StaffRoutes() {
   return (
@@ -25,14 +25,15 @@ function StaffRoutes() {
                 <Route path='/staff/dashboard' element={<StaffDashboardPage />} />
                 {/* <Route path='/staff/home' element={<StaffHomePage />} /> */}
                 <Route path='/staff/products' element={<StaffProductsPage />} />
-                <Route path='/staff/pos' element={<StaffPosPage />} />
-                <Route path='/staff/pos/product/details/:productId' element={<StaffPosDetailsPage />} />
+                <Route path='/staff/direct-orders' element={<StaffDirectOrdersPage />} />
+                <Route path='/staff/direct-orders/details/:productId' element={<StaffDirectOrdersDetailsPage />} />
                 <Route path='/staff/walkin' element={<StaffOrdersWalkinPage />} />
                 {/* <Route path='/staff/payment' element={<StaffPaymentPage />} /> */}
                 <Route path='/staff/orders' element={<StaffOrdersPage />} />
                 <Route path='/staff/order-summary/:staffId/:orderId' element={<StaffOrderSummaryPage/>} />
                 <Route path='/staff/orders/details/:orderId' element={<StaffOrdersDetailsPage />} />
                 <Route path='/staff/settings/:staffId' element={<StaffSettingsPage />} />
+                <Route path='/staff/accounts' element={<StaffAccountsPage />} />
             </Routes>
         </div>
     </StaffContextProvider>

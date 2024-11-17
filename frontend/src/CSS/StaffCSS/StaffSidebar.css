@@ -1,7 +1,7 @@
 
 .staff-sidebar{
     height: calc(100vh - 50px);
-    width: 100px;
+    width: 130px;
     background-color: #fff;
     display: flex;
     flex-direction: column;
@@ -12,15 +12,40 @@
     top: 50px; 
     left: 0;
     z-index: 500;
+    /* overflow: hidden; */
 }
-  
+.staff-sidebar .staff-sidebar-list{
+    /* overflow-y: auto; */
+    max-height: 100%;
+    /* overflow-x: hidden; */
+}
+
+.staff-sidebar .staff-sidebar-list::-webkit-scrollbar{
+    width: 3px;
+}
+
+.staff-sidebar .staff-sidebar-list::-webkit-scrollbar-track{
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.staff-sidebar .staff-sidebar-list::-webkit-scrollbar-thumb{
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.staff-sidebar .staff-sidebar-list::-webkit-scrollbar-thumb:hover{
+    background: #bbb;
+}
+
 .staff-sidebar .staff-sidebar-list{
     list-style: none;
     padding: 0;
     margin: 0;
     width: 100%;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
 }
-  
 
 .staff-sidebar .staff-sidebar-item{
     margin: 40px 0;

@@ -15,6 +15,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         discountPercentage: '',
         productSize: '',
         sizeUnit: '',
+        expirationDate: ''
     })
 
     const handleFileInputClick = () => {
@@ -32,9 +33,9 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
 
     const handleUploadProductAdmin = async(e) => {
         e.preventDefault();
-        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit} = dataInput;
+        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
 
-        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit){
+        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit || !expirationDate){
             toast.error('Please input all fields');
             return;
         }
@@ -49,7 +50,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         formData.append('image', selectedImage);
         formData.append('productSize', productSize);
         formData.append('sizeUnit', sizeUnit);
-
+        formData.append('expirationDate', expirationDate);
         try {
             const response = await axios.post('/adminProduct/uploadProductAdmin', formData, {
                 headers: { 
@@ -68,7 +69,8 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                     quantity: '',
                     discountPercentage: '',
                     productSize: '',
-                    sizeUnit: ''
+                    sizeUnit: '',
+                    expirationDate: ''
                 })
                 toast.success(response.data.message);
                 onClose();
@@ -174,7 +176,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>PRODUCT CODE :</label>
+                <label>PRODUCT CODE:</label>
                 <div>
                     <input type="text" 
                     value={dataInput.productCode} 
@@ -183,7 +185,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>PRODUCT NAME :</label>
+                <label>PRODUCT NAME:</label>
                 <div>
                     <input type="text"
                     value={dataInput.productName} 
@@ -192,7 +194,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>CATEGORY :</label>
+                <label>CATEGORY:</label>
                 <div>
                     <select 
                     value={dataInput.category} 
@@ -231,7 +233,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 )
             }
             <div className='label-text'>
-                <label>PRICE :</label>
+                <label>PRICE:</label>
                 <div>
                     <input type="number"
                     value={dataInput.price} 
@@ -240,7 +242,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>QUANTITY :</label>
+                <label>QUANTITY:</label>
                 <div>
                     <input type="number"
                     value={dataInput.quantity} 
@@ -249,12 +251,22 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>DISCOUNT PERCENTAGE :</label>
+                <label>DISCOUNT PERCENTAGE:</label>
                 <div>
                     <input
                     type="number"
                     value={dataInput.discountPercentage}
                     onChange={(e) => setDataInput({...dataInput, discountPercentage: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>Expiration Date:</label>
+                <div>
+                    <input
+                    type="date"
+                    value={dataInput.expirationDate}
+                    onChange={(e) => setDataInput({...dataInput, expirationDate: e.target.value})}
                     />
                 </div>
             </div>

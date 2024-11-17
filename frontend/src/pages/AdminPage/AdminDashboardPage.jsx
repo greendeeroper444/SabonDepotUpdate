@@ -1,130 +1,315 @@
-import React from 'react'
-import DailySalesReport from '../../components/AdminComponents/dashboards/DailySalesReport'
-import DailyProductionReport from '../../components/AdminComponents/dashboards/DailyProductionReport';
+import React, { useEffect, useState } from 'react';
 import '../../CSS/AdminCSS/AdminDashboard.css';
-import ourProduct1 from '../../assets/ourproducts/our-products-1.png'
-import ourProduct2 from '../../assets/ourproducts/our-products-2.png'
-import ourProduct3 from '../../assets/ourproducts/our-products-3.png';
-import totalOrders from '../../assets/admin/adminicons/admin-dashboard-totalorders-icon.png';
-import pendingOrders from '../../assets/admin/adminicons/admin-dashboard-pendingorders-icon.png'
+import axios from 'axios';
+import DoughnutChart from '../../components/AdminComponents/AdminDashboardGraph/DoughnutChart';
+import { monthDay } from '../../utils/OrderUtils';
+import BarChart from '../../components/AdminComponents/AdminDashboardGraph/BarChart';
+import LineChart from '../../components/AdminComponents/AdminDashboardGraph/LineChart';
 
 function AdminDashboardPage() {
+    const [topSales, setTopSales] = useState([]);
+    const [salesData, setSalesData] = useState(null);
+    const [productionReports, setProductionReports] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [orderCounts, setOrderCounts] = useState({
+        delivered: 0,
+        pending: 0,
+    });
+    const [searchQuery, setSearchQuery] = useState('');
+
+    useEffect(() => {
+        const fetchOrderCounts = async() => {
+            try {
+                const countsResponse = await axios.get('/staffOrderOverview/getDeliveredPendingCanceled');
+                setOrderCounts(countsResponse.data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchOrderCounts();
+    }, []);
+
+    useEffect(() => {
+        const fetchSalesOverview = async() => {
+            try {
+                const salesResponse = await axios.get('/staffOrderOverview/getTotalProductSales');
+                const {salesData} = salesResponse.data;
+
+                const chartLabels = salesData.map((item) => monthDay(item._id));
+                const chartSales = salesData.map((item) => item.totalSales);
+
+                setSalesData({
+                labels: chartLabels,
+                    datasets: [
+                        {
+                            label: 'Sales',
+                            data: chartSales,
+                            borderColor: 'green',
+                            fill: false,
+                            tension: 0.4,
+                        },
+                    ],
+                });
+
+                setLoading(false);
+            } catch (err) {
+                setError('Failed to fetch sales data.');
+                setLoading(false);
+            }
+        };
+
+        fetchSalesOverview();
+    }, []);
+
+    // useEffect(() => {
+    //     const fetchProductionReport = async() => {
+    //         try {
+    //             const productionResponse = await axios.get('/adminOrderOverview/getProductionReport');
+    //             const productionData = productionResponse.data;
+
+    //             const chartLabels = productionData.map(item => monthDay(item.date));
+    //             const chartQuantities = productionData.map(item => item.quantity);
+
+    //             setProductionReports({
+    //                 labels: chartLabels,
+    //                 datasets: [
+    //                     {
+    //                         label: 'Production Quantity',
+    //                         data: chartQuantities,
+    //                         backgroundColor: (context) => {
+    //                             const chart = context.chart;
+    //                             const { ctx, chartArea } = chart;
+    //                             if(!chartArea) return null;//prevent chart undefined
+
+    //                             const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+    //                             gradient.addColorStop(0, '#00ff6a');
+    //                             gradient.addColorStop(1, '#006633');
+    //                             return gradient;
+    //                         },
+    //                     },
+    //                 ],
+    //             });
+    //         } catch (error) {
+    //             console.error(error);
+    //         }
+    //     };
+
+    //     fetchProductionReport();
+    // }, []);
+
+    useEffect(() => {
+        const fetchProductionReport = async() => {
+            try {
+                const productionResponse = await axios.get('/adminOrderOverview/getProductionReport');
+                const productionData = productionResponse.data;
+    
+                //create a map to hold unique dates and their cumulative quantities
+                const productionMap = productionData.reduce((acc, item) => {
+                    const date = monthDay(item.date);
+                    if(acc[date]){
+                        acc[date] += item.quantity;
+                    } else{
+                        acc[date] = item.quantity;
+                    }
+                    return acc;
+                }, {});
+    
+                //separate labels and data from the productionMap
+                const chartLabels = Object.keys(productionMap);
+                const chartQuantities = Object.values(productionMap);
+    
+                setProductionReports({
+                    labels: chartLabels,
+                    datasets: [
+                        {
+                            label: 'Production Quantity',
+                            data: chartQuantities,
+                            backgroundColor: (context) => {
+                                const chart = context.chart;
+                                const { ctx, chartArea } = chart;
+                                if(!chartArea) return null; //prevent chart undefined
+    
+                                const gradient = ctx.createLinearGradient(0, chartArea.top, 0, chartArea.bottom);
+                                gradient.addColorStop(0, '#00ff6a');
+                                gradient.addColorStop(1, '#006633');
+                                return gradient;
+                            },
+                        },
+                    ],
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        };
+    
+        fetchProductionReport();
+    }, []);
+
+    
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                display: false,
+            },
+        },
+        scales: {
+            y: {
+                beginAtZero: true,
+            },
+        },
+    };
+
+    useEffect(() => {
+        const fetchTopSales = async() => {
+            try {
+                const bestSellingResponse = await axios.get('/staffOrderOverview/getBestSellingProducts');
+                const data = Array.isArray(bestSellingResponse.data.bestSellingProducts)
+                ? bestSellingResponse.data.bestSellingProducts
+                : [];
+                setTopSales(data);
+            } catch (error) {
+                console.error(error);
+            }
+        };
+
+        fetchTopSales();
+    }, []);
+
+
+     //function to handle the search query change
+     const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+    //filtered products based on the search query
+    const filteredProducts = topSales.filter(product =>
+        product.productName.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
   return (
-    <>
-        <div className='admin-dashboard-container'>
-            <div className='admin-dashboard-graphs'>
-                <DailySalesReport />
-                <DailyProductionReport />
+    <div className='admin-dashboard-container'>
+        <div className='admin-dashboard-first'>
+            <div className='admin-top-sales'>
+                <h3>Top Sales</h3>
+                <div className='admin-top-sales-list'>
+                {
+                    topSales.length > 0 ? (
+                        //filter out products without a valid productId
+                        topSales
+                            .filter(product => product.productId) //keep only products with a valid productId
+                            .sort((a, b) => b.totalSales - a.totalSales) //sort by totalSales in descending order
+                            .slice(0, 3) //get the top 3 products
+                            .map((product, index) => (
+                                <div key={index} className='admin-top-sales-item'>
+                                    <div>
+                                        <>
+                                            <img
+                                            src={`http://localhost:8000/${product.productId.imageUrl}`}
+                                            alt={product.productId.productName || 'Product'}
+                                            />
+                                            <strong>{product.productName}</strong>
+                                            <div>{product.totalProduct} products sold</div>
+                                        </>
+                                    </div>
+                                    <>
+                                        <div className='admin-price'>Price: {product.productId.price}</div>
+                                        <div className='admin-inventory'>Inventory: {product.totalProduct}</div>
+                                        <div className='admin-sale'>Sale: {product.totalSales}</div>
+                                    </>
+                                </div>
+                            ))
+                    ) : (
+                        <p className='admin-no-data'>No top sales data available.</p>
+                    )
+                }
+                </div>
             </div>
+
+            <DoughnutChart orderCounts={orderCounts} />
         </div>
 
+        <br />
+        <br />
+        <br />
 
-        <div className='admin-dashboard-top-products'>
-            <div className='order-summary'>
-                <div className='total-orders'>
-                    <div className='order-icon'>
-                        <img src={totalOrders} alt="" />
-                    </div>
-                    <div className='order-details'>
-                        <div className='order-label'>Total Orders</div>
-                        <div className='order-count'>4,000</div>
-                    </div>
+        <div className='admin-dashboard-second'>
+            {
+                salesData && (
+                <div className='chart-container'>
+                    <h2 className='sales-title'>Daily Sales</h2>
+                    <LineChart salesData={salesData} chartOptions={chartOptions} />
                 </div>
-                <div className='pending-orders'>
-                    <div className='order-icon'>
-                        <img src={pendingOrders} alt="" />
-                    </div>
-                    <div className='order-details'>
-                        <div className='order-label'>Pending Orders</div>
-                        <div className='order-count'>3,500</div>
-                    </div>
+                )
+            }
+            {
+                productionReports && (
+                <div className='chart-container'>
+                    <h2 className='sales-title'>Production Report</h2>
+                    <BarChart salesData={productionReports} chartOptions={chartOptions} />
                 </div>
-            </div>
+                )
+            }
+        </div>
 
-            <div className='top-products'>
-                <div>
-                    <h2>Top Products</h2>
-                    <div className='product'>
-                        <img src={ourProduct1} alt='Dishwashing Liquid Superb' />
-                        <div className='product-details'>
-                            <div className='product-name'>Dishwashing Liquid Superb</div>
-                            <div className='product-subname'>Calamansi - 50 orders</div>
-                        </div>
-                        <div className='product-info'>
-                            <div className='product-inventory'>
-                                <span>Inventory</span>
-                                <span>2000</span>
-                            </div>
-                            <div className='product-sales'>
-                                <span>Sale</span> 
-                                <span>1,000</span>
-                            </div>
-                            <div className='product-price'>
-                                <span>Price </span>
-                                <span>100.00</span>
-                            </div>
-                            <div className='product-today'>
-                                <span>Today</span>
-                                <span>10.00</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <br />
+        <br />
+        <br />
+        <br />
 
-                <div className='product'>
-                    <img src={ourProduct2} alt='Fabric Conditioner Hypoallergenic' />
-                    <div className='product-details'>
-                        <div className='product-name'>Fabric Conditioner Hypoallergenic</div>
-                        <div className='product-subname'>Morning Dew - 25 orders</div>
-                    </div>
-                    <div className='product-info'>
-                        <div className='product-inventory'>
-                            <span>Inventory</span>
-                            <span>2000</span>
-                        </div>
-                        <div className='product-sales'>
-                            <span>Sale</span> 
-                            <span>1,000</span>
-                        </div>
-                        <div className='product-price'>
-                            <span>Price </span>
-                            <span>100.00</span>
-                        </div>
-                        <div className='product-today'>
-                            <span>Today</span>
-                            <span>10.00</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className='product'>
-                    <img src={ourProduct3} alt='Dishwashing Liquid Superb' />
-                    <div className='product-details'>
-                        <div className='product-name'>Dishwashing Liquid Superb</div>
-                        <div className='product-subname'>Lemon - 50 orders</div>
-                    </div>
-                    <div className='product-info'>
-                        <div className='product-inventory'>
-                            <span>Inventory</span>
-                            <span>2000</span>
-                        </div>
-                        <div className='product-sales'>
-                            <span>Sale</span> 
-                            <span>1,000</span>
-                        </div>
-                        <div className='product-price'>
-                            <span>Price </span>
-                            <span>100.00</span>
-                        </div>
-                        <div className='product-today'>
-                            <span>Today</span>
-                            <span>10.00</span>
-                        </div>
-                    </div>
-                </div>
+        <div className='dashboard-header'>
+            <h2 className='dashboard-title'>Best Selling Products</h2>
+            <div className='search-container'>
+                <input 
+                    type='text' 
+                    placeholder='Search' 
+                    className='search-input' 
+                    value={searchQuery}
+                    onChange={handleSearchChange} 
+                />
+                <button className='filter-button'>
+                    <i className='fas fa-filter'></i>
+                </button>
             </div>
         </div>
-    </>
+        <table className='product-table'>
+            <thead>
+                <tr>
+                    <th>Product Name</th>
+                    <th>Product Code</th>
+                    <th>Size</th>
+                    <th>Category</th>
+                    <th>Inventory Level</th>
+                    <th>Units Sold</th>
+                    <th>Total Revenue</th>
+                </tr>
+            </thead>
+            <tbody>
+                {
+                   filteredProducts.length > 0 ? (
+                        filteredProducts.map((product) => (
+                            <tr key={product.productId?._id || product._id}>
+                                <td>{product.productName}</td>
+                                <td>{product.productId ? product.productId.productCode : "N/A"}</td>
+                                <td>{product.productSize}</td>
+                                <td>{product.productId ? product.productId.category : "N/A"}</td>
+                                <td>{product.productId ? product.productId.quantity : "N/A"}</td>
+                                <td>{product.quantitySold}</td>
+                                <td>{product.totalSales}</td>
+                            </tr>
+                        ))
+                    ) : (
+                        <p style={{ textAlign: 'center' }}>No results found</p>
+                    )
+                }
+            </tbody>
+        </table>
+        <br />
+        <br />
+        <br />
+    </div>
   )
 }
 

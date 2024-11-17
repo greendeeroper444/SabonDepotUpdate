@@ -42,7 +42,7 @@
 }
 
 .customer-modal-container{
-    background: white;
+    background: #fff;
     position: absolute;
     width: 80%;
     max-width: 400px;
@@ -168,6 +168,9 @@
 }
 
 
+.customer-modal-container .input-quantity-update{
+    width: 50px;
+}
 
 @media (max-width: 516px){
     .customer-modal-header .shopping-cart-content .customer-modal-header-line{

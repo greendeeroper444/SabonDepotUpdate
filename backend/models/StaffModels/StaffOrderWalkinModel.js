@@ -1,39 +1,49 @@
 const mongoose = require('mongoose');
 
-
-
-const OrderWalkinSchema = new mongoose.Schema({
-    productCode: {
-        type: String,
+const StaffOrderWalkinSchema = new mongoose.Schema({
+    staffId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Staff',
         required: true,
-        trim: true
     },
-    productName: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    category: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    price: {
+    items: [
+        {
+            productId: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'Product',
+                required: true,
+            },
+            productCode: String,
+            productName: String,
+            category: String,
+            price: Number,
+            discountPercentage: Number,
+            discountedPrice: Number,
+            finalPrice: Number,
+            quantity: Number,
+            uploaderId: mongoose.Schema.Types.ObjectId,
+            uploaderType: String,
+            imageUrl: String,
+            sizeUnit:  String,
+            productSize: String,
+            createdProductBy: String,
+            createdProductAt: Date,
+            updatedProductBy: String,
+            updatedProductAt: Date,
+        },
+    ],
+    totalAmount: {
         type: Number,
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true
+        required: true,
     },
     createdAt: {
         type: Date,
-        default: Date.now
+        default: Date.now,
     },
     updatedAt: {
-        type: Date
-    }
-})
+        type: Date,
+    },
+});
 
-const OrderWalkinModel = mongoose.model('OrderWalkin', OrderWalkinSchema);
-module.exports = OrderWalkinModel;
+const StaffOrderWalkinModel = mongoose.model('StaffOrderWalkin', StaffOrderWalkinSchema);
+module.exports = StaffOrderWalkinModel;

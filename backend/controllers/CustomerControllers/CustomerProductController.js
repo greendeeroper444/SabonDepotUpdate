@@ -1,24 +1,25 @@
 const ProductModel = require("../../models/ProductModel");
 
 
-const getProductCustomer = async(req, res) => {
+const getProductCustomer = async (req, res) => {
     const category = req.query.category;
 
     try {
-        // const query = category ? {category: category} : {};
         const query = {
-            ...(category ? {category: category} : {}),
-            isArchived: false //exclude archived products
+            ...(category ? { category: category } : {}),
+            isArchived: false, // Exclude archived products
         };
+
+        // Fetch all products that match the query without stock checks
         const customerProducts = await ProductModel.find(query);
 
-        //group by productName and then prioritize by sizeUnit and productSize
+        // Group by productName and prioritize by sizeUnit and productSize
         const productMap = new Map();
 
         customerProducts.forEach(product => {
             const key = product.productName;
 
-            if(!productMap.has(key)){
+            if (!productMap.has(key)) {
                 productMap.set(key, product);
             } else {
                 const existingProduct = productMap.get(key);
@@ -26,16 +27,16 @@ const getProductCustomer = async(req, res) => {
                 const sizePriority = {
                     "Gallons": 3,
                     "Liters": 2,
-                    "Milliliters": 1
+                    "Milliliters": 1,
                 };
 
                 const existingSizePriority = sizePriority[existingProduct.sizeUnit] || 0;
                 const newSizePriority = sizePriority[product.sizeUnit] || 0;
 
-                if(
+                if (
                     newSizePriority > existingSizePriority ||
                     (newSizePriority === existingSizePriority && product.productSize > existingProduct.productSize)
-                ){
+                ) {
                     productMap.set(key, product);
                 }
             }
@@ -47,7 +48,7 @@ const getProductCustomer = async(req, res) => {
     } catch (error) {
         console.log(error);
         return res.status(500).json({
-            message: 'Server error'
+            message: 'Server error',
         });
     }
 };

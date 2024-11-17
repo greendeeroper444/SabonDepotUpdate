@@ -50,11 +50,30 @@ function CustomerShopProductDetails() {
 
 
     const handleQuantityChange = (e) => {
+        // const value = Math.max(1, parseInt(e.target.value, 10) || 1);
+        // setQuantity(value);
+
+        //updated
         const value = Math.max(1, parseInt(e.target.value, 10) || 1);
-        setQuantity(value);
+        //ensure the quantity does not exceed available stock
+        if(value <= product.quantity){
+            setQuantity(value);
+        } else{
+            alert('Cannot exceed available stock');
+        }
     };
 
-    const incrementQuantity = () => setQuantity((prev) => prev + 1);
+    // const incrementQuantity = () => setQuantity((prev) => prev + 1);
+    const incrementQuantity = () => {
+        //check if the current quantity is less than the available stock
+
+        //updated
+        if(quantity < product.quantity){
+            setQuantity((prev) => prev + 1);
+        } else {
+            alert('Cannot add more than available stock');
+        }
+    };
     const decrementQuantity = () => setQuantity((prev) => Math.max(1, prev - 1));
 
     const handleCloseModal = () => setIsModalOpen(false);
@@ -154,7 +173,7 @@ function CustomerShopProductDetails() {
                                 {/* <h4>{product.productSize}</h4> */}
                                 <span>{`Php ${finalPrice}`}</span>
                                 <div className='stars-reviews-content'>
-                                    {/* {renderStars(rating)} */}
+                                    {renderStars(rating)}
                                     <span className='customer-review'>5 Customer Review</span>
                                 </div>
                                 <p>Description</p>
@@ -197,22 +216,33 @@ function CustomerShopProductDetails() {
                                 </div>
 
                                 {/* add to cart */}
-                                <div className='customer-shop-product-details-product-add-buttons'>
-                                    <div className='plus-and-minus-quantity'>
-                                        <button className='minus-quantity' onClick={decrementQuantity}>-</button>
-                                        <input
-                                        type='number'
-                                        className='quantity-input'
-                                        value={quantity}
-                                        onChange={handleQuantityChange}
-                                        min='1'
-                                        />
-                                        <button className='plus-quantity' onClick={incrementQuantity}>+</button>
-                                    </div>
-                                    <button className='add-to-cart' 
-                                    onClick={handleAddToCart}
-                                    >Add To Cart</button>
-                                </div>
+                                {
+                                    product.quantity <= 0 ? (
+                                        
+                                        <div>
+                                            <br />
+                                            <br />
+                                            <span className='out-of-stock'>Out Of Stock</span>
+                                        </div>
+                                    ) : (
+                                        <div className='customer-shop-product-details-product-add-buttons'>
+                                            <div className='plus-and-minus-quantity'>
+                                                <button className='minus-quantity' onClick={decrementQuantity}>-</button>
+                                                <input
+                                                type='number'
+                                                className='quantity-input'
+                                                value={quantity}
+                                                onChange={handleQuantityChange}
+                                                min='1'
+                                                />
+                                                <button className='plus-quantity' onClick={incrementQuantity}>+</button>
+                                            </div>
+                                            <button className='add-to-cart' 
+                                            onClick={handleAddToCart}
+                                            >Add To Cart</button>
+                                        </div>
+                                    )
+                                }
 
                             </div>
                         </div>

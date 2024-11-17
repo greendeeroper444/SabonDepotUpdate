@@ -7,10 +7,28 @@
     background-color: #ffffff;
     padding: 20px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    overflow-y: hidden;
+    overflow-y: auto;
     z-index: 1000;
 }
 
+
+.admin-sidebar::-webkit-scrollbar{
+    width: 3px;
+}
+
+.admin-sidebar::-webkit-scrollbar-track{
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb{
+    background: #ccc;
+    border-radius: 10px;
+}
+
+.admin-sidebar::-webkit-scrollbar-thumb:hover{
+    background: #bbb;
+}
 .admin-sidebar .admin-sidebar-header{
     display: flex;
     flex-direction: column;

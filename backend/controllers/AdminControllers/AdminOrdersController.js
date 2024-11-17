@@ -22,13 +22,13 @@ const getOrderDetailsAdmin = async(req, res) => {
         .populate('customerId')
         .populate('items.productId');
 
-    if(!order){
-        return res.status(404).json({ 
-            message: 'Order not found' 
-        });
-    }
+        if(!order){
+            return res.status(404).json({ 
+                message: 'Order not found' 
+            });
+        }
 
-    res.json(order);
+        res.json(order);
     } catch (error) {
         console.error(error);
         res.status(500).json({ 

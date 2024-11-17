@@ -9,10 +9,33 @@ import IsDiscountValidUtils from '../../../utils/IsDiscountValidUtils';
 function CustomerShopContentComponent() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const {customer} = useContext(CustomerContext);
+    const [showCount, setShowCount] = useState(16);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const categories = UseFetchCategoriesHook();
     const {products, loading, error} = UseFetchProductsHook(selectedCategory);
 
+    const totalProducts = products.length;
+    const totalPages = Math.ceil(totalProducts / showCount);
+    const paginatedProducts = products.slice((currentPage - 1) * showCount, currentPage * showCount);
+
+
+     //pagination handlers
+     const handlePageChange = (page) => {
+        setCurrentPage(page);
+    };
+
+    const handleNextPage = () => {
+        if (currentPage < totalPages) {
+            setCurrentPage(currentPage + 1);
+        }
+    };
+
+    const handlePreviousPage = () => {
+        if(currentPage > 1){
+            setCurrentPage(currentPage - 1);
+        }
+    };
 
     if(loading){
         return <div>Loading...</div>;
@@ -27,7 +50,7 @@ function CustomerShopContentComponent() {
             <div className='customer-shop-content-header-left'>
                 <div>
                     <select 
-                    name="category" 
+                    name='category' 
                     id="category"
                     value={selectedCategory}
                     onChange={(e) => setSelectedCategory(e.target.value)}
@@ -46,7 +69,9 @@ function CustomerShopContentComponent() {
             </div>
             <div className='customer-shop-content-header-section-right'>
                 <span>Show</span>
-                <button>16</button>
+                <button onClick={() => setShowCount(showCount === 16 ? 32 : 16)}>
+                    {showCount}
+                </button>
             </div>
         </div>
 
@@ -76,12 +101,24 @@ function CustomerShopContentComponent() {
                                         }
                                     </div>
                                     <div className='details-list'>
-                                        <h5>{product.productName}</h5>
+                                        <h5>{product.productName}
+                                            {' '}
+                                            <span className='out-of-stock'>
+                                                {product.quantity <= 0 ? '(Out of Stock)' : ''}
+                                            </span>
+                                        </h5>
                                         <span>{product.category}</span>
                                         <h6>{`Php ${finalPrice}`}</h6>
                                     </div>
                                 </div>
                                 <div className='view-details'>
+                                    {/* {
+                                        product.quantity <= 0 ? (
+                                            <span className='disabled-link'></span>
+                                        ) : (
+                                            <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
+                                        )
+                                    } */}
                                     <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
                                 </div>
                             </li>
@@ -91,10 +128,23 @@ function CustomerShopContentComponent() {
             </ul>
 
             <div className='customer-shop-content-pagination'>
-                <button className='page-item active'>1</button>
-                <button className='page-item'>2</button>
-                <button className='page-item'>3</button>
-                <button className='page-item'>Next</button>
+                {
+                    currentPage > 1 && <button onClick={handlePreviousPage}>Previous</button>
+                }
+                    {
+                        [...Array(totalPages)].map((_, index) => (
+                            <button
+                            key={index + 1}
+                            className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
+                            onClick={() => handlePageChange(index + 1)}
+                            >
+                                {index + 1}
+                            </button>
+                        ))
+                    }
+                {
+                    currentPage < totalPages && <button onClick={handleNextPage}>Next</button>
+                }
             </div>
         </div>
     </div>

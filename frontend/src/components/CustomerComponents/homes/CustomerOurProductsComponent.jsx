@@ -50,13 +50,24 @@ function CustomerOurProductsComponent() {
                                         }
                                     </div>
                                     <div className='details-list'>
-                                        <h5>{product.productName}</h5>
+                                        <h5>{product.productName}
+                                            {' '}
+                                            <span className='out-of-stock'>
+                                                {product.quantity <= 0 ? '(Out of Stock)' : ``}
+                                            </span>
+                                        </h5>
                                         <span>{product.category}</span>
                                         <h6>{`Php ${finalPrice}`}</h6>
                                     </div>
                                 </div>
                                 <div className='view-details'>
-                                    <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
+                                    {
+                                        product.quantity <= 0 ? (
+                                            <span className='disabled-link'></span>
+                                        ) : (
+                                            <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
+                                        )
+                                    }
                                 </div>
                             </li>
                         );

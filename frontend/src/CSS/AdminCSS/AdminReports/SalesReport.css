@@ -1,0 +1,84 @@
+.sales-report-container{
+    padding: 20px;
+    font-family: Arial, sans-serif;
+    color: #333;
+}
+.sales-report-container .sales-report-header{
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+  
+.sales-report-container .company-info{
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
+  
+.sales-report-container .logo{
+    width: 120px;
+    object-fit: contain;
+}
+  
+.sales-report-container .company-info h1{
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+  
+.sales-report-container .report-title{
+    margin-left: auto;
+    text-align: right;
+}
+  
+.sales-report-container .report-title h2{
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+  
+.sales-report-container .report-controls{
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+  
+.sales-report-container .search-input{
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+  
+.sales-report-container .date-filter .date-range{
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 5px;
+}
+  
+.sales-report-container .print-button{
+    background-color: #077A37;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+  
+.sales-report-container .sales-report-table{
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+  
+.sales-report-container .sales-report-table th,
+.sales-report-container .sales-report-table td{
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+  
+.sales-report-container .sales-report-table th{
+    background-color: #f9f9f9;
+    font-weight: bold;
+}
+  

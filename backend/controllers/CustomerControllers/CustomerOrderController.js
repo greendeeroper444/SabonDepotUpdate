@@ -4,7 +4,8 @@ const OrderModel = require("../../models/OrderModel");
 const path = require('path');
 const multer = require('multer');
 const ProductModel = require("../../models/ProductModel");
-const SalesOverviewModel = require("../../models/SalesOverviewModel");
+const { BestSellingModel, TotalSaleModel } = require("../../models/SalesOverviewModel");
+const { getInventoryReport, getSalesReport } = require("../AdminControllers/AdminReportController");
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -221,20 +222,49 @@ const createOrderCustomer = async(req, res) => {
                     $inc: {quantity: -item.quantity} //decrease product quantity
                 });
 
+                const today = new Date();
+                today.setUTCHours(0, 0, 0, 0); //set time to midnight for the day field
+                const existingRecord = await TotalSaleModel.findOne({
+                    productName: item.productId.productName,
+                    day: today,
+                });
 
-
-                //update salesoverview model
-                const salesOverview = await SalesOverviewModel.findOne({productId: item.productId._id});
-                if(salesOverview){
+                if(existingRecord){
                     //update existing record
-                    salesOverview.totalProduct += 1;
-                    salesOverview.totalSales += item.finalPrice * item.quantity;
-                    salesOverview.quantitySold += item.quantity;
-                    salesOverview.lastSoldAt = Date.now();
-                    await salesOverview.save();
+                    await TotalSaleModel.updateOne(
+                        {_id: existingRecord._id},
+                        {
+                            $inc: {
+                                totalProduct: 1,
+                                totalSales: item.productId.price * item.quantity,
+                                quantitySold: item.quantity,
+                            },
+                        }
+                    );
                 } else{
                     //create a new record
-                    await SalesOverviewModel.create({
+                    await TotalSaleModel.create({
+                        productName: item.productId.productName,
+                        totalProduct: 1,
+                        totalSales: item.productId.price * item.quantity,
+                        quantitySold: item.quantity,
+                        day: today,
+                    });
+                }
+
+                //get all best selling
+                //update bestSellingRecord model
+                const bestSellingRecord = await BestSellingModel.findOne({productId: item.productId._id});
+                if(bestSellingRecord){
+                    //update existing record
+                    bestSellingRecord.totalProduct += 1;
+                    bestSellingRecord.totalSales += item.finalPrice * item.quantity;
+                    bestSellingRecord.quantitySold += item.quantity;
+                    bestSellingRecord.lastSoldAt = Date.now();
+                    await bestSellingRecord.save();
+                } else{
+                    //create a new record
+                    await BestSellingModel.create({
                         productId: item.productId._id,
                         productName: item.productId.productName,
                         totalSales: item.finalPrice * item.quantity,
@@ -244,7 +274,30 @@ const createOrderCustomer = async(req, res) => {
                         lastSoldAt: Date.now(),
                     });
                 }
+
+
+                await getInventoryReport(
+                    item.productId._id,
+                    item.productId.productName,
+                    item.productId.sizeUnit,
+                    item.productId.productSize,
+                    item.productId.category,
+                    item.quantity,
+                    true
+                );
+
+                await getSalesReport(
+                    item.productId._id,
+                    item.productId.productName,
+                    item.productId.sizeUnit,
+                    item.productId.productSize,
+                    item.productId.category,
+                    item.quantity,
+                    true
+                );
+
             }));
+
 
             //remove selected items from the cart
             await CartModel.deleteMany({

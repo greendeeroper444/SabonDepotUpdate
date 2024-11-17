@@ -57,6 +57,9 @@ function AdminSidebarComponent() {
                             <NavLink to='/admin/inventory/finished-product' className='admin-sidebar-item' activeClassName='active'>
                                 <span>Finished Product</span>
                             </NavLink>
+                            <NavLink to='/admin/inventory/workin-progress' className='admin-sidebar-item' activeClassName='active'>
+                                <span>Work In Progress</span>
+                            </NavLink>
                         </div>
                     )
                 }

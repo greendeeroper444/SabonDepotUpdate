@@ -248,6 +248,11 @@
 }
 
 
+.staff-orders-container .date-picker-container{
+    display: flex;
+    align-items: center;
+}
+
 @media (max-width: 768px){
     .staff-orders-container .staff-orders-footer{
         display: block;

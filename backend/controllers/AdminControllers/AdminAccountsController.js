@@ -7,11 +7,11 @@ const getAllAccountsAdmin = async(req, res) => {
         const staff = await StaffAuthModel.find().lean();
     
         //add role attribute to each record
-        const customersWithRole = customers.map(customer => ({...customer, role: 'Customer'}));
-        const staffWithRole = staff.map(staff => ({...staff, role: 'Staff'}));
+        // const customersWithRole = customers.map(customer => ({...customer, clientType: clientType}));
+        const staffWithRole = staff.map(staff => ({...staff, clientType: 'Staff'}));
     
         res.json({
-          customers: customersWithRole,
+          customers,
           staff: staffWithRole
         });
     } catch (error) {
@@ -22,18 +22,45 @@ const getAllAccountsAdmin = async(req, res) => {
 }
 
 
+const getAllAccountDetailsAdmin = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        let account = await CustomerAuthModel.findById(id).lean();
+        
+        if (!account) {
+            // If not found in CustomerAuthModel, search in StaffAuthModel
+            account = await StaffAuthModel.findById(id).lean();
+            if (account) account.clientType = 'Staff';
+        } else {
+            account.clientType = 'Consumer'; // Label for customers
+        }
+
+        if (!account) {
+            return res.status(404).json({ error: 'Account not found' });
+        }
+
+        res.json(account);
+    } catch (error) {
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
 const deleteAccountAdmin = async(req, res) => {
-    const {id, role} = req.body;
+    const {id, clientType} = req.body;
   
         try {
             let result;
-        if(role === 'Customer'){
+        // if(clientType === clientType){
+        //     result = await CustomerAuthModel.findByIdAndDelete(id);
+        if(clientType !== 'Staff'){
             result = await CustomerAuthModel.findByIdAndDelete(id);
-        } else if(role === 'Staff'){
+        } else if(clientType === 'Staff'){
             result = await StaffAuthModel.findByIdAndDelete(id);
         } else{
             return res.status(400).json({ 
-                error: 'Invalid role' 
+                error: 'Invalid clientType' 
             });
         }
     
@@ -55,5 +82,6 @@ const deleteAccountAdmin = async(req, res) => {
 
 module.exports = {
     getAllAccountsAdmin,
-    deleteAccountAdmin
+    deleteAccountAdmin,
+    getAllAccountDetailsAdmin
 }
