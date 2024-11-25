@@ -36,7 +36,7 @@ function CustomerRoutes({customerToggleSidebar, customerCloseSidebar, customerSi
                 <Route path='/about-us' element={<CustomerAboutUsPage />} />
                 <Route path='/contact' element={<CustomerContactPage />} />
                 <Route path='/profile/:customerId' element={<CustomerProfilePage />} />
-                <Route path='/orders/:customerId' element={<CustomerOrdersPage />} />
+                <Route path='/orders/:customerId' element={<CustomerPayablePage />} />
                 <Route path='/shop' element={<CustomerShopPage />} />
                 <Route path='/shop/product/details/:productId' element={<CustomerShopProductDetails />} />
                 <Route path='/cart/:customerId' element={<CustomerCartPage />} />

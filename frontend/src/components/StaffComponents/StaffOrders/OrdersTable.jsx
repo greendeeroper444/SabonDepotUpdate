@@ -16,7 +16,7 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
     <table className='staff-orders-table'>
         <thead>
             <tr>
-                <th><input type='checkbox' onClick={(e) => e.stopPropagation()} /></th>
+                {/* <th><input type='checkbox' onClick={(e) => e.stopPropagation()} /></th> */}
                 <th>Orders</th>
                 <th>Date</th>
                 <th>Customer</th>
@@ -41,7 +41,7 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
                     className='clickable-row'
                     onClick={!!staff ? () => handleRowClick(order._id) : undefined} 
                     >
-                        <td><input type='checkbox' onClick={(e) => e.stopPropagation()} /></td>
+                        {/* <td><input type='checkbox' onClick={(e) => e.stopPropagation()} /></td> */}
                         <td>
                         {
                             order.items.map(item => (

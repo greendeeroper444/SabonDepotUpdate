@@ -49,10 +49,10 @@ const uploadWorkinProgressProductAdmin = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -99,15 +99,15 @@ const uploadWorkinProgressProductAdmin = async(req, res) => {
                     quantity,
                     discountPercentage,
                     imageUrl,
-                    sizeUnit: sizeUnit || null,
-                    productSize: productSize || null,
+                    // sizeUnit: sizeUnit || null,
+                    // productSize: productSize || null,
                     uploaderId: adminId,
                     uploaderType: 'Admin',
                     expirationDate,
                     createdBy: adminExists.fullName
                 });
 
-                await getInventoryReport(newProduct._id, productName, sizeUnit, productSize, category, quantity)
+                // await getInventoryReport(newProduct._id, productName, category, quantity)
 
                 return res.json({
                     message: 'Product added successfully!',
@@ -170,10 +170,10 @@ const editWorkinProgressProductAdmin = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, discountPercentage = 0, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !quantity || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -197,8 +197,8 @@ const editWorkinProgressProductAdmin = async(req, res) => {
             product.discountedPrice = discountedPrice;
             product.quantity = quantity;
             product.discountPercentage = discountPercentage;
-            product.sizeUnit = sizeUnit;
-            product.productSize = productSize;
+            // product.sizeUnit = sizeUnit;
+            // product.productSize = productSize;
             product.expirationDate = expirationDate;
             if(imageUrl){
                 product.imageUrl = imageUrl;
@@ -207,7 +207,7 @@ const editWorkinProgressProductAdmin = async(req, res) => {
             const updatedProduct = await product.save();
 
 
-            await getInventoryReport(product._id, productName, sizeUnit, productSize, category, quantity);
+            // await getInventoryReport(product._id, productName, category, quantity);
 
 
             return res.json({

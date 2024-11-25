@@ -99,7 +99,7 @@ function CustomerLoginPage() {
                 
                 <button onClick={handleLogin} type='submit' className='customer-login-button'>Login</button>
                 
-                <div className='or-sign-in'>
+                {/* <div className='or-sign-in'>
                     <span className='divider-line'></span>
                     <span className='divider-text'>or sign in with</span>
                     <span className='divider-line'></span>
@@ -109,7 +109,7 @@ function CustomerLoginPage() {
                     <img src={googleIcon} alt='Google Icon' />
                     Continue with Google
                 </button>
-                
+                 */}
                 <Link className='create-account' to='/register'>Create an account</Link>
             </form>
         </div>

@@ -59,6 +59,7 @@
   
 .customer-navbar .customer-navbar-container .customer-navbar-links li{
     margin-left: 20px;
+    cursor: pointer;
 }
   
 .customer-navbar .customer-navbar-container .customer-navbar-links .link{
@@ -179,6 +180,7 @@
 .customer-narvbar .notification-icon{
     width: 24px;
     height: 24px;
+    cursor: pointer;
 }
 
 .customer-narvbar .notification-count{
@@ -191,6 +193,7 @@
     font-weight: bold;
     border-radius: 50%;
     padding: 3px 7px;
+    cursor: pointer;
 }
 
 .customer-narvbar .notification-dropdown{

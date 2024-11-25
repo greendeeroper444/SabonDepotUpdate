@@ -243,8 +243,6 @@ function AdminWorkinProgressPage() {
                             <th>Product Code</th>
                             <th>Product Name</th>
                             <th>Category</th>
-                            <th>Size</th>
-                            <th>Price</th>
                             <th>Quantity</th>
                             <th>Availability</th>
                             <th>Action</th>
@@ -264,7 +262,7 @@ function AdminWorkinProgressPage() {
                                         <img src={`http://localhost:8000/${product.imageUrl}`} alt={product.productName} />{' '}{product.productName}
                                     </td>
                                     <td>{product.category}</td>
-                                    <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td>
+                                    {/* <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td> */}
                                     <td>{`₱${product.price.toFixed(2)}`}</td>
                                     <td>{product.quantity}</td>
                                     <td className={product.quantity > 0 ? (product.quantity > 10 ? 'in-stock' : 'low-stock') : 'out-of-stock'}>

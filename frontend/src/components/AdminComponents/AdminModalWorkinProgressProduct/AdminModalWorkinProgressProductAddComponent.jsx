@@ -13,8 +13,6 @@ function AdminModalWorkinProgressProductAddComponent({isOpen, onClose, fetchProd
         price: '', 
         quantity: '',
         discountPercentage: '',
-        productSize: '',
-        sizeUnit: '',
         expirationDate: ''
     })
 
@@ -33,9 +31,9 @@ function AdminModalWorkinProgressProductAddComponent({isOpen, onClose, fetchProd
 
     const handleUploadProductAdmin = async(e) => {
         e.preventDefault();
-        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
+        const {productCode, productName, category, price, quantity, discountPercentage, expirationDate} = dataInput;
 
-        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit || !expirationDate){
+        if(!productCode || !productName || !category || !price || !quantity || !expirationDate){
             toast.error('Please input all fields');
             return;
         }
@@ -48,8 +46,8 @@ function AdminModalWorkinProgressProductAddComponent({isOpen, onClose, fetchProd
         formData.append('quantity', quantity);
         formData.append('discountPercentage', discountPercentage);
         formData.append('image', selectedImage);
-        formData.append('productSize', productSize);
-        formData.append('sizeUnit', sizeUnit);
+        // formData.append('productSize', productSize);
+        // formData.append('sizeUnit', sizeUnit);
         formData.append('expirationDate', expirationDate);
         try {
             const response = await axios.post('/adminWorkinProgressProduct/uploadWorkinProgressProductAdmin', formData, {
@@ -68,8 +66,6 @@ function AdminModalWorkinProgressProductAddComponent({isOpen, onClose, fetchProd
                     price: '', 
                     quantity: '',
                     discountPercentage: '',
-                    productSize: '',
-                    sizeUnit: '',
                     expirationDate: ''
                 })
                 toast.success(response.data.message);
@@ -82,71 +78,7 @@ function AdminModalWorkinProgressProductAddComponent({isOpen, onClose, fetchProd
     };
 
     const categories = ['Dishwashing Liquid', 'Car Soap', 'Fabric Conditioner', 'Pet Shampoo', 'Ethanol'];
-    const unitSize = ['Milliliters', 'Liters', 'Gallons'];
 
-    const handleSizeUnitChange = (e) => {
-        setDataInput({
-            ...dataInput,
-            sizeUnit: e.target.value,
-            productSize: '', //reset product size when unit changes
-        });
-    };
-
-    const renderSizeInputOptions = () => {
-        switch (dataInput.sizeUnit) {
-            case 'Milliliters':
-                return (
-                    <select
-                    value={dataInput.productSize}
-                    onChange={(e) => setDataInput({ ...dataInput, productSize: e.target.value })}
-                    >
-                        <option value="">Select size in mL</option>
-                        <option value="1ml">1ml</option>
-                        <option value="5ml">5 mL</option>
-                        <option value="10ml">10ml</option>
-                        <option value="50ml">50ml</option>
-                        <option value="100ml">100ml</option>
-                        <option value="200ml">200ml</option>
-                        <option value="250ml">250ml</option>
-                        <option value="500ml">500ml</option>
-                        <option value="750ml">750ml</option>
-                        <option value="1000ml">1000ml (1 L)</option>
-                    </select>
-                );
-            case 'Liters':
-                return (
-                    <select
-                    value={dataInput.productSize}
-                    onChange={(e) => setDataInput({ ...dataInput, productSize: e.target.value })}
-                    >
-                        <option value="">Select size in L</option>
-                        <option value="1L">1L</option>
-                        <option value="1.5L">1.5L</option>
-                        <option value="2L">2L</option>
-                        <option value="3L">3L</option>
-                        <option value="5L">5L</option>
-                        <option value="10L">10L</option>
-                        <option value="20L">20L</option>
-                    </select>
-                );
-            case 'Gallons':
-                return (
-                    <select
-                    value={dataInput.productSize}
-                    onChange={(e) => setDataInput({...dataInput, productSize: e.target.value})}
-                    >
-                        <option value="">Select size in gal</option>
-                        <option value="1gal">1gal</option>
-                        <option value="2gal">2gal</option>
-                        <option value="5gal">5gal</option>
-                        <option value="10gal">10gal</option>
-                        <option value="50gal">50gal</option>
-                    </select>
-                );
-            default:
-                return null;
-        }
-    };
 
   return (
     <div className='admin-modal-products-add-container'>
@@ -209,29 +141,6 @@ function AdminModalWorkinProgressProductAddComponent({isOpen, onClose, fetchProd
                     </select>
                 </div>
             </div>
-            <div className='label-text'>
-                <label>SIZE UNIT:</label>
-                <div>
-                    <select value={dataInput.sizeUnit} onChange={handleSizeUnitChange}>
-                        <option value="">Select size unit</option>
-                        {
-                            unitSize.map((size, index) => (
-                                <option key={index} value={size}>{size}</option>
-                            ))
-                        }
-                    </select>
-                </div>
-            </div>
-            {
-                dataInput.sizeUnit && (
-                    <div className='label-text'>
-                        <label>PRODUCT SIZE:</label>
-                        <div>
-                            {renderSizeInputOptions()}
-                        </div>
-                    </div>
-                )
-            }
             <div className='label-text'>
                 <label>PRICE:</label>
                 <div>

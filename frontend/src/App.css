@@ -31,10 +31,10 @@ body{
 }
 
 .admin-main-container{
-   margin-left: 222px;
+   margin-left: 200px;
    padding: 20px 60px;
    padding-top: 70px;
-   width: calc(100% - 222px);
+   width: calc(100% - 200px);
    /* height: calc(100vh - 70px); */
    overflow: auto;
    box-sizing: border-box;

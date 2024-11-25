@@ -31,6 +31,7 @@ app.use('/staffOrderWalkin', require('./routers/StaffRouters/StaffOrdersWalkinRo
 app.use('/staffCart', require('./routers/StaffRouters/StaffCartRouter'));
 app.use('/staffOrderOverview', require('./routers/StaffRouters/StaffOrderOverviewRouter'));
 app.use('/staffAccounts', require('./routers/StaffRouters/StaffAccountsRouter'));
+app.use('/staffNotifications', require('./routers/StaffRouters/StaffNotificationRouter'));
 
 //admin routes
 app.use('/adminAuth', require('./routers/AdminRouters/AdminAuthRouter'));

@@ -6,6 +6,9 @@ const multer = require('multer');
 const ProductModel = require("../../models/ProductModel");
 const { BestSellingModel, TotalSaleModel } = require("../../models/SalesOverviewModel");
 const { getInventoryReport, getSalesReport } = require("../AdminControllers/AdminReportController");
+const mongoose = require('mongoose');
+const NotificationStaffModel = require("../../models/StaffModels/NotificationStaffModel");
+const NotificationModel = require("../../models/NotificationModel");
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -53,12 +56,12 @@ const handleGcashPayment = async({paymentProof, gcashPaid, totalAmountWithShippi
 
 const handleCodPayment = async({totalAmountWithShipping, partialPayment}) => {
     const outstandingAmount = totalAmountWithShipping - partialPayment;
-    const paymentStatus = outstandingAmount > 0 ? 'Partial' : 'Paid';
+    const paymentStatus = 'Partial';
 
     return {paymentStatus, outstandingAmount};
 };
 
-const handlePayLaterPayment = async({ totalAmountWithShipping }) => {
+const handlePayLaterPayment = async({totalAmountWithShipping}) => {
     const outstandingAmount = totalAmountWithShipping; 
     const paymentStatus = 'Unpaid';
 
@@ -82,7 +85,7 @@ const createOrderCustomer = async(req, res) => {
                 partialPayment = 0,
                 gcashPaid = 0
             } = req.body;
-            const paymentProof = req.file ? req.file.path : null;
+            const paymentProof = req.file ? req.file.path : '';
 
             let parsedBillingDetails = {};
 
@@ -204,7 +207,7 @@ const createOrderCustomer = async(req, res) => {
                     updatedProductAt: item.productId.updatedAt,
                 })),
                 totalAmount: totalAmountWithShipping,
-                paymentProof: paymentMethod === 'Gcash' ? paymentProof : null,
+                paymentProof: paymentMethod === 'Gcash' ? paymentProof : '',
                 gcashPaid,
                 partialPayment,
                 outstandingAmount,
@@ -601,8 +604,65 @@ const getAllOrdersCustomer = async(req, res) => {
     }
 }
 
+const uploadProof = async(req, res) => {
+    try {
+        //wrapping multer's upload logic in a Promise
+        await new Promise((resolve, reject) => {
+            upload(req, res, (err) => {
+                if(err){
+                    reject(err);
+                } else{
+                    resolve();
+                }
+            });
+        });
+
+        const {orderId} = req.params;
+
+        //validate orderId
+        if(!mongoose.Types.ObjectId.isValid(orderId)){
+            return res.status(400).json({ 
+                error: 'Invalid orderId format' 
+            });
+        }
+
+        const order = await OrderModel.findById(orderId);
+        if(!order){
+            return res.status(404).json({ 
+                error: 'Order not found' 
+            });
+        }
+
+        const paymentProof = req.file ? req.file.path : '';
+        order.paymentProof = paymentProof;
+
+        const updatedOrder = await order.save();
+
+        //create notification
+         const notification = new NotificationModel({
+            customerId: order.customerId,
+            orderId: order._id,
+            message: `Payment proof uploaded for Order #${orderId}.`,
+        });
+        await notification.save();
+
+        res.json({
+            message: 'Payment proof uploaded successfully!',
+            updatedOrder,
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ 
+            message: 'Server error', 
+            error 
+        });
+    }
+};
+
+
 module.exports = {
     createOrderCustomer,
     getOrderCustomer,
-    getAllOrdersCustomer
+    getAllOrdersCustomer,
+    uploadProof
 }

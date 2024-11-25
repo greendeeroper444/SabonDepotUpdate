@@ -129,7 +129,7 @@ function CustomerRegisterPage() {
                                     value={data.lastName} onChange={(e) =>setData({...data, lastName: e.target.value})} />
                                 </div>
                                 <div className='form-group'>
-                                    <label htmlFor="middleInitial">Middle Name (optional)</label>
+                                    <label htmlFor="middleInitial">Middle Name</label>
                                     <input type="text" className='form-input' id='middleInitial'
                                     value={data.middleInitial} onChange={(e) =>setData({...data, middleInitial: e.target.value})} />
                                 </div>
@@ -139,10 +139,7 @@ function CustomerRegisterPage() {
                                     <select className='form-input' id='clientType' value={data.clientType} 
                                         onChange={(e) => setData({...data, clientType: e.target.value})}>
                                         <option value="Consumer">Consumer</option>
-                                        <option value="Retailer">Retailer</option>
-                                        <option value="Wholesaler">Wholesaler</option>
-                                        <option value="Franchiser">Franchiser</option>
-                                        <option value="Dealer">Dealer</option>
+                                        <option value="Business Partners">Business Partners</option>
                                     </select>
                                 </div>
                             </div>
@@ -265,7 +262,7 @@ function CustomerRegisterPage() {
                     )
                 }
                 
-                <div className='or-sign-up'>
+                {/* <div className='or-sign-up'>
                     <span className='divider-line'></span>
                     <span className='divider-text'>or sign in with</span>
                     <span className='divider-line'></span>
@@ -274,7 +271,7 @@ function CustomerRegisterPage() {
                 <button type='button' className='google-register-button'>
                     <img src={googleIcon} alt='Google Icon' />
                     Continue with Google
-                </button>
+                </button> */}
                 
                 <br />
                 <div className='already-account'>Already have an account?<Link to='/login' className='signin-here'> Sign in here</Link></div>

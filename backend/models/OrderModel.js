@@ -34,6 +34,7 @@ const OrderSchema = new mongoose.Schema({
     ],
     paymentProof: {
         type: String,
+        default: ''
     },
     gcashPaid: {
         type: Number,
@@ -144,10 +145,11 @@ OrderSchema.pre('save', function(next){
     if(this.paymentMethod === 'Gcash'){
         this.overallPaid = this.gcashPaid;
         this.isPaidPartial = this.gcashPaid >= this.totalAmount;
-    } else if(this.paymentMethod === 'Cash On Delivery'){
-        this.overallPaid = this.partialPayment;
-        this.isPaidPartial = this.partialPayment + this.outstandingAmount === this.totalAmount;
     }
+    // } else if(this.paymentMethod === 'Cash On Delivery'){
+    //     this.overallPaid = this.partialPayment;
+    //     this.isPaidPartial = this.partialPayment + this.outstandingAmount === this.totalAmount;
+    // }
     
     //update isFullPaidAmount based on isPaidPartial and totalAmount
     this.isFullPaidAmount = this.overallPaid >= this.totalAmount;

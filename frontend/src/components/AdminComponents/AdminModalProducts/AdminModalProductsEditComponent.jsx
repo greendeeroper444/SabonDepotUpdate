@@ -15,22 +15,27 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         discountPercentage: '',
         productSize: '',
         sizeUnit: '',
-        expirationDate: ''
+        expirationDate: '',
+        updatedAt: ''
     });
+    const [inputValue, setInputValue] = useState(''); 
 
     const handleEditProductAdmin = async(e) => {
         e.preventDefault();
+
+        const updatedQuantity = parseInt(dataInput.quantity) + parseInt(inputValue);
 
         const formData = new FormData();
         formData.append('productCode', dataInput.productCode);
         formData.append('productName', dataInput.productName);
         formData.append('category', dataInput.category);
         formData.append('price', dataInput.price);
-        formData.append('quantity', dataInput.quantity);
+        formData.append('quantity', updatedQuantity);
         formData.append('discountPercentage', dataInput.discountPercentage);
         formData.append('productSize', dataInput.productSize);
         formData.append('sizeUnit', dataInput.sizeUnit);
         formData.append('expirationDate', dataInput.expirationDate);
+        formData.append('updatedAt', dataInput.updatedAt);
         if(selectedImage && typeof selectedImage !== 'string'){
             formData.append('image', selectedImage);
         }
@@ -52,7 +57,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
 
     useEffect(() => {
         if(selectedProduct){
-            const {productCode, productName, category, price, quantity, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate} = selectedProduct;
+            const {productCode, productName, category, price, quantity, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
             setDataInput({
                 productCode: productCode || '',
                 productName: productName || '',
@@ -62,7 +67,8 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 discountPercentage: discountPercentage || '',
                 productSize: productSize || '',
                 sizeUnit: sizeUnit || '',
-                expirationDate: expirationDate ? new Date(expirationDate).toISOString().split('T')[0] : ''
+                expirationDate: expirationDate ? new Date(expirationDate).toISOString().split('T')[0] : '',
+                updatedAt: updatedAt ? new Date(updatedAt).toISOString().split('T')[0] : ''
             });
             setSelectedImage(imageUrl || null);
         }
@@ -247,13 +253,20 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 </div>
             </div>
             <div className='label-text'>
-                <label>QUANTITY:</label>
+                <label>UPDATE QUANTITY:</label>
                 <div>
-                    <input type="number"
-                    value={dataInput.quantity}
-                    onChange={(e) => setDataInput({...dataInput, quantity: e.target.value})}
+                    <input
+                        type="number"
+                        value={inputValue}
+                        onChange={(e) => {
+                            const newValue = Number(e.target.value);
+                            setInputValue(newValue);
+                        }}
                     />
                 </div>
+                <span>
+                    = {dataInput.quantity + inputValue}
+                </span>
             </div>
             <div className='label-text'>
                 <label>DISCOUNT PERCENTAGE:</label>
@@ -272,6 +285,16 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                     type="date"
                     value={dataInput.expirationDate}
                     onChange={(e) => setDataInput({...dataInput, expirationDate: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>UPLOADED DATE:</label>
+                <div>
+                    <input
+                    type="date"
+                    value={dataInput.updatedAt}
+                    onChange={(e) => setDataInput({...dataInput, updatedAt: e.target.value})}
                     />
                 </div>
             </div>

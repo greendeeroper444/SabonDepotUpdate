@@ -182,9 +182,26 @@ const updateOrderStatusStaff = async(req, res) => {
                 orderId: order._id,
                 message: `Your order ${order._id} is out for delivery.`,
             });
-        } else if(status === 'isDelivered'){
+        } 
+        // else if(status === 'isDelivered'){
+        //     updateFields.deliveredDate = Date.now();
+        //     updateFields.orderStatus = 'Delivered';
+        //     await NotificationModel.create({
+        //         customerId: order.customerId,
+        //         orderId: order._id,
+        //         message: `Your order ${order._id} has been delivered.`,
+        //     });
+        // }
+        else if(status === 'isDelivered'){
             updateFields.deliveredDate = Date.now();
             updateFields.orderStatus = 'Delivered';
+
+            //mark the order as fully paid
+            updateFields.overallPaid = order.totalAmount;
+            updateFields.outstandingAmount = 0;
+            updateFields.paymentStatus = 'Paid';
+            updateFields.isFullPaidAmount = true;
+
             await NotificationModel.create({
                 customerId: order.customerId,
                 orderId: order._id,
@@ -193,7 +210,7 @@ const updateOrderStatusStaff = async(req, res) => {
         }
 
         //update the order with the new status
-        const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, updateFields, { new: true });
+        const updatedOrder = await OrderModel.findByIdAndUpdate(orderId, updateFields, {new: true});
 
         res.json(updatedOrder);
     } catch (error) {

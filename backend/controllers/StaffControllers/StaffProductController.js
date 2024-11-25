@@ -486,6 +486,8 @@ const getOutOfStockProducts = async(req, res) => {
         });
     }
 };
+
+
 module.exports = {
     uploadProductStaff,
     getProductStaff,

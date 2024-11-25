@@ -12,11 +12,11 @@ import { calculateFinalPriceModal, calculateSubtotalModal } from '../../../../ut
 function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
     const navigate = useNavigate();
 
-    const [sizeSelection, setSizeSelection] = useState({}); //to track selected sizes for each product
+    const [sizeSelection, setSizeSelection] = useState({});
 
     //handle quantity change
     const handleQuantityChange = async(cartItemId, newQuantity) => {
-        if (newQuantity < 1) return;
+        if(newQuantity < 1) return;
 
         try {
             const response = await axios.put('/staffCart/updateProductQuantityStaff', {
@@ -111,7 +111,7 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
         }));
     };
 
-    if (!isOpen) return null;
+    if(!isOpen) return null;
 
   return (
     <div className='customer-modal-overlay'>

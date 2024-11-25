@@ -22,7 +22,7 @@ export default function UseCartHook(customer) {
             });
             if(response.status === 200){
                 setCartItems(response.data);
-                toast.success('Product successfully added to cart');
+                // toast.success('Product successfully added to cart');
                 return true;
             } else{
                 throw new Error('Failed to add product to cart');

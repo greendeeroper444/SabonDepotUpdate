@@ -9,7 +9,7 @@ import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuth
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import CustomerLogoutConfimationModalComponent from './CustomerLogoutConfimationModalComponent';
-import notificationIcon from '../../assets/admin/adminicons/admin-navbar-notification-icon.png';
+import notificationIcon from '../../assets/admin/adminicons/admin-navbar-notification-icon-2.png';
 
 function CustomerNavbarComponent({customerToggleSidebar}) {
     const location = useLocation();
@@ -142,65 +142,69 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
                         }
                     </li>
                     <li>
-                        <div className='notification-container'>
-                            <img
-                                src={notificationIcon}
-                                alt="Notifications"
-                                className='notification-icon'
-                                onClick={toggleNotificationDropdown}
-                            />
-                            {
-                                notifications.length > 0 && (
-                                    <span className='notification-count'>{notifications.filter(n => !n.isRead).length}</span>
-                                )
-                            }
-                            {
-                                notificationDropdownVisible && (
-                                    <div className='notification-dropdown'>
-                                        <h4>Notifications</h4>
-                                        {
-                                            notifications.length > 0 ? (
-                                                notifications.map((notification, index) => (
-                                                    <div
-                                                    key={index}
-                                                    className={`notification-item ${notification.isRead ? '' : 'unread'}`}
-                                                    onClick={async () => {
-                                                        try {
-                                                            //if the notification is unread, mark it as read
-                                                            if(!notification.isRead){
-                                                                await axios.put(`/customerNotification/markNotificationAsRead/${notification._id}`);
-                                                                
-                                                                //update the state after marking as read
-                                                                setNotifications((prevNotifications) =>
-                                                                    prevNotifications.map((n) =>
-                                                                        n._id === notification._id ? {...n, isRead: true} : n
-                                                                    )
-                                                                );
-                                                            }
-                                                            
-                                                            //navigate to the specific URL
-                                                            const orderId = notification.orderId;
-                                                            navigate(`/place-order/${customer._id}/${orderId}`);
-                                                        } catch (error) {
-                                                            console.error('Error processing notification:', error);
-                                                        }
-                                                    }}
-                                                >
-                                                    <p>{notification.message}</p>
-                                                    <small>{new Date(notification.createdAt).toLocaleString()}</small>
-                                                </div>
+                        {
+                            customer && (
+                                <div className='notification-container'>
+                                    <img
+                                    src={notificationIcon}
+                                    alt="Notifications"
+                                    className='notification-icon'
+                                    onClick={toggleNotificationDropdown}
+                                    />
+                                    {
+                                        notifications.length > 0 && (
+                                            <span className='notification-count'>{notifications.filter(n => !n.isRead).length}</span>
+                                        )
+                                    }
+                                    {
+                                        notificationDropdownVisible && (
+                                            <div className='notification-dropdown'>
+                                                <h4>Notifications</h4>
+                                                {
+                                                    notifications.length > 0 ? (
+                                                        notifications.map((notification, index) => (
+                                                            <div
+                                                            key={index}
+                                                            className={`notification-item ${notification.isRead ? '' : 'unread'}`}
+                                                            onClick={async () => {
+                                                                try {
+                                                                    //if the notification is unread, mark it as read
+                                                                    if(!notification.isRead){
+                                                                        await axios.put(`/customerNotification/markNotificationAsRead/${notification._id}`);
+                                                                        
+                                                                        //update the state after marking as read
+                                                                        setNotifications((prevNotifications) =>
+                                                                            prevNotifications.map((n) =>
+                                                                                n._id === notification._id ? {...n, isRead: true} : n
+                                                                            )
+                                                                        );
+                                                                    }
+                                                                    
+                                                                    //navigate to the specific URL
+                                                                    const orderId = notification.orderId;
+                                                                    navigate(`/place-order/${customer._id}/${orderId}`);
+                                                                } catch (error) {
+                                                                    console.error('Error processing notification:', error);
+                                                                }
+                                                            }}
+                                                        >
+                                                            <p>{notification.message}</p>
+                                                            <small>{new Date(notification.createdAt).toLocaleString()}</small>
+                                                        </div>
 
-                                                ))
-                                            ) : (
-                                                <div className='notification-item'>No new notifications</div>
-                                            )
-                                        }
+                                                        ))
+                                                    ) : (
+                                                        <div className='notification-item'>No new notifications</div>
+                                                    )
+                                                }
 
-                                    </div>
-                                )
-                            }
+                                            </div>
+                                        )
+                                    }
 
-                        </div>
+                                </div>
+                            )
+                        }
                     </li>
 
 
@@ -233,7 +237,7 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
                                             >
                                                 Orders
                                             </Link>
-                                            {
+                                            {/* {
                                                 customer && 
                                                 [
                                                     'Retailer', 
@@ -249,7 +253,7 @@ function CustomerNavbarComponent({customerToggleSidebar}) {
                                                     Payable
                                                     </Link>
                                                 )
-                                            }
+                                            } */}
                                             <Link className='dropdown-item' 
                                             onClick={handleLogoutClick}>
                                                 Logout

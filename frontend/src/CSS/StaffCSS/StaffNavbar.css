@@ -147,6 +147,21 @@
     color: #333;
 }
 
+.notification-items.unread{
+    background-color: #f5f5f5;
+    color: #333;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+.notification-items.read{
+    background-color: #fff;
+    cursor: pointer;
+    padding: 10px;
+    border-radius: 5px;
+}
+
 .no-notifications{
     padding: 20px;
     text-align: center;
@@ -178,7 +193,7 @@
 
 
 @media (max-width: 400px){
-    .notification-dropdown {
+    .notification-dropdown{
         width: 90vw;
         max-height: 400px;
     }

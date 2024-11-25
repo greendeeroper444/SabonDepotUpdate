@@ -22,7 +22,7 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
         try {
             const response = await axios.delete(`/customerCart/removeProductFromCartCustomer/${cartItemId}`);
             if(response.data.success){
-                toast.success(response.data.message);
+                // toast.success(response.data.message);
                 fetchCartItems();
             } else{
                 throw new Error('Failed to delete product from cart');

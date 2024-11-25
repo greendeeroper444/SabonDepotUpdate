@@ -71,8 +71,8 @@ function StaffSidebarComponent() {
                     <NavLink to='/staff/direct-orders' className='staff-sidebar-item' activeClassName='active'>
                         <img src={paymentIcon} alt="Payment" className='sidebar-icon' />
                         <img src={paymentIconColor} alt="Payment" className='sidebar-icon-active' />
-                        <div>DIRECT ORDERS</div>
-                        <span className='tooltip'>DIRECT ORDERS</span>
+                        <div>ORDERS</div>
+                        <span className='tooltip'>ORDERS</span>
                     </NavLink>
                 </li>
             

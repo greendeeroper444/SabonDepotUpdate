@@ -190,7 +190,7 @@ function CustomerCheckOutPage() {
                             Make your payment directly into our Gcash account. Please use your Reference ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
                         </p>
                     </label>
-                    {
+                    {/* {
                         customer && [
                             'Retailer', 
                             'Wholesaler', 
@@ -211,7 +211,7 @@ function CustomerCheckOutPage() {
                                 </p>
                             </label>
                         )
-                    }
+                    } */}
                     <label>
                         <input
                         type="radio"

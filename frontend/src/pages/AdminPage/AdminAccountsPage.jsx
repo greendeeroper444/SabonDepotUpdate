@@ -15,7 +15,7 @@ function AdminAccountsPage() {
 
 
     const handleCardClick = (id, clientType) => {
-        navigate(`/admin/accounts/${id}`, { state: { clientType } });
+        navigate(`/admin/accounts/${id}`, {state: {clientType}});
     };
 
     //delete staff and customer
@@ -23,7 +23,7 @@ function AdminAccountsPage() {
         if(window.confirm(`Are you sure you want to delete this ${clientType}?`)){
             try {
                 await axios.delete('/adminAccounts/deleteAccountAdmin', {
-                data: {id, clientType}
+                    data: {id, clientType}
                 });
                 setAccounts(accounts.filter(account => account._id !== id));
             } catch (err) {
