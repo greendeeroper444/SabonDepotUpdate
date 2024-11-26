@@ -14,8 +14,8 @@ function StaffOrdersDetailsPage() {
     const [error, setError] = useState(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
 
-     //update order status function
-     const handleStatusUpdate = async(status) => {
+    //update order status function
+    const handleStatusUpdate = async(status) => {
         try {
             const response = await axios.put(`/staffOrders/updateOrderStatusStaff/${orderId}`, {status});
             setOrder(response.data);

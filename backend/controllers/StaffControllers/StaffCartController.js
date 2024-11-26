@@ -126,7 +126,7 @@ const addProductToCartStaff = async(req, res) => {
 
                 const finalPrice = product.price;
 
-                let existingCartItem = await StaffCartModel.findOne({ staffId, productId });
+                let existingCartItem = await StaffCartModel.findOne({staffId, productId});
 
                 if(existingCartItem){
                 //if item exists, update the quantity and finalPrice

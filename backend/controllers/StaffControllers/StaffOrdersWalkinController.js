@@ -45,9 +45,25 @@ const addOrderWalkinStaff = async(req, res) => {
             }
     
             //calculate total amount for the order
-            const totalAmount = cartItems.reduce((acc, item) => {
+            // const totalAmount = cartItems.reduce((acc, item) => {
+            //     return acc + item.productId.price * item.quantity;
+            // }, 0);
+            //calculate raw total amount
+            const rawTotalAmount = cartItems.reduce((acc, item) => {
                 return acc + item.productId.price * item.quantity;
             }, 0);
+
+            //apply discount logic
+            let discountRate = 0;
+
+            if(rawTotalAmount >= 2000 && rawTotalAmount < 10000){
+                discountRate = 0.05; //5% discount
+            } else if(rawTotalAmount >= 10000){
+                discountRate = 0.10; //10% discount
+            }
+
+            const discountAmount = rawTotalAmount * discountRate;
+            const totalAmount = rawTotalAmount - discountAmount; //final discounted total
     
             //create the order for the staff
             const order = new StaffOrderWalkinModel({

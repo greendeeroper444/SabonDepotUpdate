@@ -46,6 +46,8 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
         }
 
         try {
+            const {finalSubtotal} = calculateSubtotalModal(cartItems);
+
             const orderData = {
                 staffId,
                 items: cartItems.map((item) => ({
@@ -54,7 +56,8 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                     quantity: item.quantity,
                     finalPrice: calculateFinalPriceModal(item),
                 })),
-                totalAmount: calculateSubtotalModal(cartItems),
+                // totalAmount: calculateSubtotalModal(cartItems),
+                totalAmount: parseFloat(finalSubtotal.replace(/,/g, '')),
             };
 
             const response = await axios.post('/staffOrderWalkin/addOrderWalkinStaff', orderData);
@@ -128,65 +131,81 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                 </div>
 
                 <div className='customer-modal-content'>
-                    {Array.isArray(cartItems) && cartItems.length === 0 ? (
-                        <div className='no-items-message'>No items in this cart</div>
-                    ) : (
-                        Array.isArray(cartItems) &&
-                        cartItems.map((cartItem) =>
-                            cartItem.productId ? (
-                                <div key={cartItem._id} className='customer-modal-content-group'>
-                                    <img
-                                        src={`http://localhost:8000/${cartItem.productId.imageUrl}`}
-                                        alt=''
-                                        className='customer-modal-product-items'
-                                    />
-                                    <div className='customer-modal-product-items-content'>
-                                        <span>{cartItem.productId.productName}</span>
+                    {
+                        Array.isArray(cartItems) && cartItems.length === 0 ? (
+                            <div className='no-items-message'>No items in this cart</div>
+                        ) : (
+                            Array.isArray(cartItems) &&
+                            cartItems.map((cartItem) =>
+                                cartItem.productId ? (
+                                    <div key={cartItem._id} className='customer-modal-content-group'>
+                                        <img
+                                            src={`http://localhost:8000/${cartItem.productId.imageUrl}`}
+                                            alt=''
+                                            className='customer-modal-product-items'
+                                        />
+                                        <div className='customer-modal-product-items-content'>
+                                            <span>{cartItem.productId.productName}</span>
 
-                                        {/* dropdown for size options */}
-                                        <select
+                                            {/* dropdown for size options */}
+                                            <select
                                             className='size-select'
                                             value={sizeSelection[cartItem._id] || ''}
                                             onChange={(e) => handleSizeChange(cartItem._id, e.target.value)}
-                                        >
-                                            <option value='' disabled>
-                                                {cartItem.productId.sizeUnit}
-                                            </option>
-                                            <option value={cartItem.productId.productSize}>
-                                                {cartItem.productId.productSize}
-                                            </option>
-                                        </select>
+                                            >
+                                                <option value='' disabled>
+                                                    {cartItem.productId.sizeUnit}
+                                                </option>
+                                                <option value={cartItem.productId.productSize}>
+                                                    {cartItem.productId.productSize}
+                                                </option>
+                                            </select>
 
-                                        <p>
-                                            <input
-                                                type='number'
-                                                value={cartItem.quantity}
-                                                min='1'
-                                                onChange={(e) => handleQuantityChange(cartItem._id, parseInt(e.target.value))}
-                                                className='input-quantity-update'
-                                            />
-                                            <span>X</span>
-                                            <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
-                                        </p>
-                                    </div>
-                                    <span
+                                            <p>
+                                                <input
+                                                    type='number'
+                                                    value={cartItem.quantity}
+                                                    min='1'
+                                                    onChange={(e) => handleQuantityChange(cartItem._id, parseInt(e.target.value))}
+                                                    className='input-quantity-update'
+                                                />
+                                                <span>X</span>
+                                                <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
+                                            </p>
+                                        </div>
+                                        <span
                                         className='customer-modal-cancel-items'
                                         onClick={() => handleCartItemDelete(cartItem._id)}
-                                    >
-                                        <img src={cancelIcon2} alt='Cancel Icon' />
-                                    </span>
-                                </div>
-                            ) : null
+                                        >
+                                            <img src={cancelIcon2} alt='Cancel Icon' />
+                                        </span>
+                                    </div>
+                                ) : null
+                            )
                         )
-                    )}
+                    }
                 </div>
 
                 <div className='customer-modal-footer'>
                     <div className='products-subtotal'>
-                        <span>Subtotal</span>
-                        <span>{`Php ${calculateSubtotalModal(cartItems)}`}</span>
+                        <span>Raw Subtotal:</span>
+                        <span>Php {calculateSubtotalModal(cartItems).rawSubtotal}</span>
+                    </div>
+                    {
+                        calculateSubtotalModal(cartItems).discountRate > 0 && (
+                            <div className='products-discount'>
+                                <span>Discount ({calculateSubtotalModal(cartItems).discountRate}%):</span>
+                                <span>- Php {calculateSubtotalModal(cartItems).discountAmount}</span>
+                            </div>
+                        )
+                    }
+                    <div className='products-final-subtotal'>
+                        <span>Final Subtotal:</span>
+                        <span>Php {calculateSubtotalModal(cartItems).finalSubtotal}</span>
                     </div>
                 </div>
+
+
 
                 <footer>
                     <div>
