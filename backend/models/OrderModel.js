@@ -142,26 +142,46 @@ const OrderSchema = new mongoose.Schema({
 });
 
 OrderSchema.pre('save', function(next){
-    if(this.paymentMethod === 'Gcash'){
-        this.overallPaid = this.gcashPaid;
-        this.isPaidPartial = this.gcashPaid >= this.totalAmount;
-    }
-    // } else if(this.paymentMethod === 'Cash On Delivery'){
+    // if(this.paymentMethod === 'Gcash'){
+    //     this.overallPaid = this.gcashPaid;
+    //     this.isPaidPartial = this.gcashPaid >= this.totalAmount;
+    // }else if(this.paymentMethod === 'Cash On Delivery'){
     //     this.overallPaid = this.partialPayment;
     //     this.isPaidPartial = this.partialPayment + this.outstandingAmount === this.totalAmount;
     // }
     
-    //update isFullPaidAmount based on isPaidPartial and totalAmount
-    this.isFullPaidAmount = this.overallPaid >= this.totalAmount;
+    // //update isFullPaidAmount based on isPaidPartial and totalAmount
+    // this.isFullPaidAmount = this.overallPaid >= this.totalAmount;
     
-    if(this.isPaidPartial){
+    // if(this.isPaidPartial){
+    //     this.paymentStatus = 'Paid';
+    // } else if(this.overallPaid > 0) {
+    //     this.paymentStatus = 'Partial';
+    // } else{
+    //     this.paymentStatus = 'Unpaid';
+    // }
+     //Handle Gcash payment method
+     if(this.paymentMethod === 'Gcash'){
+        this.overallPaid = this.gcashPaid;
+        this.isPaidPartial = this.gcashPaid >= this.totalAmount;
+        this.isFullPaidAmount = this.gcashPaid >= this.totalAmount;
+    } 
+    //handle Cash On Delivery payment method
+    else if(this.paymentMethod === 'Cash On Delivery'){
+        this.overallPaid = this.partialPayment;
+        this.isPaidPartial = this.partialPayment > 0 && this.partialPayment + this.outstandingAmount === this.totalAmount;
+        this.isFullPaidAmount = false;
+    }
+
+    //update payment status based on payment method and paid amounts
+    if(this.paymentMethod === 'Gcash' && this.isFullPaidAmount){
         this.paymentStatus = 'Paid';
-    } else if(this.overallPaid > 0) {
+    }else if(this.overallPaid > 0){
         this.paymentStatus = 'Partial';
     } else{
         this.paymentStatus = 'Unpaid';
     }
-    
+
 
     //dates every tracking
     if(this.isModified('isShipped') && this.isShipped && !this.shippedDate){

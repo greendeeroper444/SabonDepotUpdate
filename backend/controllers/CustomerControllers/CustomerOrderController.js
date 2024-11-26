@@ -54,19 +54,23 @@ const handleGcashPayment = async({paymentProof, gcashPaid, totalAmountWithShippi
     return {paymentStatus, outstandingAmount};
 };
 
-const handleCodPayment = async({totalAmountWithShipping, partialPayment}) => {
+const handleCodPayment = async({paymentProof, totalAmountWithShipping, partialPayment}) => {
+    if(!paymentProof){
+        throw new Error('Payment proof is required for COD payment.');
+    }
+
     const outstandingAmount = totalAmountWithShipping - partialPayment;
     const paymentStatus = 'Partial';
 
     return {paymentStatus, outstandingAmount};
 };
 
-const handlePayLaterPayment = async({totalAmountWithShipping}) => {
-    const outstandingAmount = totalAmountWithShipping; 
-    const paymentStatus = 'Unpaid';
+// const handlePayLaterPayment = async({totalAmountWithShipping}) => {
+//     const outstandingAmount = totalAmountWithShipping; 
+//     const paymentStatus = 'Unpaid';
 
-    return { paymentStatus, outstandingAmount };
-};
+//     return { paymentStatus, outstandingAmount };
+// };
 
 const createOrderCustomer = async(req, res) => {
     upload(req, res, async (err) => {
@@ -169,19 +173,18 @@ const createOrderCustomer = async(req, res) => {
                 }));
             } else if(paymentMethod === 'Cash On Delivery'){
                 ({paymentStatus, outstandingAmount} = await handleCodPayment({
+                    paymentProof,
                     totalAmountWithShipping,
                     partialPayment
                 }));
-            }else if (paymentMethod === 'Pay Later') {
-                ({paymentStatus, outstandingAmount} = await handlePayLaterPayment({
-                    totalAmountWithShipping
-                }));
-            } else{
-                console.log('Received Payment Method:', paymentMethod);
-                return res.status(400).json({
-                    message: 'Invalid payment method'
-                });
             }
+            
+            // else{
+            //     console.log('Received Payment Method:', paymentMethod);
+            //     return res.status(400).json({
+            //         message: 'Invalid payment method'
+            //     });
+            // }
 
             //create the order
             const order = new OrderModel({
@@ -207,7 +210,7 @@ const createOrderCustomer = async(req, res) => {
                     updatedProductAt: item.productId.updatedAt,
                 })),
                 totalAmount: totalAmountWithShipping,
-                paymentProof: paymentMethod === 'Gcash' ? paymentProof : '',
+                paymentProof,
                 gcashPaid,
                 partialPayment,
                 outstandingAmount,

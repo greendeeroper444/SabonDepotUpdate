@@ -82,8 +82,9 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
         setPaymentProof(paymentProof)
     };
     //cash on delivery
-    const handleSetPartialPayment = (partialPayment) => {
+    const handleSetPartialPayment = ({partialPayment, paymentProof}) => {
         setPartialPayment(partialPayment);
+        setPaymentProof(paymentProof)
     };
 
 

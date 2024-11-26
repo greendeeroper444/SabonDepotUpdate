@@ -17,11 +17,11 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
     };
 
     const handleSubmit = () => {
-        if (gcashPaid && paymentProof) {
-            onGcashPayment({ gcashPaid, paymentProof });
+        if(gcashPaid && paymentProof){
+            onGcashPayment({gcashPaid, paymentProof});
             toast.success('Submitted successfully! Please place your order.');
             onClose();
-        } else {
+        } else{
             toast.error('Please fill in all fields and upload a payment proof.');
         }
     };
