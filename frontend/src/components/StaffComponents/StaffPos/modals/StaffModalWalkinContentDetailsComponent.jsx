@@ -188,20 +188,20 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
 
                 <div className='customer-modal-footer'>
                     <div className='products-subtotal'>
-                        <span>Raw Subtotal:</span>
+                        <span>Subtotal:</span>
                         <span>Php {calculateSubtotalModal(cartItems).rawSubtotal}</span>
                     </div>
                     {
                         calculateSubtotalModal(cartItems).discountRate > 0 && (
-                            <div className='products-discount'>
+                            <div className='products-subtotal'>
                                 <span>Discount ({calculateSubtotalModal(cartItems).discountRate}%):</span>
                                 <span>- Php {calculateSubtotalModal(cartItems).discountAmount}</span>
                             </div>
                         )
                     }
-                    <div className='products-final-subtotal'>
-                        <span>Final Subtotal:</span>
-                        <span>Php {calculateSubtotalModal(cartItems).finalSubtotal}</span>
+                    <div className='products-subtotal'>
+                        <span>Total:</span>
+                        <span> Php {calculateSubtotalModal(cartItems).finalSubtotal}</span>
                     </div>
                 </div>
 
