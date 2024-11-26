@@ -44,7 +44,7 @@ const CustomerOtpScheme = new mongoose.Schema({
     },
     clientType: {
         type: String,
-        enum: ['Consumer', 'Retailer', 'Wholesaler', 'Franchiser', 'Dealer'],
+        enum: ['Consumer', 'Business Partners'],
         required: true,
     },
     otp: { 

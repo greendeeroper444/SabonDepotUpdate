@@ -201,7 +201,7 @@ function CustomerPayablePage() {
                             </tbody>
                         </table>
                         <div className='total-amount'>
-                            <strong>Total Amount:</strong> ₱{totalAmount.toFixed(2)}
+                            <strong>Total Amount:</strong> ₱{totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}
                         </div>
                     </div>
                 );
