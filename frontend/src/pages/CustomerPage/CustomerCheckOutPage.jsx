@@ -157,14 +157,14 @@ function CustomerCheckOutPage() {
                     selectedItems.map((item, index) => (
                         <div key={index} className='order-items-subtotal'>
                             <p>{`${item.productId.productName} x ${item.quantity}`}</p>
-                            <p>{`Php ${item.finalPrice ? item.finalPrice.toFixed(2) : item.productId.price.toFixed(2)}`}</p>
+                            <p>{`Php ${item.finalPrice ? item.finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : item.productId.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</p>
                         </div>
                     ))
                 }
                 <div className='order-total'>
                     <div className='subtotal'>
                         <span>Subtotal</span>
-                        <span>{`Php ${total.toFixed(2)}`}</span>
+                        <span>{`Php ${total.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
                     </div>
                     <div className='shipping'>
                         <span>Shipping</span>
@@ -172,7 +172,7 @@ function CustomerCheckOutPage() {
                     </div>
                     <div className='total'>
                         <span>Total</span>
-                        <span>{`Php ${(total + 50).toFixed(2)}`}</span>
+                        <span>{`Php ${(total + 50).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
                     </div>
                 </div>
 

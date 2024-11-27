@@ -63,7 +63,7 @@ function StaffDashboardPage() {
                 const percentageChangeValue = yesterdaySalesAmount
                     ? ((todaySalesAmount - yesterdaySalesAmount) / yesterdaySalesAmount) * 100
                     : 0;
-                setPercentageChange(percentageChangeValue.toFixed(2));
+                setPercentageChange(percentageChangeValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}));
 
                 const bestSellingResponse = await axios.get('/staffOrderOverview/getBestSellingProducts');
                 setBestSellingProducts(bestSellingResponse.data.bestSellingProducts);

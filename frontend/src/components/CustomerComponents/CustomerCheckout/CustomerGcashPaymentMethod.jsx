@@ -5,6 +5,7 @@ import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-ico
 
 const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
     const [gcashPaid, setGcashPaid] = useState('');
+    const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentProof, setPaymentProof] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -17,8 +18,8 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
     };
 
     const handleSubmit = () => {
-        if(gcashPaid && paymentProof){
-            onGcashPayment({gcashPaid, paymentProof});
+        if(gcashPaid && paymentProof && referenceNumber){
+            onGcashPayment({gcashPaid, referenceNumber, paymentProof});
             toast.success('Submitted successfully! Please place your order.');
             onClose();
         } else{
@@ -30,13 +31,22 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
             <h2>Gcash Payment</h2>
-            <p>Please enter your Gcash payment:</p>
-            <input
-                type='number'
-                placeholder='Enter your Gcash paid'
-                value={gcashPaid}
-                onChange={(e) => setGcashPaid(e.target.value)}
-            />
+            <div className='customer-gcash-payment-inputs'>
+                <p>Please enter your Gcash payment:</p>
+                <input
+                    type='number'
+                    placeholder='ex...(300)'
+                    value={gcashPaid}
+                    onChange={(e) => setGcashPaid(e.target.value)}
+                />
+                <p>Please enter your Refence Number:</p>
+                <input
+                    type='number'
+                    placeholder='ex...(1001 543 610110)'
+                    value={referenceNumber}
+                    onChange={(e) => setReferenceNumber(e.target.value)}
+                />
+            </div>
             <div className='file-upload'>
                 <label htmlFor='file-input'>
                     <img

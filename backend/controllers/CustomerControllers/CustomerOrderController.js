@@ -87,7 +87,8 @@ const createOrderCustomer = async(req, res) => {
                 selectedItems,
                 billingDetails,
                 partialPayment = 0,
-                gcashPaid = 0
+                gcashPaid = 0,
+                referenceNumber
             } = req.body;
             const paymentProof = req.file ? req.file.path : '';
 
@@ -168,12 +169,14 @@ const createOrderCustomer = async(req, res) => {
                 ({paymentStatus, outstandingAmount} = await handleGcashPayment({
                     paymentProof,
                     gcashPaid,
+                    referenceNumber,
                     totalAmountWithShipping,
                     partialPayment
                 }));
             } else if(paymentMethod === 'Cash On Delivery'){
                 ({paymentStatus, outstandingAmount} = await handleCodPayment({
                     paymentProof,
+                    referenceNumber,
                     totalAmountWithShipping,
                     partialPayment
                 }));
@@ -212,6 +215,7 @@ const createOrderCustomer = async(req, res) => {
                 totalAmount: totalAmountWithShipping,
                 paymentProof,
                 gcashPaid,
+                referenceNumber,
                 partialPayment,
                 outstandingAmount,
                 paymentMethod,

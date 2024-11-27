@@ -55,7 +55,7 @@ function AdminSidebarComponent() {
                     isDropdownOpenInventory && (
                         <div className='admin-sidebar-item-dropdown'>
                             <NavLink to='/admin/inventory/finished-product' className='admin-sidebar-item' activeClassName='active'>
-                                <span>Finished Product</span>
+                                <span>FINISHED GOODS</span>
                             </NavLink>
                             <NavLink to='/admin/inventory/workin-progress' className='admin-sidebar-item' activeClassName='active'>
                                 <span>Initial Product</span>

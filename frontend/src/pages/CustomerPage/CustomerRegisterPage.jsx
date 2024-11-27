@@ -34,7 +34,35 @@ function CustomerRegisterPage() {
 
     const handleNextStep = (e) => {
         e.preventDefault();
-        setStep(step + 1); 
+        // setStep(step + 1); 
+        //validation for step 1
+        if(step === 1){
+            const {firstName, lastName, middleInitial, clientType} = data;
+            if(!firstName || !lastName || !middleInitial || !clientType){
+                toast.error('Please fill in all required fields.');
+                return;
+            }
+        }
+
+        //validation for step 2
+        if(step === 2){
+            const {contactNumber, province, city, barangay, purokStreetSubdivision} = data;
+            if(!contactNumber || !province || !city || !barangay || !purokStreetSubdivision){
+                toast.error('Please fill in all required fields.');
+                return;
+            }
+        }
+
+        //validation for step 3
+        if(step === 3){
+            const {emailAddress, password} = data;
+            if(!emailAddress || !password){
+                toast.error('Please fill in all required fields.');
+                return;
+            }
+        }
+
+        setStep(step + 1); //proceed to the next step
     };
 
     const handlePreviousStep = (e) => {
@@ -138,6 +166,7 @@ function CustomerRegisterPage() {
                                     <label htmlFor="clientType">Client Type</label>
                                     <select className='form-input' id='clientType' value={data.clientType} 
                                         onChange={(e) => setData({...data, clientType: e.target.value})}>
+                                        <option value=""> Select Client Type</option>
                                         <option value="Consumer">Consumer</option>
                                         <option value="Business Partners">Business Partners</option>
                                     </select>

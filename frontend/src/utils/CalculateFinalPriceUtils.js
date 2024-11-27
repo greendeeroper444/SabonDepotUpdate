@@ -4,7 +4,7 @@ import IsDiscountValidUtils from "./IsDiscountValidUtils";
 
 export default function CalculateFinalPriceUtils(customer, product) {
     const shouldShowDiscount = IsDiscountValidUtils(customer) && product.discountPercentage > 0;
-    const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
+    const finalPrice = shouldShowDiscount ? product.discountedPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
     return {shouldShowDiscount, finalPrice};
 }
@@ -20,14 +20,15 @@ export function calculateFinalPriceModal(cartItem) {
 }
 
 
-// export function calculateSubtotalModal(cartItems) {
-//     const subtotal = cartItems.reduce((acc, cartItem) => {
-//         const price = calculateFinalPriceModal(cartItem);
-//         return acc + (price * cartItem.quantity);
-//     }, 0);
+export function calculateSubtotalModalCustomer(cartItems) {
+    const subtotal = cartItems.reduce((acc, cartItem) => {
+        const price = calculateFinalPriceModal(cartItem);
+        return acc + (price * cartItem.quantity);
+    }, 0);
 
-//     return subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
-// }
+    return subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+}
+
 export function calculateSubtotalModal(cartItems) {
     const rawSubtotal = cartItems.reduce((acc, cartItem) => {
         const price = calculateFinalPriceModal(cartItem);

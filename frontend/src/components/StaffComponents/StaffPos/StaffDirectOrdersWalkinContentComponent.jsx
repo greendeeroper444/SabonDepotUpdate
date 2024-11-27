@@ -23,7 +23,7 @@ function StaffDirectOrdersWalkinContentComponent({onAddToCart, cartItems, setCar
             {
                 products.map((product, index) => {
                     const shouldShowDiscount = IsDiscountValidUtils(staff) && product.discountPercentage > 0;
-                    const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
+                    const finalPrice = shouldShowDiscount ? product.discountedPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
                     return (
                         <li key={product._id}>

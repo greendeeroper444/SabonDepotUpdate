@@ -166,8 +166,8 @@ function StaffOrdersWalkinPage() {
                                 <td>{order._id}</td>
                                 <td>{item.productName || "N/A"}</td>
                                 <td>{item.quantity || 0}</td>
-                                <td>{`₱${(item.price ?? 0).toFixed(2)}`}</td>
-                                <td>{`₱${((item.price ?? 0) * (item.quantity ?? 0)).toFixed(2)}`}</td>
+                                <td>{`₱${(item.price ?? 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
+                                <td>{`₱${((item.price ?? 0) * (item.quantity ?? 0)).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                 <td>{orderDate(order.createdAt)}</td>
                             </tr>
                         ))

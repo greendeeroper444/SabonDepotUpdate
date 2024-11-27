@@ -19,6 +19,11 @@
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
+
+.customer-gcash-payment-container .customer-gcash-payment-content .customer-gcash-payment-inputs{
+    line-height: 1px;
+}
+
   
 .customer-gcash-payment-container h2{
     font-size: 1.5em;
@@ -37,6 +42,8 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
+    width: 100%;
+    box-sizing: border-box;
 }
   
 .customer-gcash-payment-container .file-upload{

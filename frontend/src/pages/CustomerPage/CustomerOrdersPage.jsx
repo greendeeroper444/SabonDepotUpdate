@@ -50,7 +50,7 @@ function CustomerOrdersPage() {
                     </div>
                     <div className='order-details'>
                         <span>{orderDate(order.createdAt)}</span>
-                        <span>${order.totalAmount.toFixed(2)}</span>
+                        <span>${order.totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span>
                         <span>{customer.firstName}</span>
                         <span>#{order._id}</span>
                         {/* <span>

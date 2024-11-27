@@ -51,7 +51,7 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                     <div className='payment-details'>
                         <div className='detail'>
                             <span>Ref Number</span>
-                            <span>N/A</span>
+                            <span>{order.referenceNumber}</span>
                         </div>
                         <div className='detail'>
                             <span>Payment Time</span>
@@ -97,6 +97,7 @@ StaffPaymentMethodModal.propTypes = {
     order: PropTypes.shape({
         overallPaid: PropTypes.number.isRequired,
         outstandingAmount: PropTypes.number.isRequired,
+        referenceNumber: PropTypes.number.isRequired,
         paymentProof: PropTypes.string.isRequired,
         createdAt: PropTypes.string.isRequired,
         paymentMethod: PropTypes.string.isRequired,

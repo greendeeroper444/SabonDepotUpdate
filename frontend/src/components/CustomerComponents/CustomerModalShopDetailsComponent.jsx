@@ -7,7 +7,7 @@ import Draggable from 'react-draggable';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import PropTypes from 'prop-types'; 
-import { calculateFinalPriceModal, calculateSubtotalModal } from '../../utils/CalculateFinalPriceUtils';
+import { calculateFinalPriceModal, calculateSubtotalModal, calculateSubtotalModalCustomer } from '../../utils/CalculateFinalPriceUtils';
 
 function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartItems, customerId}) {
     const navigate = useNavigate();
@@ -99,7 +99,7 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                 <div className='customer-modal-footer'>
                     <div className='products-subtotal'>
                         <span>Subtotal</span>
-                        <span>{`Php ${calculateSubtotalModal(cartItems)}`}</span>
+                        <span>{`Php ${calculateSubtotalModalCustomer(cartItems)}`}</span>
                     </div>
                 </div>
 

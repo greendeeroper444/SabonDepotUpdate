@@ -353,7 +353,7 @@ function CustomerPayablePage() {
                                 <th>Quantity</th>
                                 <th>Amount</th>
                                 <th>Outstanding Amount</th>
-                                <th>Action</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -412,9 +412,7 @@ function CustomerPayablePage() {
                                         <td>₱{order.totalAmount.toFixed(2)}</td>
                                         <td>₱{order.outstandingAmount.toFixed(2)}</td>
                                         <td>
-                                            <button>
-                                                Recieve
-                                            </button>
+                                           
                                             {' '}
                                             <button
                                             className="view-button"

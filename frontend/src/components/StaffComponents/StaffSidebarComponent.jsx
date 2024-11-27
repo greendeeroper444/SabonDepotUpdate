@@ -62,8 +62,8 @@ function StaffSidebarComponent() {
                     <NavLink to='/staff/products' className='staff-sidebar-item' activeClassName='active'>
                         <img src={priceIcon} alt="Products" className='sidebar-icon' />
                         <img src={priceIconColor} alt="Products" className='sidebar-icon-active' />
-                        <div>PRODUCTS</div>
-                        <span className='tooltip'>PRODUCTS</span>
+                        <div>FINISHED GOODS</div>
+                        <span className='tooltip'>FINISHED GOODS</span>
                     </NavLink>
                 </li>
 

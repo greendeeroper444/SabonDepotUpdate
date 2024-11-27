@@ -31,6 +31,7 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => 
     //     }
     // };
     const [partialPayment, setPartialPayment] = useState('');
+    const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentProof, setPaymentProof] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
 
@@ -43,8 +44,8 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => 
     };
 
     const handleSubmit = () => {
-        if(partialPayment && paymentProof){
-            onSetPartialPayment({partialPayment, paymentProof});
+        if(partialPayment && referenceNumber && paymentProof){
+            onSetPartialPayment({partialPayment, paymentProof, referenceNumber});
             toast.success('Submitted successfully! Please place your order.');
             onClose();
         } else{
@@ -99,13 +100,22 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => 
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
             <h2>Cash On Delivery</h2>
-            <p>Please enter your Gcash payment:</p>
-            <input
-                type='number'
-                placeholder='Enter your Gcash paid'
-                value={partialPayment}
-                onChange={(e) => setPartialPayment(e.target.value)}
-            />
+            <div className='customer-gcash-payment-inputs'>
+                <p>Please enter your Gcash payment:</p>
+                <input
+                    type='number'
+                    placeholder='ex...(300)'
+                    value={partialPayment}
+                    onChange={(e) => setPartialPayment(e.target.value)}
+                />
+                <p>Please enter your Refence Number:</p>
+                <input
+                    type='number'
+                    placeholder='ex...(1001 543 610110)'
+                    value={referenceNumber}
+                    onChange={(e) => setReferenceNumber(e.target.value)}
+                />
+            </div>
             <div className='file-upload'>
                 <label htmlFor='file-input'>
                     <img

@@ -80,7 +80,7 @@ function CustomerShopContentComponent() {
                 {
                     products.map((product, index) => {
                         const shouldShowDiscount = IsDiscountValidUtils(customer) && product.discountPercentage > 0;
-                        const finalPrice = shouldShowDiscount ? product.discountedPrice.toFixed(2) : product.price.toFixed(2);
+                        const finalPrice = shouldShowDiscount ? product.discountedPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
                         return (
                             <li key={product._id}>

@@ -38,7 +38,7 @@ function StaffCanceledOrders({orders, handleRowClick, orderDate}) {
                         <td>{order.billingDetails.fullName}</td>
                         <td><span className={`badge ${order.paymentStatus.toLowerCase()}`}>{order.paymentStatus}</span></td>
                         <td><span className={`badge ${order.orderStatus.toLowerCase().replace(' ', '-')}`}>{order.orderStatus}</span></td>
-                        <td>{`₱${order.totalAmount.toFixed(2)}`}</td>
+                        <td>{`₱${order.totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                         {/* <td>
                             <img src={editIcon} alt="Edit Icon" className='edit-icon' />
                         </td> */}

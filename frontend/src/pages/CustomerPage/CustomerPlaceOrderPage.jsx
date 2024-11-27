@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import '../../CSS/CustomerCSS/CustomerPlaceOrder.css';
 import invoiceIcon from '../../assets/placeorder/placeorder-invoice-icon.png'
 import { useParams } from 'react-router-dom';
 import UseOrderDetailsHook from '../../hooks/CustomerHooks/UseOrderDetailsHook';
 import { formatFullDate, getEstimatedDeliveryDate, getStatusClass, orderDate } from '../../utils/OrderUtils';
+import InvoiceModal from '../../components/CustomerComponents/InvoiceModal';
 
 
 function CustomerPlaceOrderPage() {
     const {customerId, orderId} = useParams();
     const {order, loading, error} = UseOrderDetailsHook(customerId, orderId);
+    const [isInvoiceModalOpen, setInvoiceModalOpen] = useState(false);
+
 
     const confirmedDate = new Date();
 
@@ -38,7 +41,7 @@ function CustomerPlaceOrderPage() {
             <div className='breadcrumb'>Home &gt; Orders &gt; ID {order._id}</div>
             <div className='order-id'>
                 <h2>Order ID: {order._id}</h2>
-                <button className='invoice-button'>
+                <button className='invoice-button' onClick={() => setInvoiceModalOpen(true)}>
                     <img src={invoiceIcon} alt="" />
                     <span>Invoice</span>
                 </button>
@@ -109,17 +112,24 @@ function CustomerPlaceOrderPage() {
             <h4>Order Summary</h4>
             <div className='summary-item'>
                 <span>Subtotal</span>
-                <span> {`₱${subtotal.toFixed(2)}`}</span>
+                <span> {`₱${subtotal.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
             </div>
             <div className='summary-item' style={{ color: 'red' }}>
                 <span>Shipping</span>
-                <span> {`₱${shippingCost.toFixed(2)}`}</span>
+                <span> {`₱${shippingCost.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
             </div>
             <div className='customer-place-order-total'>
                 <span>Total</span>
-                <span> {`₱${order.totalAmount.toFixed(2)}`}</span>
+                <span> {`₱${order.totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</span>
             </div>
         </div>
+        <InvoiceModal
+        isOpen={isInvoiceModalOpen}
+        onClose={() => setInvoiceModalOpen(false)}
+        order={order}
+        subtotal={subtotal}
+        shippingCost={shippingCost}
+        />
     </div>
   )
 }

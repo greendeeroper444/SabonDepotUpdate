@@ -107,8 +107,8 @@ function AdminOrdersDetailsPage() {
                                 <td>{item.sku}</td>
                                 <td>{item.location}</td>
                                 <td>{item.quantity ?? 'N/A'}</td>
-                                <td>₱{item.price?.toFixed(2) ?? 'N/A'}</td>
-                                <td>₱{(item.price * item.quantity).toFixed(2)}</td>
+                                <td>₱{item.price?.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) ?? 'N/A'}</td>
+                                <td>₱{(item.price * item.quantity).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                             </tr>
                         ))
                     }

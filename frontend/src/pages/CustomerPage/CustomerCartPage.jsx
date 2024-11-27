@@ -151,7 +151,7 @@ function CustomerCartPage() {
                                                     <p>{cartItem.productId.productName}</p>
                                                 </div>
                                             </td>
-                                            <td>{`Php ${cartItem.finalPrice.toFixed(2)}`}</td>
+                                            <td>{`Php ${cartItem.finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                             <td>
                                                 <input
                                                 type="number"
@@ -160,7 +160,7 @@ function CustomerCartPage() {
                                                 onChange={(e) => handleQuantityChange(cartItem, parseInt(e.target.value))}
                                                 />
                                             </td>
-                                            <td>{`Php ${(cartItem.finalPrice) * cartItem.quantity.toFixed(2)}`}</td>
+                                            <td>{`Php ${(cartItem.finalPrice) * cartItem.quantity.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                             <td>
                                                 <button className='delete-button' 
                                                 onClick={() => handleDeleteCartClick(cartItem._id)}>
@@ -184,8 +184,8 @@ function CustomerCartPage() {
                         <span>
                             {`Php ${
                                 selectedItems.some(item => item.finalPrice < item.productId.price)
-                                ? selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0).toFixed(2)
-                                : selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0).toFixed(2)
+                                ? selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+                                : selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
                             }`}
                         </span>
                     </div>
@@ -198,8 +198,8 @@ function CustomerCartPage() {
                         <span>
                             {`Php ${
                                 selectedItems.some(item => item.finalPrice < item.productId.price)
-                                ? (selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0) + 50).toFixed(2)
-                                : (selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0) + 50).toFixed(2)
+                                ? (selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0) + 50).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+                                : (selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0) + 50).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
                             }`}
                         </span>
                     </div>

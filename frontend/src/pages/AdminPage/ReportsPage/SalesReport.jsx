@@ -228,19 +228,22 @@ function SalesReportPage() {
 
         doc.autoTable({
             startY: 60,
-            head: [['PRODUCT NAME', 'CODE', 'SIZE', 'CATEGORY', 'INVENTORY LEVEL', 'UNITS SOLD', 'TOTAL REVENUE']],
+            head: [['PRODUCT NAME', 'CODE', 'SIZE', 'CATEGORY', 'UNITS SOLD', 'TOTAL REVENUE']],
             body: filteredReports.map(report => [
                 report.productName,
                 report.productCode,
                 report.sizeUnit,
                 report.category,
-                report.inventoryLevel,
+                // report.inventoryLevel,
                 report.unitsSold,
-                report.totalRevenue.toFixed(2),
+                report.totalRevenue.toLocaleString('en-US', {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                }),
             ]),
-            styles: { fontSize: 10, halign: 'center' },
-            headStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0] },
-            bodyStyles: { fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0] },
+            styles: {fontSize: 10, halign: 'center'},
+            headStyles: {fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0]},
+            bodyStyles: {fillColor: [255, 255, 255], textColor: [0, 0, 0], lineWidth: 0.1, lineColor: [0, 0, 0]},
         });
 
         doc.setFontSize(10);
@@ -294,7 +297,7 @@ function SalesReportPage() {
                         <th>Product Code</th>
                         <th>Size</th>
                         <th>Category</th>
-                        <th>Inventory Level</th>
+                        {/* <th>Inventory Level</th> */}
                         <th>Units Sold</th>
                         <th>Total Revenue</th>
                     </tr>
@@ -308,9 +311,14 @@ function SalesReportPage() {
                                     <td>{report.productCode}</td>
                                     <td>{report.sizeUnit}</td>
                                     <td>{report.category}</td>
-                                    <td>{report.inventoryLevel}</td>
+                                    {/* <td>{report.inventoryLevel}</td> */}
                                     <td>{report.unitsSold}</td>
-                                    <td>{report.totalRevenue.toFixed(2)}</td>
+                                    <td>
+                                        {report.totalRevenue.toLocaleString('en-US', {
+                                            minimumFractionDigits: 2,
+                                            maximumFractionDigits: 2,
+                                        })}
+                                    </td>
                                 </tr>
                             ))
                         ) : (

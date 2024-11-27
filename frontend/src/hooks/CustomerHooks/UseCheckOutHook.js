@@ -19,6 +19,7 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
     const [total, setTotal] = useState(0);
     const [partialPayment, setPartialPayment] = useState(0);
     const [gcashPaid, setGcashPaid] = useState(0);
+    const [referenceNumber, setReferenceNumber] = useState(0);
     const [paymentProof, setPaymentProof] = useState(null);
     const [showCashOnDeliveryModal, setShowCashOnDeliveryModal] = useState(false);
     const [showGcashModal, setShowGcashModal] = useState(false);
@@ -77,14 +78,16 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
     };
 
     //gcash 
-    const handleGcashPayment = ({gcashPaid, paymentProof}) => {
+    const handleGcashPayment = ({gcashPaid, referenceNumber, paymentProof}) => {
         setGcashPaid(gcashPaid);
-        setPaymentProof(paymentProof)
+        setReferenceNumber(referenceNumber);
+        setPaymentProof(paymentProof);
     };
     //cash on delivery
-    const handleSetPartialPayment = ({partialPayment, paymentProof}) => {
+    const handleSetPartialPayment = ({partialPayment, referenceNumber, paymentProof}) => {
         setPartialPayment(partialPayment);
-        setPaymentProof(paymentProof)
+        setReferenceNumber(referenceNumber);
+        setPaymentProof(paymentProof);
     };
 
 
@@ -109,6 +112,7 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
             formData.append('billingDetails', JSON.stringify(billingDetails));
             formData.append('partialPayment', partialPayment);
             formData.append('gcashPaid', gcashPaid);
+            formData.append('referenceNumber', referenceNumber);
             if(paymentProof) formData.append('paymentProof', paymentProof);
     
             //append each selected item ID individually
@@ -145,6 +149,7 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
     total,
     partialPayment,
     gcashPaid,
+    referenceNumber,
     paymentProof,
     showCashOnDeliveryModal,
     showGcashModal,

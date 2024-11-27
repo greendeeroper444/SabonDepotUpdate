@@ -58,7 +58,7 @@ function StaffHomePage() {
                             </td>
                             <td><span className='status complete'>Complete</span></td>
                             <td><span className='payment-status paid'>{order.paymentStatus}</span></td>
-                            <td>{`Php ${order.totalAmount.toFixed(2)}`}</td>
+                            <td>{`Php ${order.totalAmount.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                         </tr>
                     ))
                 }

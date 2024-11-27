@@ -81,7 +81,7 @@ function AdminWorkinProgressPage() {
                 product.productCode,
                 product.productName,
                 product.category,
-                product.price.toFixed(2)
+                product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
             ]),
             styles: {fontSize: 12, halign: 'center'},
             headStyles: {fillColor: [0, 0, 139]},
@@ -205,7 +205,7 @@ function AdminWorkinProgressPage() {
                         <td>{summaryData.categoryCount}</td>
                         <td>{summaryData.totalProducts}</td>
                         <td>{summaryData.totalUnitsProduced}</td>
-                        <td>Php {summaryData.totalValue.toFixed(2)}</td>
+                        <td>Php {summaryData.totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td>{summaryData.lowStockCount}</td>
                         <td>{summaryData.notInStock}</td>
                     </tr>
@@ -263,7 +263,7 @@ function AdminWorkinProgressPage() {
                                     </td>
                                     <td>{product.category}</td>
                                     {/* <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td> */}
-                                    <td>{`₱${product.price.toFixed(2)}`}</td>
+                                    <td>{`₱${product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                     <td>{product.quantity}</td>
                                     <td className={product.quantity > 0 ? (product.quantity > 10 ? 'in-stock' : 'low-stock') : 'out-of-stock'}>
                                         {product.quantity > 0 ? (product.quantity > 10 ? 'In stock' : 'Low stock') : 'Out of stock'}
