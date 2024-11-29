@@ -228,8 +228,9 @@ function CustomerRegisterPage() {
                                 </div>
                             </div>
 
-                            <button type='submit' className='customer-register-button' onClick={handlePreviousStep}>Back</button>
                             <button type='submit' className='customer-register-button' onClick={handleNextStep}>Next...</button>
+                            <button type='submit' className='customer-back-button' onClick={handlePreviousStep}>Back</button>
+                           
 
                         </motion.span>
                     )
@@ -285,8 +286,9 @@ function CustomerRegisterPage() {
                             <div className='form-group'>
                                 <span>By continuing, you agree to our <Link className='terms-of-service'>terms of service.</Link></span>
                             </div>
-                            <button type='submit' className='customer-register-button' onClick={handlePreviousStep}>Back</button>
+                           
                             <button type='submit' className='customer-register-button'>Sign up</button>
+                            <button type='submit' className='customer-back-button' onClick={handlePreviousStep}>Back</button>
                         </motion.span>
                     )
                 }

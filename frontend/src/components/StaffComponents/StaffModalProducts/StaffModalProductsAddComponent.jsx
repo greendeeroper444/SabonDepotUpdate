@@ -253,6 +253,15 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
+                <label>Low stock level:</label>
+                <div>
+                    <input type="number"
+                    value={dataInput.quantity} 
+                    onChange={(e) => setDataInput({...dataInput, quantity: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
                 <label>DISCOUNT PERCENTAGE:</label>
                 <div>
                     <input

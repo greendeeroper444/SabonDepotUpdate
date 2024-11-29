@@ -130,6 +130,22 @@
     background-color: #08632e;
 }
   
+.customer-register-container .customer-back-button{
+    width: 100%;
+    padding: 10px;
+    background-color: #FFCC00;
+    color: black;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+}
+
+.customer-register-container .customer-back-button:hover,
+.customer-register-container .customer-back-button:focus{
+    background-color: #FFCC00;
+}
 .customer-register-container .or-sign-up{
     display: flex;
     align-items: center;

@@ -38,6 +38,7 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment, defaultGcashPaid }
                     type='number'
                     value={defaultGcashPaid}
                     onChange={(e) => setGcashPaid(e.target.value)}
+                    disabled
                 />
                 <p>Please enter your Refence Number:</p>
                 <input
