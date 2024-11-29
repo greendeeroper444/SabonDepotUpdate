@@ -139,7 +139,7 @@
   
 
 /* order status */
-.staff-orders-container .badge.unconfirmed{
+.staff-orders-container .badge.pending{
     background-color: #FFF0F0;
     color: #2e2c2c;
 }

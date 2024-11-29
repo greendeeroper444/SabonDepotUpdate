@@ -221,7 +221,7 @@ const createOrderCustomer = async(req, res) => {
                 paymentMethod,
                 billingDetails: parsedBillingDetails,
                 paymentStatus,
-                orderStatus: 'Unconfirmed',
+                orderStatus: 'Pending',
             });
 
             await order.save();
@@ -666,10 +666,49 @@ const uploadProof = async(req, res) => {
     }
 };
 
+const receivedButton = async(req, res) => {
+    const {orderId} = req.params;
+
+    try {
+        //find and update the order's `isReceived` field
+        const order = await OrderModel.findByIdAndUpdate(
+            orderId,
+            {isReceived: true, receivedDate: Date.now()},
+            {new: true}
+        );
+
+        if(!order){
+            return res.status(404).json({ 
+                message: 'Order not found' 
+            });
+        }
+
+        //create a notification
+        const {customerId, billingDetails} = order;
+        const notification = new NotificationStaffModel({
+            customerId: customerId,
+            orderId: orderId,
+            message: `${billingDetails.firstName} ${billingDetails.middleInitial} ${billingDetails.lastName} received the order #${orderId}.`,
+        });
+        await notification.save();
+
+        res.status(200).json({ 
+            message: 'Order received successfully', 
+            order 
+        });
+    } catch (error) {
+        console.error('Error updating order:', error);
+        res.status(500).json({ 
+            message: 'Error updating order', error 
+        });
+    }
+};
+
 
 module.exports = {
     createOrderCustomer,
     getOrderCustomer,
     getAllOrdersCustomer,
-    uploadProof
+    uploadProof,
+    receivedButton
 }

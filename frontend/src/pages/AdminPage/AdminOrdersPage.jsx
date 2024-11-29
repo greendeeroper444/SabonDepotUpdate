@@ -93,8 +93,8 @@ function AdminOrdersPage() {
         switch (activeTab) {
             case 'All Orders':
                 return <StaffAllOrders orders={displayedOrders} handleRowClick={handleRowClick} orderDate={orderDate} />;
-            case 'Unconfirmed':
-                return <StaffUnconfirmedOrders orders={displayedOrders.filter(order => order.orderStatus === 'Unconfirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
+            case 'Pending':
+                return <StaffUnconfirmedOrders orders={displayedOrders.filter(order => order.orderStatus === 'Pending')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Confirmed':
                 return <StaffConfirmedOrders orders={displayedOrders.filter(order => order.orderStatus === 'Confirmed')} handleRowClick={handleRowClick} orderDate={orderDate} />;
             case 'Shipped':
@@ -133,7 +133,7 @@ function AdminOrdersPage() {
         <div className='staff-orders-header'>
             <ul className='staff-orders-nav'>
                 <li className={activeTab === 'All Orders' ? 'active' : ''} onClick={() => handleTabClick('All Orders')}>All Orders</li>
-                <li className={activeTab === 'Unconfirmed' ? 'active' : ''} onClick={() => handleTabClick('Unconfirmed')}>Unconfirmed</li>
+                <li className={activeTab === 'Pending' ? 'active' : ''} onClick={() => handleTabClick('Pending')}>Pending</li>
                 <li className={activeTab === 'Confirmed' ? 'active' : ''} onClick={() => handleTabClick('Confirmed')}>Confirmed</li>
                 <li className={activeTab === 'Shipped' ? 'active' : ''} onClick={() => handleTabClick('Shipped')}>Shipped</li>
                 <li className={activeTab === 'Out For Delivery' ? 'active' : ''} onClick={() => handleTabClick('Out For Delivery')}>On Delivery</li>

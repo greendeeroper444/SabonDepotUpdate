@@ -94,7 +94,7 @@ function StaffOrdersDetailsPage() {
                 </h3>
                 <p>
                     <strong>Name:</strong>
-                    {order.billingDetails.firstName} {' '}
+                    {' '}{order.billingDetails.firstName} {' '}
                     {order.billingDetails.middleInitial} {' '}
                     {order.billingDetails.lastName} 
                 </p>

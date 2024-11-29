@@ -3,34 +3,8 @@ import '../../../CSS/CustomerCSS/CustomerCheckout/CustomerCashOnDeliveryPaymentM
 import { toast } from 'react-hot-toast';
 import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-icon.png';
 
-const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => {
-    // const [step, setStep] = useState(1);
-    // const [contactNumber, setContactNumber] = useState('');
-    // const [partialPayment, setPartialPayment] = useState('');
-
-    // if(typeof onSetPartialPayment !== 'function'){
-    //     console.error('onSetPartialPayment is not a function');
-    //     return null; //or handle the error as needed
-    // }
-
-
-    // const handleNext = () => {
-    //     if(contactNumber){
-    //         setStep(2);
-    //     } else{
-    //         toast.error('Please enter your contact number.');
-    //     }
-    // };
-
-    // const handleSubmit = () => {
-    //     if(partialPayment){
-    //         onSetPartialPayment(partialPayment);
-    //         onClose();
-    //     } else {
-    //         toast.error('Please enter the partial payment.');
-    //     }
-    // };
-    const [partialPayment, setPartialPayment] = useState('');
+const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defaultPartialAmount}) => {
+    const [partialPayment, setPartialPayment] = useState(defaultPartialAmount || '');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentProof, setPaymentProof] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
@@ -100,6 +74,7 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment}) => 
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
             <h2>Cash On Delivery</h2>
+            <h5>09974559639 - Sabon Depot Number</h5>
             <div className='customer-gcash-payment-inputs'>
                 <p>Please enter your Gcash payment:</p>
                 <input

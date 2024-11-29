@@ -18,6 +18,8 @@
     width: 320px;
     text-align: center;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 400px;
+    overflow-y: auto;
 }
 
 .customer-gcash-payment-container .customer-gcash-payment-content .customer-gcash-payment-inputs{

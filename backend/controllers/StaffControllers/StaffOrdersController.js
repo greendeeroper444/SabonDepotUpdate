@@ -44,7 +44,7 @@ const approveOrderStaff = async(req, res) => {
     try {
         const {orderId} = req.params;
         const order = await OrderModel.findByIdAndUpdate(orderId, { 
-            isApproved: true,
+            isConfirmed: true,
             orderStatus: 'Confirmed' 
         }, {new: true});
 
@@ -225,7 +225,7 @@ const getCompleteOrderTransactionStaff = async(req, res) => {
     try {
         const orders = await OrderModel.find({
             // isFullPaidAmount: true,
-            isApproved: true,
+            isConfirmed: true,
             isDelivered: true
         }).sort({createdAt: -1})
 

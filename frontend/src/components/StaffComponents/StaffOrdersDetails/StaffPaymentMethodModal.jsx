@@ -19,11 +19,11 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                 <button className='modal-close' onClick={onClose}>×</button>
                 <div className='modal-body'>
                     <div className='modal-header'>
-                        <div className={`modal-icon ${order.isApproved ? 'success-icon' : 'pending-icon'}`}>
-                            {order.isApproved ? '✔️' : '⚠️'}
+                        <div className={`modal-icon ${order.isConfirmed ? 'success-icon' : 'pending-icon'}`}>
+                            {order.isConfirmed ? '✔️' : '⚠️'}
                         </div>
-                        <h2>{order.isApproved ? 'Payment Success!' : 'Pending Payment'}</h2>
-                        <p>{order.isApproved ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
+                        <h2>{order.isConfirmed ? 'Payment Success!' : 'Pending Payment'}</h2>
+                        <p>{order.isConfirmed ? 'Your payment has been successfully done.' : 'Please approve the payment.'}</p>
                     </div>
                     {
                         order.overallPaid !== 0 && (
@@ -77,9 +77,9 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                     <button 
                     onClick={handleApprove} 
                     className='approve-button'
-                    disabled={order.isApproved}
+                    disabled={order.isConfirmed}
                     >
-                        {order.isApproved ? 'Approved' : 'Approve'}
+                        {order.isConfirmed ? 'Approved' : 'Approve'}
                     </button>
                     <button onClick={handleDecline} className='decline-button'>
                         Decline
@@ -106,7 +106,7 @@ StaffPaymentMethodModal.propTypes = {
             middleInitial: PropTypes.string.isRequired,
             lastName: PropTypes.string.isRequired,
         }).isRequired,
-        isApproved: PropTypes.bool.isRequired,
+        isConfirmed: PropTypes.bool.isRequired,
     }).isRequired,
     handleApprove: PropTypes.func.isRequired,
 };

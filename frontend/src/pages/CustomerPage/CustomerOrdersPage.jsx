@@ -71,7 +71,9 @@ function CustomerOrdersPage() {
                                         {order.orderStatus} 
                                         {' '}
                                         {
-                                            order.orderStatus === 'Shipped' && order.shippedDate
+                                            order.orderStatus === 'Confirmed' && order.shippedDate
+                                            ? new Date(order.shippedDate).toLocaleDateString()
+                                            : order.orderStatus === 'Shipped' && order.shippedDate
                                             ? new Date(order.shippedDate).toLocaleDateString()
                                             : order.orderStatus === 'Out For Delivery' && order.outForDeliveryDate
                                             ? new Date(order.outForDeliveryDate).toLocaleDateString()

@@ -3,8 +3,8 @@ import '../../../CSS/CustomerCSS/CustomerCheckout/CustomerGcashPaymentMethod.css
 import { toast } from 'react-hot-toast';
 import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-icon.png';
 
-const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
-    const [gcashPaid, setGcashPaid] = useState('');
+const CustomerGcashPaymentMethod = ({onClose, onGcashPayment, defaultGcashPaid }) => {
+    const [gcashPaid, setGcashPaid] = useState(defaultGcashPaid);
     const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentProof, setPaymentProof] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
@@ -31,12 +31,12 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment}) => {
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
             <h2>Gcash Payment</h2>
+            <h5>09974559639 - Sabon Depot Number</h5>
             <div className='customer-gcash-payment-inputs'>
                 <p>Please enter your Gcash payment:</p>
                 <input
                     type='number'
-                    placeholder='ex...(300)'
-                    value={gcashPaid}
+                    value={defaultGcashPaid}
                     onChange={(e) => setGcashPaid(e.target.value)}
                 />
                 <p>Please enter your Refence Number:</p>

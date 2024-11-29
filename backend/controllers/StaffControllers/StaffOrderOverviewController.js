@@ -105,8 +105,9 @@ const getDeliveredPendingCanceled = async(req, res) => {
 
         //count pending orders where isDelivered, isApproved, isShipped, and isOutForDelivery are all false
         const pendingCount = await OrderModel.countDocuments({ 
+            isReceived: false, 
             isDelivered: false, 
-            isApproved: false, 
+            isConfirmed: false, 
             isShipped: false, 
             isOutForDelivery: false 
         });

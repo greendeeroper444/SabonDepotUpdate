@@ -241,6 +241,7 @@ function CustomerCheckOutPage() {
                 <CustomerCashOnDeliveryPaymentMethod
                 onClose={() => setShowCashOnDeliveryModal(false)}
                 onSetPartialPayment={handleSetPartialPayment}
+                defaultPartialAmount={((total + 50) * 0.2).toFixed(2)}
                 />
             )
         }
@@ -250,6 +251,7 @@ function CustomerCheckOutPage() {
                 <CustomerGcashPaymentMethod 
                 onClose={() => setShowGcashModal(false)} 
                 onGcashPayment={handleGcashPayment}
+                defaultGcashPaid={(total + 50).toFixed(2)}
                 />
             )
         }

@@ -33,7 +33,7 @@ function CustomerPlaceOrderPage() {
     }, 0);
 
     const shippingCost = 50;
-    const {isShipped, isOutForDelivery, isDelivered} = order;
+    const {isPending, isConfirmed, isShipped, isOutForDelivery, isDelivered} = order;
 
   return (
     <div className='customer-place-order-container'>
@@ -55,10 +55,15 @@ function CustomerPlaceOrderPage() {
         </div>
 
         <div className='customer-place-order-progress-tracker'>
-            <div className={`status confirmed ${getStatusClass('confirmed', order) === 'confirmed' ? 'active' : ''}`}>
-                <div className={`status-circle ${getStatusClass('confirmed', order) === 'confirmed' ? 'active' : ''}`}></div>
-                <p>Order Confirmed</p>
+        <div className={`status pending ${getStatusClass('pending', order) === 'pending' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('pending', order) === 'pending' ? 'active' : ''}`}></div>
+                <p>Pending</p>
                 <span>{formatFullDate(confirmedDate)}</span>
+            </div>
+            <div className={`status confirmed ${getStatusClass('isConfirmed', order) === 'isConfirmed' ? 'active' : ''}`}>
+                <div className={`status-circle ${getStatusClass('isConfirmed', order) === 'isConfirmed' ? 'active' : ''}`}></div>
+                <p>Confirmed</p>
+                <span>{isConfirmed ? formatFullDate(order.createdAt) : 'N/A'}</span>
             </div>
             <div className={`status shipped ${getStatusClass('isShipped', order) === 'isShipped' ? 'active' : ''}`}>
                 <div className={`status-circle ${getStatusClass('isShipped', order) === 'isShipped' ? 'active' : ''}`}></div>

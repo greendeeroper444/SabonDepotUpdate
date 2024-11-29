@@ -227,3 +227,58 @@
 .upload-button:hover{
     background-color: #218838;
 }
+
+
+.view-button{
+    background-color: #fff;
+    color: #077A37;
+    font-size: 14px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.view-button:hover {
+    background-color: #077A37;
+    color: #ffff;
+}
+
+.view-button:active{
+    transform: scale(0.98); 
+}
+
+.customer-payable-page .view-button,
+.customer-payable-page .receive-button{
+    border: none;
+    border-radius: 5px;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.receive-button{
+    background-color: #077A37;
+    color: #fff;
+    font-size: 14px;
+    margin-left: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.receive-button:hover{
+    background-color: #01682c;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.15);
+}
+
+.receive-button:active{
+    transform: scale(0.98);
+}
+
+.receive-button.disabled{
+    background-color: #cccccc;
+    color: #666666;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.receive-button:disabled:hover{
+    background-color: #cccccc;
+    box-shadow: none;
+}

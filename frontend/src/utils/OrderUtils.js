@@ -50,5 +50,6 @@ export const getStatusClass = (status, order) => {
     if(order.isDelivered) return 'isDelivered';
     if(order.isOutForDelivery) return 'isOutForDelivery';
     if(order.isShipped) return 'isShipped';
-    return 'confirmed';
+    if(order.isConfirmed) return 'isConfirmed';
+    return 'pending';
 };

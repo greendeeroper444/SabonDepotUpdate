@@ -84,15 +84,13 @@ const OrderSchema = new mongoose.Schema({
     orderStatus: {
         type: String,
         enum: [
-            'Unconfirmed',
+            'Pending',
             'Confirmed',
             'Shipped', 
             'Out For Delivery', 
             'Delivered', 
-            // 'Under Review', 
-            // 'Cancelled'
         ],
-        default: 'Unconfirmed',
+        default: 'Pending',
     },
     isPaidPartial: {
         type: Boolean,
@@ -102,7 +100,11 @@ const OrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    isApproved: {
+    isPending: {
+        type: Boolean,
+        default: false,
+    },
+    isConfirmed: {
         type: Boolean,
         default: false,
     },
@@ -118,15 +120,16 @@ const OrderSchema = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
-    // //updated new
-    // isCanceled: {
-    //     type: Boolean,
-    //     default: false,
-    // },
-    // //updated new
-    // canceledDate {
-    //     type: Date,
-    // },
+    isReceived: {
+        type: Boolean,
+        default: false,
+    },
+    pendingDate: {
+        type: Date,
+    },
+    confirmedDate: {
+        type: Date,
+    },
     shippedDate: {
         type: Date,
     },
@@ -135,6 +138,9 @@ const OrderSchema = new mongoose.Schema({
     },
     deliveredDate: {
         type: Date,
+    },
+    receivedDate: {
+        type: Date
     },
     createdAt: {
         type: Date,
@@ -146,24 +152,7 @@ const OrderSchema = new mongoose.Schema({
 });
 
 OrderSchema.pre('save', function(next){
-    // if(this.paymentMethod === 'Gcash'){
-    //     this.overallPaid = this.gcashPaid;
-    //     this.isPaidPartial = this.gcashPaid >= this.totalAmount;
-    // }else if(this.paymentMethod === 'Cash On Delivery'){
-    //     this.overallPaid = this.partialPayment;
-    //     this.isPaidPartial = this.partialPayment + this.outstandingAmount === this.totalAmount;
-    // }
-    
-    // //update isFullPaidAmount based on isPaidPartial and totalAmount
-    // this.isFullPaidAmount = this.overallPaid >= this.totalAmount;
-    
-    // if(this.isPaidPartial){
-    //     this.paymentStatus = 'Paid';
-    // } else if(this.overallPaid > 0) {
-    //     this.paymentStatus = 'Partial';
-    // } else{
-    //     this.paymentStatus = 'Unpaid';
-    // }
+   
      //Handle Gcash payment method
      if(this.paymentMethod === 'Gcash'){
         this.overallPaid = this.gcashPaid;
@@ -188,6 +177,14 @@ OrderSchema.pre('save', function(next){
 
 
     //dates every tracking
+    if (this.isModified('isConfirmed') && this.isConfirmed && !this.confirmedDate) {
+        this.confirmedDate = Date.now();
+        this.isPending = false;
+        this.orderStatus = 'Confirmed';
+    }
+    if (this.isModified('isPending') && !this.isPending && this.orderStatus === 'Pending') {
+        this.pendingDate = Date.now();
+    }
     if(this.isModified('isShipped') && this.isShipped && !this.shippedDate){
         this.shippedDate = Date.now();
     }
@@ -197,40 +194,27 @@ OrderSchema.pre('save', function(next){
     if(this.isModified('isDelivered') && this.isDelivered && !this.deliveredDate){
         this.deliveredDate = Date.now();
     }
+    if(this.isModified('isReceived') && this.isReceived && !this.receivedDate){
+        this.receivedDate = Date.now();
+    }
 
 
     //order status update based on shipping stages
-    if (this.isDelivered) {
+    if(this.isDelivered){
         this.orderStatus = 'Delivered';
-    } else if (this.isOutForDelivery) {
+    }else if(this.isOutForDelivery){
         this.orderStatus = 'Out For Delivery';
-    } else if (this.isShipped) {
+    }else if (this.isShipped){
         this.orderStatus = 'Shipped';
-    } else {
-        this.orderStatus = 'Unconfirmed';
+    }else if (this.isConfirmed){
+        this.orderStatus = 'Confirmed';
+    }else {
+        this.orderStatus = 'Pending';
     }
     
     next();
 });
 
-// OrderSchema.pre('save', function(next){
-//     if(this.paymentMethod === 'Gcash'){
-//         this.overallPaid = this.gcashPaid;
-//         this.isPaidPartial = this.gcashPaid >= this.totalAmount;
-//     } else if(this.paymentMethod === 'Cash On Delivery'){
-//         this.overallPaid = this.partialPayment;
-//         this.isPaidPartial = this.partialPayment + this.outstandingAmount === this.totalAmount;
-//     }
-    
-//     if(this.isPaidPartial){
-//         this.paymentStatus = 'Paid';
-//     } else if(this.overallPaid > 0){
-//         this.paymentStatus = 'Partial';
-//     } else{
-//         this.paymentStatus = 'Unpaid';
-//     }
-//     next();
-// });
 
 const OrderModel = mongoose.model('Order', OrderSchema);
 module.exports = OrderModel;
