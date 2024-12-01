@@ -3,11 +3,23 @@ import '../../../CSS/CustomerCSS/CustomerCheckout/CustomerCashOnDeliveryPaymentM
 import { toast } from 'react-hot-toast';
 import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-icon.png';
 
-const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defaultPartialAmount}) => {
+const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defaultPartialAmount, partialAmount}) => {
     const [partialPayment, setPartialPayment] = useState(defaultPartialAmount || '');
     const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentProof, setPaymentProof] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
+
+    const handlePartialPaymentChange = (e) => {
+        const value = parseFloat(e.target.value);
+        if(isNaN(value)){
+            setPartialPayment('');
+        } else if(value >= defaultPartialAmount && value <= partialAmount) {
+            setPartialPayment(value);
+        } else{
+            toast.error(`Amount cannot exceed below ${defaultPartialAmount} and above ${partialAmount}`);
+        }
+    };
+    
 
     const handleFileChange = (event) => {
         const file = event.target.files[0];
@@ -28,49 +40,6 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defa
     };
 
   return (
-    // <div className='customer-delivery-payment-container'>
-    //     <div className={`customer-delivery-payment-content ${step === 2 ? 'slide-center' : ''}`}>
-    //         {
-    //             step === 1 && (
-    //                 <div className='step-content'>
-    //                     <h2>Cash On Delivery</h2>
-    //                     <p className='company-number'>+63 | 9501049657</p>
-    //                     <p>Please enter your contact number:</p>
-    //                     <input
-    //                     type='number'
-    //                     placeholder='Enter your contact number'
-    //                     value={contactNumber}
-    //                     onChange={(e) => setContactNumber(e.target.value)}
-    //                     className='input-field'
-    //                     />
-    //                     <div className='modal-buttons'>
-    //                         <button className='cancel-button' onClick={onClose}>Cancel</button>
-    //                         <button className='next-button' onClick={handleNext}>Next</button>
-    //                     </div>
-    //                 </div>
-    //             )
-    //         }
-    //         {
-    //             step === 2 && (
-    //                 <div className='step-content'>
-    //                     <h2>Payment Amount</h2>
-    //                     <p>Please enter the amount you want to pay:</p>
-    //                     <input
-    //                     type='number'
-    //                     placeholder='Enter amount (e.g., 300)'
-    //                     value={partialPayment}
-    //                     onChange={(e) => setPartialPayment(e.target.value)}
-    //                     className='input-field'
-    //                     />
-    //                     <div className='modal-buttons'>
-    //                         <button className='cancel-button' onClick={onClose}>Cancel</button>
-    //                         <button className='submit-button' onClick={handleSubmit}>Submit</button>
-    //                     </div>
-    //                 </div>
-    //             )
-    //         }
-    //     </div>
-    // </div>
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
             <h2>Cash On Delivery</h2>
@@ -79,9 +48,9 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defa
                 <p>Please enter your Gcash payment:</p>
                 <input
                     type='number'
-                    placeholder='ex...(300)'
+                    placeholder={`Enter amount (up to ${defaultPartialAmount})`}
                     value={partialPayment}
-                    onChange={(e) => setPartialPayment(e.target.value)}
+                    onChange={handlePartialPaymentChange}
                 />
                 <p>Please enter your Refence Number:</p>
                 <input

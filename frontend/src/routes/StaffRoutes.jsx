@@ -14,6 +14,7 @@ import StaffDashboardPage from '../pages/StaffPage/StaffDashboardPage'
 import StaffAccountsPage from '../pages/StaffPage/StaffAccountsPage'
 import StaffDirectOrdersPage from '../pages/StaffPage/StaffDirectOrdersPage'
 import StaffDirectOrdersDetailsPage from '../pages/StaffPage/StaffDirectOrdersDetailsPage'
+import StaffOrdersRefillPage from '../pages/StaffPage/StaffOrdersRefillPage'
 
 function StaffRoutes() {
   return (
@@ -28,6 +29,7 @@ function StaffRoutes() {
                 <Route path='/staff/direct-orders' element={<StaffDirectOrdersPage />} />
                 <Route path='/staff/direct-orders/details/:productId' element={<StaffDirectOrdersDetailsPage />} />
                 <Route path='/staff/walkin' element={<StaffOrdersWalkinPage />} />
+                <Route path='/staff/refill' element={<StaffOrdersRefillPage />} />
                 {/* <Route path='/staff/payment' element={<StaffPaymentPage />} /> */}
                 <Route path='/staff/orders' element={<StaffOrdersPage />} />
                 <Route path='/staff/order-summary/:staffId/:orderId' element={<StaffOrderSummaryPage/>} />

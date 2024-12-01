@@ -6,9 +6,9 @@ import UseFetchProductsHook from '../../hooks/CustomerHooks/UseFetchProductsHook
 import IsDiscountValidUtils from '../../utils/IsDiscountValidUtils';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 import UseCartHook from '../../hooks/StaffHooks/UseCartHook';
-import StaffModalWalkinContentDetailsComponent from '../../components/StaffComponents/StaffModalWalkinContentDetailsComponent';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
+import StaffModalRefillingContentDetailsComponent from '../../components/StaffComponents/StaffPos/modals/StaffModalRefillingContentDetailsComponent';
 
 function StaffRefillingPage() {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -26,7 +26,7 @@ function StaffRefillingPage() {
     // Display/get orders walk-in data
     const fetchOrderWalkins = async () => {
         try {
-            const response = await axios.get('/staffOrderWalkin/getAllOrderWalkinStaff');
+            const response = await axios.get('/staffOrderRefill/getAllOrderRefillStaff');
             setOrderWalkins(response.data);
             setLoading(false);
         } catch (error) {
@@ -139,7 +139,7 @@ function StaffRefillingPage() {
             </div>
 
             {/* Modal to show when item is added to cart */}
-            <StaffModalWalkinContentDetailsComponent
+            <StaffModalRefillingContentDetailsComponent
                 isOpen={isModalOpen}
                 onClose={handleCloseModal}
                 cartItems={cartItems}

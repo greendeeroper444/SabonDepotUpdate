@@ -242,6 +242,7 @@ function CustomerCheckOutPage() {
                 onClose={() => setShowCashOnDeliveryModal(false)}
                 onSetPartialPayment={handleSetPartialPayment}
                 defaultPartialAmount={((total + 50) * 0.2).toFixed(2)}
+                partialAmount={(total + 50).toFixed(2)}
                 />
             )
         }

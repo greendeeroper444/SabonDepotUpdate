@@ -28,6 +28,7 @@ app.use('/staffAuth', require('./routers/StaffRouters/StaffAuthRouters'));
 app.use('/staffProduct', require('./routers/StaffRouters/StaffProductRouters'));
 app.use('/staffOrders', require('./routers/StaffRouters/StaffOrdersRouter'));
 app.use('/staffOrderWalkin', require('./routers/StaffRouters/StaffOrdersWalkinRouter'));
+app.use('/staffOrderRefill', require('./routers/StaffRouters/StaffOrdersRefillRouter'));
 app.use('/staffCart', require('./routers/StaffRouters/StaffCartRouter'));
 app.use('/staffOrderOverview', require('./routers/StaffRouters/StaffOrderOverviewRouter'));
 app.use('/staffAccounts', require('./routers/StaffRouters/StaffAccountsRouter'));

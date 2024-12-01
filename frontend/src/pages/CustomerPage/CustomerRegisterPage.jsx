@@ -168,7 +168,7 @@ function CustomerRegisterPage() {
                                         onChange={(e) => setData({...data, clientType: e.target.value})}>
                                         <option value=""> Select Client Type</option>
                                         <option value="Consumer">Consumer</option>
-                                        <option value="Business Partners">Business Partners</option>
+                                        <option value="Associates">Associates</option>
                                     </select>
                                 </div>
                             </div>

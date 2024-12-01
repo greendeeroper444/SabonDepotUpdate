@@ -12,7 +12,7 @@ import { orderDate } from '../../utils/OrderUtils';
 import DatePicker from "react-multi-date-picker";
 import { isSameDay } from 'date-fns';
 
-function StaffOrdersWalkinPage() {
+function StaffOrdersRefillPage() {
     const [orderWalkins, setOrderWalkins] = useState([]);
     const [filteredOrders, setFilteredOrders] = useState([]);
     const [selectedDates, setSelectedDates] = useState([]);
@@ -34,7 +34,7 @@ function StaffOrdersWalkinPage() {
 
     const handleEditOrderWalkinClick = async(orderId) => {
         try {
-            const response = await axios.get(`/staffOrderWalkin/getUpdateOrderWalkinStaff/${orderId}`);
+            const response = await axios.get(`/staffOrderRefill/getUpdateOrderRefillStaff/${orderId}`);
             setSelectedOrder(response.data);
             setIsEditModalOpen(true);
         } catch (error) {
@@ -49,7 +49,7 @@ function StaffOrdersWalkinPage() {
 
     const fetchOrderWalkins = async() => {
         try {
-            const response = await axios.get('/staffOrderWalkin/getAllOrderWalkinStaff');
+            const response = await axios.get('/staffOrderRefill/getAllOrderRefillStaff');
             setOrderWalkins(response.data);
             setFilteredOrders(response.data);
         } catch (error) {
@@ -215,4 +215,4 @@ function StaffOrdersWalkinPage() {
   )
 }
 
-export default StaffOrdersWalkinPage
+export default StaffOrdersRefillPage

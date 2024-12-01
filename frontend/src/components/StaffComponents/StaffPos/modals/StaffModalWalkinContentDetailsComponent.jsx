@@ -148,7 +148,7 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                                             <span>{cartItem.productId.productName}</span>
 
                                             {/* dropdown for size options */}
-                                            <select
+                                            {/* <select
                                             className='size-select'
                                             value={sizeSelection[cartItem._id] || ''}
                                             onChange={(e) => handleSizeChange(cartItem._id, e.target.value)}
@@ -159,7 +159,8 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                                                 <option value={cartItem.productId.productSize}>
                                                     {cartItem.productId.productSize}
                                                 </option>
-                                            </select>
+                                            </select> */}
+                                            <p style={{ fontSize: '12px' }}>{cartItem.productId.productSize}</p>
 
                                             <p>
                                                 <input

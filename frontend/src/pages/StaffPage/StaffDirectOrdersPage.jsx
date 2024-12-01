@@ -13,14 +13,21 @@ function StaffDirectOrdersPage() {
     const [orderType, setOrderType] = useState('Walkin');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedProductId, setSelectedProductId] = useState(null);
+    const [selectedSizeUnit, setSelectedSizeUnit] = useState('');
+    const [selectedProductSize, setSelectedProductSize] = useState('');
+
+
     
     const categories = UseFetchCategoriesHook();
     const {products, loading, error} = UseFetchProductsHook(selectedCategory);
     const {staff} = useContext(StaffContext);
     const {cartItems, setCartItems, handleAddToCartClick} = UseCartHook(staff);
 
-    if(loading) return <div>Loading...</div>;
-    if(error) return <div>Error: {error.message}</div>;
+    const handleSizeUnitChange = (e) => {
+        setSelectedSizeUnit(e.target.value);
+        setSelectedProductSize('');
+    };
+    
 
     const handleAddToCart = async (productId) => {
         const success = await handleAddToCartClick(staff?._id, productId, 1);
@@ -35,6 +42,9 @@ function StaffDirectOrdersPage() {
         setSelectedProductId(null);
     };
 
+
+    if(loading) return <div>Loading...</div>;
+    if(error) return <div>Error: {error.message}</div>
 
   return (
     <>
@@ -73,22 +83,72 @@ function StaffDirectOrdersPage() {
                         <option value="Refilling">Refilling</option>
                     </select>
                 </div>
+                <div>
+                    <select 
+                        name="sizeUnit" 
+                        id="sizeUnit"
+                        value={selectedSizeUnit}
+                        onChange={handleSizeUnitChange}
+                    >
+                        <option value="">All Size Unit</option>
+                        {/* get unique sizeUnits from products */}
+                        {Array.from(new Set(products.map(product => product.sizeUnit)))
+                            .map(sizeUnit => (
+                                <option key={sizeUnit} value={sizeUnit}>
+                                    {sizeUnit}
+                                </option>
+                            ))}
+                    </select>
+                </div>
+
+                {/* second select for productSize */}
+                <div>
+                    <select 
+                    name="productSize" 
+                    id="productSize"
+                    value={selectedProductSize}
+                    onChange={(e) => setSelectedProductSize(e.target.value)}
+                    disabled={!selectedSizeUnit}
+                    >
+                        <option value="">Product Size</option>
+                        
+                        {
+                            products
+                            .filter(product => product.sizeUnit === selectedSizeUnit)
+                            .map(filteredProduct => (
+                                <option key={filteredProduct._id} value={filteredProduct.productSize}>
+                                    {filteredProduct.productSize}
+                                </option>
+                            ))
+                        }
+                    </select>
+                </div>
                 <div className='customer-shop-content-header-section-right'>
                     <span>Show</span>
                     <button>16</button>
                 </div>
+
                 
             </div>
             {
                 orderType === 'Walkin' ? (
                     <StaffDirectOrdersWalkinContentComponent
-                    onAddToCart={handleAddToCart}
-                    cartItems={cartItems}
-                    setCartItems={setCartItems}
-                    staff={staff}
+                        onAddToCart={handleAddToCart}
+                        cartItems={cartItems}
+                        setCartItems={setCartItems}
+                        staff={staff}
+                        selectedSizeUnit={selectedSizeUnit}
+                        selectedProductSize={selectedProductSize}
                     />
                 ) : (
-                    <StaffDirectOrdersRefillContentComponent />
+                    <StaffDirectOrdersRefillContentComponent
+                        onAddToCart={handleAddToCart}
+                        cartItems={cartItems}
+                        setCartItems={setCartItems}
+                        staff={staff}
+                        selectedSizeUnit={selectedSizeUnit}
+                        selectedProductSize={selectedProductSize}
+                    />
                 )
             }
         </div>

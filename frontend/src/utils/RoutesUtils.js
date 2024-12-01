@@ -29,6 +29,7 @@ export const staffRoutes = [
     '/staff/direct-orders',
     '/staff/direct-orders/details/:productId',
     '/staff/walkin',
+    '/staff/refill',
     '/staff/payment',
     '/staff/orders',
     '/staff/orders/details/:orderId',

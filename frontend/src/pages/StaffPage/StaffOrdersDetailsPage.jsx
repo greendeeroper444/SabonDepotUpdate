@@ -65,10 +65,18 @@ function StaffOrdersDetailsPage() {
         />
 
         <div className='order-header'>
-            <h1>Order # {order._id}</h1>
-            {/* <div className='order-status'>
-                <span>Ready for ship</span>
-            </div> */}
+            <div style={{ display: 'flex', flexDirection: 'column' }}>
+                <h1>Order # {order._id}</h1>
+                <div className='order-status'>
+                {
+                    order.isReceived ? (
+                        <span>Order Completed</span>
+                    ) : (
+                        <span>Order Not Completed</span>
+                    )
+                }
+                </div>
+            </div>
             <div className='order-actions'>
                 {/* <button>More</button>
                 <button>Export</button>
