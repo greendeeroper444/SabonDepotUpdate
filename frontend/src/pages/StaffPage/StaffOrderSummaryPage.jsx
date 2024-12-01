@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import { useParams } from 'react-router-dom'
 import '../../CSS/StaffCSS/StaffOrderSummary.css';
@@ -9,7 +9,7 @@ import StaffInvoiceModal from '../../components/StaffComponents/StaffInvoiceModa
 import invoiceIcon from '../../assets/placeorder/placeorder-invoice-icon.png';
 
 function StaffOrderSummaryPage() {
-    const { staffId, orderId } = useParams();
+    const {staffId, orderId} = useParams();
     const [orders, setOrders] = useState([]);
     const [isInvoiceModalOpen, setInvoiceModalOpen] = useState(false);
     const [selectedOrder, setSelectedOrder] = useState(null);

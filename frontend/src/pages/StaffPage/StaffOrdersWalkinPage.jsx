@@ -86,7 +86,7 @@ function StaffOrdersWalkinPage() {
         setFilteredOrders(filtered);
     };
 
-    // Pagination Logic
+    //pagination logic
     const indexOfLastOrder = currentPage * ordersPerPage;
     const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
     const currentOrders = filteredOrders.slice(indexOfFirstOrder, indexOfLastOrder);
@@ -104,10 +104,10 @@ function StaffOrdersWalkinPage() {
   return (
     <div className='staff-orders-walkin-container'>
         <StaffModalOrdersWalkinEditComponent
-            isOpen={isEditModalOpen}
-            onClose={handleCloseEditModal}
-            selectedOrder={selectedOrder}
-            fetchOrderWalkins={fetchOrderWalkins}
+        isOpen={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        selectedOrder={selectedOrder}
+        fetchOrderWalkins={fetchOrderWalkins}
         />
 
         <div className='staff-orders-walkin-header'>
@@ -124,23 +124,23 @@ function StaffOrdersWalkinPage() {
                     <img src={searchIcon} alt='Search Icon' />
                 </button>
                 <input 
-                    type='text' 
-                    placeholder='Search by ID, product, or others...' 
-                    className='search-input'
-                    value={searchQuery}
-                    onChange={handleSearchChange}
+                type='text' 
+                placeholder='Search by ID, product, or others...' 
+                className='search-input'
+                value={searchQuery}
+                onChange={handleSearchChange}
                 />
             </form>
             <div className='date-picker-container'>
                 <img src={calendarIcon} alt='Calendar Icon' />
                 <DatePicker
-                    value={selectedDates}
-                    onChange={handleDateChange}
-                    placeholder='Select dates'
-                    multiple
-                    format='MMM DD'
-                    className='date-picker-input'
-                    maxDate={new Date()}
+                value={selectedDates}
+                onChange={handleDateChange}
+                placeholder='Select dates'
+                multiple
+                format='MMM DD'
+                className='date-picker-input'
+                maxDate={new Date()}
                 />
             </div>
         </div>

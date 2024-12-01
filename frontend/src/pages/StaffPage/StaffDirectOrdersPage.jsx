@@ -85,19 +85,21 @@ function StaffDirectOrdersPage() {
                 </div>
                 <div>
                     <select 
-                        name="sizeUnit" 
-                        id="sizeUnit"
-                        value={selectedSizeUnit}
-                        onChange={handleSizeUnitChange}
+                    name="sizeUnit" 
+                    id="sizeUnit"
+                    value={selectedSizeUnit}
+                    onChange={handleSizeUnitChange}
                     >
                         <option value="">All Size Unit</option>
                         {/* get unique sizeUnits from products */}
-                        {Array.from(new Set(products.map(product => product.sizeUnit)))
+                        {
+                        Array.from(new Set(products.map(product => product.sizeUnit)))
                             .map(sizeUnit => (
                                 <option key={sizeUnit} value={sizeUnit}>
                                     {sizeUnit}
                                 </option>
-                            ))}
+                            ))
+                        }
                     </select>
                 </div>
 

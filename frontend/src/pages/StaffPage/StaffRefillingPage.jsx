@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react'
 import '../../CSS/CustomerCSS/Shop/CustomerShopContent.css';
 import '../../CSS/StaffCSS/StaffPayment.css';
 import UseFetchCategoriesHook from '../../hooks/CustomerHooks/UseFetchCategoriesHook';
@@ -23,7 +23,7 @@ function StaffRefillingPage() {
     const {products, loading: productsLoading, error: productsError} = UseFetchProductsHook(selectedCategory);
     const {cartItems, setCartItems, handleAddToCartClick} = UseCartHook(staff);
 
-    // Display/get orders walk-in data
+    //display/get orders walk-in data
     const fetchOrderWalkins = async () => {
         try {
             const response = await axios.get('/staffOrderRefill/getAllOrderRefillStaff');
@@ -67,10 +67,10 @@ function StaffRefillingPage() {
                 <div className='customer-shop-content-header-left'>
                     <div>
                         <select
-                            name="category"
-                            id="category"
-                            value={selectedCategory}
-                            onChange={(e) => setSelectedCategory(e.target.value)}
+                        name="category"
+                        id="category"
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
                         >
                             <option value="">All Products</option>
                             {
