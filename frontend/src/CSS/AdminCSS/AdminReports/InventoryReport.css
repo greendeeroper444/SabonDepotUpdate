@@ -9,6 +9,11 @@
     margin-bottom: 20px;
 }
 
+.logo-inventory-report{
+    width: 160px;
+    object-fit: contain;
+}
+
 .admin-inventory-report-container .admin-inventory-report-header button{
     padding: 10px 20px;
     font-size: 16px;

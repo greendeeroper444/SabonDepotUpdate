@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import '../../CSS/CustomerCSS/CustomerModalShopDetails.css';
 import cancelIcon from '../../assets/modals/modal-icon-cancel.png';
 import cancelIcon2 from '../../assets/modals/modal-icon-cancel-2.png';
@@ -7,10 +7,12 @@ import Draggable from 'react-draggable';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import PropTypes from 'prop-types'; 
-import { calculateFinalPriceModal, calculateSubtotalModal, calculateSubtotalModalCustomer } from '../../utils/CalculateFinalPriceUtils';
+import CalculateFinalPriceUtils, { calculateFinalPriceModal, calculateSubtotalModalCustomer } from '../../utils/CalculateFinalPriceUtils';
+import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
 
 function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartItems, customerId}) {
     const navigate = useNavigate();
+    const {customer} = useContext(CustomerContext);
 
     //handle checkout
     const handleCheckout = () => {
@@ -32,15 +34,19 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
         }
     };
 
-    const fetchCartItems = async() => {
+    const fetchCartItems = async () => {
         try {
             const response = await axios.get(`/customerCart/getProductCartCustomer/${customerId}`);
-            setCartItems(response.data);
+            const updatedCartItems = response.data.map(item => ({
+                ...item,
+                finalPrice: CalculateFinalPriceUtils(customer, item.productId).finalPrice
+            }));
+            setCartItems(updatedCartItems);
         } catch (error) {
             console.error(error);
         }
     };
-
+    
 
     const handleCartNavigation = () => {
         navigate(`/cart/${customerId}`);
@@ -82,7 +88,7 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                                         <p>
                                             <span>{cartItem.quantity}</span>
                                             <span>X</span> 
-                                            <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
+                                            <span>{`Php ${calculateFinalPriceModal(cartItem, customer)}`}</span>
                                             {/* <span>=</span>
                                             <span>{`Php ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
                                         </p>
@@ -97,10 +103,11 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                 </div>
 
                 <div className='customer-modal-footer'>
-                    <div className='products-subtotal'>
-                        <span>Subtotal</span>
-                        <span>{`Php ${calculateSubtotalModalCustomer(cartItems)}`}</span>
-                    </div>
+                <div className="products-subtotal">
+                    <span>Subtotal</span>
+                    <span>{`Php ${calculateSubtotalModalCustomer(cartItems, customer)}`}</span>
+                </div>
+
                 </div>
 
                 <footer>

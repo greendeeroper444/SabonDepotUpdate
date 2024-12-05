@@ -2,9 +2,6 @@ import React, { useContext, useState } from 'react'
 import '../../CSS/CustomerCSS/CustomerShopProductDetails.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
-import fullStar from '../../assets/shopproductdetails/stars/fullstar.png';
-import halfStar from '../../assets/shopproductdetails/stars/halfstar.png';
-import emptyStar from '../../assets/shopproductdetails/stars/emptystar.png';
 import CustomerModalShopDetailsComponent from '../../components/CustomerComponents/CustomerModalShopDetailsComponent';
 import CustomerTopFooterComponent from '../../components/CustomerComponents/CustomerTopFooterComponent';
 import CustomerFooterComponent from '../../components/CustomerComponents/CustomerFooterComponent';
@@ -24,6 +21,28 @@ function CustomerShopProductDetails() {
     const navigate = useNavigate();
     const [selectedSizeUnit, setSelectedSizeUnit] = useState("");
     const [selectedProductId, setSelectedProductId] = useState("");
+    const {customerId} = useParams();
+
+    const handleCheckout = (product) => {
+        navigate(`/checkout/${customer?._id}`, {
+            state: {
+                selectedItems: [
+                    {
+                        productId: {
+                            _id: product._id,
+                            productName: product.productName,
+                            price: product.price,
+                            discountedPrice: product.discountedPrice,
+                        },
+                        quantity: quantity,
+                    },
+                ],
+            },
+        });
+    };
+    
+    
+    
 
     //event handler for product relateds
     const handleProductClick = (relatedProductId) => {
@@ -171,12 +190,31 @@ function CustomerShopProductDetails() {
                             <div className='customer-shop-product-details-content-right-header'>
                                 <h1>{`${product.productName} (${product.productSize})`}</h1>
                                 {/* <h4>{product.productSize}</h4> */}
-                                <span>{`Php ${finalPrice}`}</span>
+                                <div className='price-container'>
+                                {
+                                    shouldShowDiscount && !customer.isNewCustomer && (
+                                        <h4 className='final-price line-through'>
+                                            Php {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </h4>
+                                    )
+                                }
+                                
+                                {
+                                    customer.isNewCustomer && new Date(customer.newCustomerExpiresAt) > new Date() && (
+                                        <h4 className='final-price line-through'>
+                                            Php {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                        </h4>
+                                    )
+                                }
+                                    <h4 className='final-price'>
+                                        Php {finalPrice}
+                                    </h4>
+                                </div>
                                 {/* <div className='stars-reviews-content'>
                                     {renderStars(rating)}
                                     <span className='customer-review'>5 Customer Review</span>
                                 </div> */}
-                                <p>Description</p>
+                                {/* <p>Description</p> */}
                             </div>
 
                             <div className='customer-shop-product-details-content-right-content'>
@@ -208,12 +246,12 @@ function CustomerShopProductDetails() {
                                 </div>
 
 
-                                <span className='color-span'>Color</span>
+                                {/* <span className='color-span'>Color</span>
                                 <div className='customer-shop-product-details-product-color'>
                                     <button className='product-color'></button>
                                     <button className='product-color'></button>
                                     <button className='product-color'></button>
-                                </div>
+                                </div> */}
 
                                 {/* add to cart */}
                                 {
@@ -240,6 +278,7 @@ function CustomerShopProductDetails() {
                                             <button className='add-to-cart' 
                                             onClick={handleAddToCart}
                                             >Add To Cart</button>
+                                            <button className='check-out' onClick={() => handleCheckout(product)}>Checkout</button>
                                         </div>
                                     )
                                 }
@@ -268,20 +307,6 @@ function CustomerShopProductDetails() {
         <CustomerFooterComponent />
     </div>
   )
-}
-
-const renderStars = (rating) => {
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
-  
-    return (
-      <div className='stars'>
-        {[...Array(fullStars)].map((_, i) => <span key={`full-${i}`} className='star-full' style={{ backgroundImage: `url(${fullStar})` }}></span>)}
-        {hasHalfStar && <span className='star-half' style={{ backgroundImage: `url(${halfStar})` }}></span>}
-        {[...Array(emptyStars)].map((_, i) => <span key={`empty-${i}`} className='star-empty' style={{ backgroundImage: `url(${emptyStar})` }}></span>)}
-      </div>
-    )
 }
 
 export default CustomerShopProductDetails

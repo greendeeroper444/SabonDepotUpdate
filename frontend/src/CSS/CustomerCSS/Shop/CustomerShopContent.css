@@ -229,6 +229,15 @@
     font-weight: bold;
 }
 
+.original-price{
+    color: #999;
+}
+
+.final-price.line-through{
+    color: #ff0000;
+    font-size: 12px;
+    text-decoration: line-through;
+}
 
 
 @media (max-width: 768px){

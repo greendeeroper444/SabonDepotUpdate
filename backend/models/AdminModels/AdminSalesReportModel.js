@@ -22,6 +22,9 @@ const SalesReportSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    price: {
+        type: Number,
+    },
     inventoryLevel: {
         type: Number,
         required: true

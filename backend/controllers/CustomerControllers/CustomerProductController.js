@@ -6,37 +6,37 @@ const getProductCustomer = async (req, res) => {
 
     try {
         const query = {
-            ...(category ? { category: category } : {}),
-            isArchived: false, // Exclude archived products
+            ...(category ? {category: category} : {}),
+            isArchived: false,
         };
 
-        // Fetch all products that match the query without stock checks
+        //fetch all products that match the query without stock checks
         const customerProducts = await ProductModel.find(query);
 
-        // Group by productName and prioritize by sizeUnit and productSize
+        //group by productName and prioritize by sizeUnit and productSize
         const productMap = new Map();
 
         customerProducts.forEach(product => {
             const key = product.productName;
 
-            if (!productMap.has(key)) {
+            if(!productMap.has(key)){
                 productMap.set(key, product);
-            } else {
+            } else{
                 const existingProduct = productMap.get(key);
 
                 const sizePriority = {
-                    "Gallons": 3,
-                    "Liters": 2,
-                    "Milliliters": 1,
+                    'Gallons': 3,
+                    'Liters': 2,
+                    'Milliliters': 1,
                 };
 
                 const existingSizePriority = sizePriority[existingProduct.sizeUnit] || 0;
                 const newSizePriority = sizePriority[product.sizeUnit] || 0;
 
-                if (
+                if(
                     newSizePriority > existingSizePriority ||
                     (newSizePriority === existingSizePriority && product.productSize > existingProduct.productSize)
-                ) {
+                ){
                     productMap.set(key, product);
                 }
             }
@@ -52,77 +52,6 @@ const getProductCustomer = async (req, res) => {
         });
     }
 };
-
-// const getProductCustomer = async(req, res) => { 
-//     const category = req.query.category;
-//     try {
-
-//         const query = category ? {category: category} : {};
-//         const customerProducts = await ProductModel.find(query);
-
-//         return res.json(customerProducts);
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({ 
-//             message: 'Server error' 
-//         });
-//     }
-// };
-
-// const getProductDetailsCustomer = async(req, res) => { 
-//     const productId = req.params.productId;
-
-//     try {
-//         const productDetails = await ProductModel.findById(productId);
-//         if(!productDetails){
-//             return res.status(404).json({ 
-//                 error: 'Product not found.' 
-//             });
-//         }
-        
-//         return res.json(productDetails);
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({ 
-//             message: 'Server error' 
-//         });
-//     }
-// };
-
-
-// const getProductDetailsCustomer = async(req, res) => {
-//     const productId = req.params.productId;
-
-//     try {
-//         const productDetails = await ProductModel.findById(productId);
-//         if(!productDetails){
-//             return res.status(404).json({ 
-//                 error: 'Product not found.' 
-//             });
-//         }
-
-//         //gt all products with the same productName to fetch available sizes and units
-//         const relatedProducts = await ProductModel.find({ productName: productDetails.productName });
-
-//         //extract available sizes and units
-//         const sizesAndUnits = relatedProducts.map(product => ({
-//             sizeUnit: product.sizeUnit,
-//             productSize: product.productSize,
-//             productId: product._id
-//         }));
-
-//         return res.json({
-//             ...productDetails.toObject(),
-//             sizesAndUnits: sizesAndUnits
-//         });
-//     } catch (error) {
-//         console.log(error);
-//         return res.status(500).json({ 
-//             message: 'Server error' 
-//         });
-//     }
-// };
-
 
 const getProductDetailsCustomer = async(req, res) => {
     const productId = req.params.productId;

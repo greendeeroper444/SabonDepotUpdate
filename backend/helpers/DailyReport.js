@@ -36,6 +36,7 @@ const generateSalesReport = async() => {
             productCode: product.productCode,
             sizeUnit: product.sizeUnit,
             category: product.category,
+            price: product.price,
             inventoryLevel: product.quantity,
             unitsSold,
             totalRevenue,

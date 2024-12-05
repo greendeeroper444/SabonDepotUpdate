@@ -12,6 +12,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         category: '', 
         price: '', 
         quantity: '',
+        stockLevel: '',
         discountPercentage: '',
         productSize: '',
         sizeUnit: '',
@@ -33,9 +34,9 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
 
     const handleUploadProductAdmin = async(e) => {
         e.preventDefault();
-        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
+        const {productCode, productName, category, price, quantity, stockLevel, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
 
-        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit || !expirationDate){
+        if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !stockLevel || !productSize || !sizeUnit || !expirationDate){
             toast.error('Please input all fields');
             return;
         }
@@ -46,6 +47,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         formData.append('category', category);
         formData.append('price', price);
         formData.append('quantity', quantity);
+        formData.append('stockLevel', stockLevel);
         formData.append('discountPercentage', discountPercentage);
         formData.append('image', selectedImage);
         formData.append('productSize', productSize);
@@ -67,6 +69,7 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                     category: '', 
                     price: '', 
                     quantity: '',
+                    stockLevel: '',
                     discountPercentage: '',
                     productSize: '',
                     sizeUnit: '',
@@ -247,6 +250,15 @@ function AdminModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                     <input type="number"
                     value={dataInput.quantity} 
                     onChange={(e) => setDataInput({...dataInput, quantity: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>STOCK LEVEL:</label>
+                <div>
+                    <input type="number"
+                    value={dataInput.stockLevel} 
+                    onChange={(e) => setDataInput({...dataInput, stockLevel: e.target.value})}
                     />
                 </div>
             </div>

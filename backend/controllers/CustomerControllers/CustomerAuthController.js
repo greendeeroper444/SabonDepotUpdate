@@ -202,6 +202,47 @@ const getOtpDetailsCustomer = async(req, res) => {
     }
 }
 
+const resendOtpCustomer = async(req, res) => {
+    const {emailAddress} = req.body;
+
+    try {
+        //find the existing OTP entry
+        const existingOtpEntry = await CustomerOtpModel.findOne({ 
+            emailAddress 
+        });
+
+        if(!existingOtpEntry){
+            return res.status(404).json({
+                error: 'No OTP found for this email address.',
+            });
+        }
+
+        //generate a new OTP and expiration time
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+        const expires = new Date(Date.now() + 5 * 60 * 1000);
+
+        //update the existing entry with the new OTP
+        existingOtpEntry.otp = otp;
+        existingOtpEntry.expires = expires;
+        existingOtpEntry.createdAt = new Date();
+        await existingOtpEntry.save();
+
+        //send the new OTP via email
+        await SendOtpEmail(emailAddress, otp);
+
+        return res.status(200).json({
+            message: 'New OTP has been sent.',
+            expires,
+        });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({
+            message: 'Failed to resend OTP. Please try again later.',
+        });
+    }
+};
+
+
 const loginCustomer = async(req, res) => {
     try {
         const {emailAddress, password} = req.body;
@@ -522,5 +563,6 @@ module.exports = {
     updateProfileCustomer,
     getDataUpdateCustomer,
     requestPasswordReset,
-    resetPassword
+    resetPassword,
+    resendOtpCustomer
 }

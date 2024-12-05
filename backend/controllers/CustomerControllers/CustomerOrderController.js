@@ -135,7 +135,8 @@ const createOrderCustomer = async(req, res) => {
             //check if the customer is new
             const customerExists = await CustomerAuthModel.findById(customerId);
             const currentTime = Date.now();
-            const isNewCustomer = customerExists.isNewCustomer && currentTime <= customerExists.newCustomerExpiresAt;
+            // const isNewCustomer = customerExists.isNewCustomer && currentTime <= customerExists.newCustomerExpiresAt;
+            const isNewCustomer = customerExists.isNewCustomer;
 
             //calculate total amount
             const totalAmount = cartItems.reduce((acc, item) => {
@@ -145,6 +146,10 @@ const createOrderCustomer = async(req, res) => {
                 //calculate discounted price
                 if(item.productId.discountPercentage && item.productId.discountPercentage > 0){
                     discountedPrice = originalPrice - (originalPrice * item.productId.discountPercentage / 100);
+                }
+
+                if(isNewCustomer){
+                    discountedPrice = discountedPrice - (discountedPrice * 0.30); //apply 30% discount
                 }
 
                 //determine final price based on new customer status
@@ -286,15 +291,15 @@ const createOrderCustomer = async(req, res) => {
                 }
 
 
-                await getInventoryReport(
-                    item.productId._id,
-                    item.productId.productName,
-                    item.productId.sizeUnit,
-                    item.productId.productSize,
-                    item.productId.category,
-                    item.quantity,
-                    true
-                );
+                // await getInventoryReport(
+                //     item.productId._id,
+                //     item.productId.productName,
+                //     item.productId.sizeUnit,
+                //     item.productId.productSize,
+                //     item.productId.category,
+                //     item.quantity,
+                //     true
+                // );
 
                 await getSalesReport(
                     item.productId._id,
@@ -302,9 +307,21 @@ const createOrderCustomer = async(req, res) => {
                     item.productId.sizeUnit,
                     item.productId.productSize,
                     item.productId.category,
+                    item.productId.price,
                     item.quantity,
                     true
                 );
+                console.log('Nganong dika mogawas price waa ka', {
+                    productId: item.productId._id,
+                    productName: item.productId.productName,
+                    sizeUnit: item.productId.sizeUnit,
+                    productSize: item.productId.productSize,
+                    category: item.productId.category,
+                    price: item.productId.price,
+                    quantity: item.quantity,
+                });
+                
+                
 
             }));
 

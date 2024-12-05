@@ -227,9 +227,9 @@ function StaffProductsPage() {
                                 <tr 
                                 key={product._id} 
                                 className={`${product.isArchived ? 'archived-product' : ''} 
-                                ${product.quantity < 10 ? 'low-quantity' : ''} 
+                                ${product.quantity < product.stockLevel ? 'low-quantity' : ''} 
                                 ${product.quantity === 0 ? 'out-of-quantity' : ''}
-                                ${product.isArchived && product.quantity < 10 ? 'low-quantity archived-product' : ''}`}
+                                ${product.isArchived && product.quantity < product.stockLevel ? 'low-quantity archived-product' : ''}`}
                                 >
                                     <td>{product.productCode}</td>
                                     <td className='product-image-name'>
@@ -239,8 +239,8 @@ function StaffProductsPage() {
                                     <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td>
                                     <td>{`₱${product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                     <td>{product.quantity}</td>
-                                    <td className={product.quantity > 0 ? (product.quantity > 10 ? 'in-stock' : 'low-stock') : 'out-of-stock'}>
-                                        {product.quantity > 0 ? (product.quantity > 10 ? 'In stock' : 'Low stock') : 'Out of stock'}
+                                    <td className={product.quantity > 0 ? (product.quantity > product.stockLevel ? 'in-stock' : 'low-stock') : 'out-of-stock'}>
+                                        {product.quantity > 0 ? (product.quantity > product.stockLevel ? 'In stock' : 'Low stock') : 'Out of stock'}
                                     </td>
                                     <td className='actions-tbody'>
                                         <button className='button-edit-icon'

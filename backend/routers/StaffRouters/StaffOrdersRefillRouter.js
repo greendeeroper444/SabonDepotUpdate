@@ -1,5 +1,5 @@
 const express = require('express');
-const { addOrderRefillStaff, getOrderRefillStaff, getAllOrderRefillStaff, updateOrderRefillStaff, getUpdateOrderRefillStaff } = require('../../controllers/StaffControllers/StaffOrdersRefillRouter');
+const { addOrderRefillStaff, getOrderRefillStaff, getAllOrderRefillStaff, updateOrderRefillStaff, getUpdateOrderRefillStaff } = require('../../controllers/StaffControllers/StaffOrdersRefillController');
 const router = express.Router();
 
 router.post('/addOrderRefillStaff', addOrderRefillStaff);

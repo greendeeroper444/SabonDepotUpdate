@@ -48,13 +48,14 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment, defaultGcashPaid }
                     onChange={(e) => setReferenceNumber(e.target.value)}
                 />
             </div>
-            <div className='file-upload'>
+            <div className='file-upload' style={{ position: 'relative' }}>
                 <label htmlFor='file-input'>
                     <img
                     src={previewImage || uploadIcon} //display the uploaded image or default icon
                     alt='Upload proof of payment'
                     className='upload-image'
                     />
+                    <p className='sliding-message'>Upload proof of payment here</p>
                 </label>
                 <input
                     id='file-input'

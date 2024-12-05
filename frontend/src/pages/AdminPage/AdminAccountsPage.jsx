@@ -20,17 +20,24 @@ function AdminAccountsPage() {
 
     //delete staff and customer
     const handleDelete = async(id, clientType) => {
+        if(clientType === 'Staff'){
+            alert('Staff accounts cannot be deleted.');
+            return;
+        }
+    
         if(window.confirm(`Are you sure you want to delete this ${clientType}?`)){
             try {
                 await axios.delete('/adminAccounts/deleteAccountAdmin', {
-                    data: {id, clientType}
+                    data: {id, clientType},
                 });
-                setAccounts(accounts.filter(account => account._id !== id));
+                setAccounts(accounts.filter((account) => account._id !== id));
             } catch (err) {
                 setError('Error deleting account');
             }
         }
     };
+    
+    
 
     //display stagg and customer
     useEffect(() => {
@@ -107,7 +114,8 @@ function AdminAccountsPage() {
     
                     return (
                         <div className='admin-accounts-card' key={index}
-                        onClick={() => handleCardClick(account._id, account.clientType)} >
+                        // onClick={() => handleCardClick(account._id, account.clientType)} 
+                        >
                             <div className='card-info'>
                                 <div className='card-info-name'>
                                     <h3>{fullName}</h3>
@@ -123,12 +131,17 @@ function AdminAccountsPage() {
                                 <p><strong>Gender : </strong>{account.gender}</p>
                                 <p><strong>Address : </strong>{address}</p>
                             </div>
-                            <div className='delete-icon'  onClick={(e) => {
-                                        e.stopPropagation();
-                                        handleDelete(account._id, account.clientType);
-                                    }}>
+                            <div
+                            className='delete-icon'
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                handleDelete(account._id, account.clientType);
+                            }}
+                            style={{ display: account.clientType === 'Staff' ? 'none' : 'block' }}
+                            >
                                 <img src={deleteIcon} alt="Delete Icon" />
                             </div>
+
                         </div>
                     );
                 })

@@ -224,6 +224,13 @@
     background: none;
 }
   
+.customer-shop-product-details-product-add-buttons .check-out{
+    margin-right: 5px;
+    padding: 10px 30px;
+    background-color:#000;
+    border-radius: 10px;
+    color: #fff;
+}
 .customer-shop-product-details-product-add-buttons .add-to-cart:hover{
     margin-right: 5px;
     padding: 10px 30px;
@@ -232,6 +239,14 @@
     color: #fff;
 }
   
+.customer-shop-product-details-product-add-buttons .check-out:hover{
+    margin-right: 5px;
+    padding: 10px 30px;
+    border: 1px solid #000;
+    border-radius: 10px;
+    background: none;
+    color: #000;
+}
 .customer-shop-product-details-content-right .customer-shop-product-details-product-add-buttons .add-to-cart{
     padding: 10px 20px;
 }

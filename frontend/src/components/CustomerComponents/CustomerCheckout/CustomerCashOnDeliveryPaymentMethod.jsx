@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import '../../../CSS/CustomerCSS/CustomerCheckout/CustomerCashOnDeliveryPaymentMethod.css';
 import { toast } from 'react-hot-toast';
 import uploadIcon from '../../../assets/staff/stafficons/staff-prices-upload-icon.png';
@@ -8,6 +8,7 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defa
     const [referenceNumber, setReferenceNumber] = useState('');
     const [paymentProof, setPaymentProof] = useState(null);
     const [previewImage, setPreviewImage] = useState(null);
+    const [showMessage, setShowMessage] = useState(false);
 
     const handlePartialPaymentChange = (e) => {
         const value = parseFloat(e.target.value);
@@ -39,6 +40,15 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defa
         }
     };
 
+    // useEffect(() => {
+    //     if (!paymentProof) {
+    //         const messageLoop = setInterval(() => {
+    //             setShowMessage(prev => !prev);
+    //         }, 3000);
+
+    //         return () => clearInterval(messageLoop);
+    //     }
+    // }, [paymentProof]);
   return (
     <div className='customer-gcash-payment-container'>
         <div className='customer-gcash-payment-content'>
@@ -60,13 +70,19 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defa
                     onChange={(e) => setReferenceNumber(e.target.value)}
                 />
             </div>
-            <div className='file-upload'>
+            <div className='file-upload' style={{ position: 'relative' }}>
                 <label htmlFor='file-input'>
                     <img
                     src={previewImage || uploadIcon} //display the uploaded image or default icon
                     alt='Upload proof of payment'
                     className='upload-image'
                     />
+                    {/* {
+                        showMessage && !paymentProof && (
+                            <p className='sliding-message'>Please upload a photo</p>
+                        )
+                    } */}
+                    <p className='sliding-message'>Upload proof of payment here</p>
                 </label>
                 <input
                     id='file-input'

@@ -50,12 +50,16 @@ const addProductToCartCustomer = async(req, res) => {
             //determine final price based on new customer status
             const currentTime = Date.now();
             let finalPrice = discountedPrice;
-            if(customerExists.isNewCustomer && currentTime <= customerExists.newCustomerExpiresAt){
+            // if(customerExists.isNewCustomer && currentTime <= customerExists.newCustomerExpiresAt){
+            //     finalPrice = discountedPrice;
+            // } else{
+            //     finalPrice = originalPrice;
+            // }
+            if(customerExists.isNewCustomer){
                 finalPrice = discountedPrice;
             } else{
                 finalPrice = originalPrice;
             }
-
             let existingCartItem = await CartModel.findOne({customerId, productId});
 
             if(existingCartItem){

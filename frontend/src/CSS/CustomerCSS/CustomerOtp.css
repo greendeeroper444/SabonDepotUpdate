@@ -50,6 +50,12 @@
     color: #555;
 }
   
+.resend-link.disabled{
+    pointer-events: none;
+    color: gray;
+    cursor: not-allowed;
+}
+
 .customer-otp-container .resend-link{
     color: red;
     cursor: pointer;

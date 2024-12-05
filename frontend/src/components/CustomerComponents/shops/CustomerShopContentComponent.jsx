@@ -10,32 +10,9 @@ function CustomerShopContentComponent() {
     const [selectedCategory, setSelectedCategory] = useState('');
     const {customer} = useContext(CustomerContext);
     const [showCount, setShowCount] = useState(16);
-    const [currentPage, setCurrentPage] = useState(1);
 
     const categories = UseFetchCategoriesHook();
     const {products, loading, error} = UseFetchProductsHook(selectedCategory);
-
-    const totalProducts = products.length;
-    const totalPages = Math.ceil(totalProducts / showCount);
-    const paginatedProducts = products.slice((currentPage - 1) * showCount, currentPage * showCount);
-
-
-     //pagination handlers
-     const handlePageChange = (page) => {
-        setCurrentPage(page);
-    };
-
-    const handleNextPage = () => {
-        if (currentPage < totalPages) {
-            setCurrentPage(currentPage + 1);
-        }
-    };
-
-    const handlePreviousPage = () => {
-        if(currentPage > 1){
-            setCurrentPage(currentPage - 1);
-        }
-    };
 
     if(loading){
         return <div>Loading...</div>;
@@ -44,6 +21,10 @@ function CustomerShopContentComponent() {
     if(error){
         return <div>Error: {error.message}</div>;
     }
+
+     //check if the customer is new and eligible for the discount
+     const isNewCustomer = customer?.isNewCustomer && new Date() < new Date(customer?.newCustomerExpiresAt);
+
   return (
     <div className='customer-shop-content-container'>
         <div className='customer-shop-content-header'>
@@ -79,8 +60,15 @@ function CustomerShopContentComponent() {
             <ul>
                 {
                     products.map((product, index) => {
-                        const shouldShowDiscount = IsDiscountValidUtils(customer) && product.discountPercentage > 0;
-                        const finalPrice = shouldShowDiscount ? product.discountedPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        const discount = isNewCustomer ? 30 : product.discountPercentage;
+                        // const shouldShowDiscount = IsDiscountValidUtils(customer) && product.discountPercentage > 0;
+                        // const shouldShowDiscount = product.discountPercentage > 0;
+                        const shouldShowDiscount = discount > 0;
+                        // const finalPrice = shouldShowDiscount ? product.discountedPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        const finalPrice = shouldShowDiscount 
+                                ? (product.price - (product.price * (discount / 100))).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
+                                : product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+                        const originalPrice = product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2});
 
                         return (
                             <li key={product._id}>
@@ -95,7 +83,7 @@ function CustomerShopContentComponent() {
                                         {
                                             shouldShowDiscount && (
                                                 <div className='discount-badge'>
-                                                    {product.discountPercentage}% OFF
+                                                    {discount}% OFF
                                                 </div>
                                             )
                                         }
@@ -108,17 +96,22 @@ function CustomerShopContentComponent() {
                                             </span>
                                         </h5>
                                         <span>{product.category}</span>
-                                        <h6>{`Php ${finalPrice}`}</h6>
+                                        <div className='price-container'>
+                                            {
+                                                shouldShowDiscount && (
+                                                    <h4 className='final-price line-through'>
+                                                        Php {originalPrice}
+                                                    </h4>
+                                                )
+                                            }
+                                            <h4 className='final-price'>
+                                                Php {finalPrice}
+                                            </h4>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className='view-details'>
-                                    {/* {
-                                        product.quantity <= 0 ? (
-                                            <span className='disabled-link'></span>
-                                        ) : (
-                                            <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
-                                        )
-                                    } */}
+                                    
                                     <Link to={`/shop/product/details/${product._id}`}>View Details</Link>
                                 </div>
                             </li>
@@ -126,26 +119,6 @@ function CustomerShopContentComponent() {
                     })
                 }
             </ul>
-
-            <div className='customer-shop-content-pagination'>
-                {
-                    currentPage > 1 && <button onClick={handlePreviousPage}>Previous</button>
-                }
-                    {
-                        [...Array(totalPages)].map((_, index) => (
-                            <button
-                            key={index + 1}
-                            className={`page-item ${currentPage === index + 1 ? 'active' : ''}`}
-                            onClick={() => handlePageChange(index + 1)}
-                            >
-                                {index + 1}
-                            </button>
-                        ))
-                    }
-                {
-                    currentPage < totalPages && <button onClick={handleNextPage}>Next</button>
-                }
-            </div>
         </div>
     </div>
   )

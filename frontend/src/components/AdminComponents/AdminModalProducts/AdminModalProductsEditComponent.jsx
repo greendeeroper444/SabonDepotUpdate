@@ -12,6 +12,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         category: '',
         price: '',
         quantity: '',
+        stockLevel: '',
         discountPercentage: '',
         productSize: '',
         sizeUnit: '',
@@ -31,6 +32,7 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         formData.append('category', dataInput.category);
         formData.append('price', dataInput.price);
         formData.append('quantity', updatedQuantity);
+        formData.eppend('stockLevel', dataInput.stockLevel)
         formData.append('discountPercentage', dataInput.discountPercentage);
         formData.append('productSize', dataInput.productSize);
         formData.append('sizeUnit', dataInput.sizeUnit);
@@ -57,13 +59,14 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
 
     useEffect(() => {
         if(selectedProduct){
-            const {productCode, productName, category, price, quantity, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
+            const {productCode, productName, category, price, quantity, stockLevel, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
             setDataInput({
                 productCode: productCode || '',
                 productName: productName || '',
                 category: category || '',
                 price: price || '',
                 quantity: quantity || '',
+                stockLevel: stockLevel || '',
                 discountPercentage: discountPercentage || '',
                 productSize: productSize || '',
                 sizeUnit: sizeUnit || '',
@@ -267,6 +270,15 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 <span>
                     = {dataInput.quantity + inputValue}
                 </span>
+            </div>
+            <div className='label-text'>
+                <label>UPDATE STOCK LEVEL:</label>
+                <div>
+                    <input type="number"
+                    value={dataInput.stockLevel} 
+                    onChange={(e) => setDataInput({...dataInput, stockLevel: e.target.value})}
+                    />
+                </div>
             </div>
             <div className='label-text'>
                 <label>DISCOUNT PERCENTAGE:</label>

@@ -7,7 +7,7 @@ import Draggable from 'react-draggable';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { calculateFinalPriceModal, calculateSubtotalModal } from '../../../../utils/CalculateFinalPriceUtils';
+import { calculateFinalPriceModal, calculateSubtotalModal } from '../../../../utils/StaffCalculateFinalPriceUtils';
 
 function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
     const navigate = useNavigate();

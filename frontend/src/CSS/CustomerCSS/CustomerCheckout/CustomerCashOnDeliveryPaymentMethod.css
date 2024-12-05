@@ -11,6 +11,33 @@
     z-index: 9999;
 }
 
+
+.sliding-message{
+    position: absolute;
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    font-size: 16px;
+    color: #ff0000;
+    font-weight: bold;
+    text-align: center;
+    animation: slideInSlow 6s infinite alternate;
+}
+  
+.upload-image{
+    width: 100%;
+    height: 100%;
+}
+  
+/* @keyframes slideInSlow{
+    0% {
+       transform: translateX(-100%);
+    }
+    100% {
+       transform: translateX(100%);
+    }
+} */
+  
 .customer-delivery-payment-container .customer-delivery-payment-content{
     background: white;
     padding: 30px 40px;

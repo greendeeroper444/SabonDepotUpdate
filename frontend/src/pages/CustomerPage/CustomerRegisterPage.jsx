@@ -28,6 +28,7 @@ function CustomerRegisterPage() {
         purokStreetSubdivision: '',
         emailAddress: '',
         password: '',
+        confirmPassword: '',
         clientType: ''
     });
     const [step, setStep] = useState(1);
@@ -84,8 +85,15 @@ function CustomerRegisterPage() {
             purokStreetSubdivision, 
             emailAddress, 
             password,
+            confirmPassword,
             clientType
         } = data;
+
+        //check if passwords match
+        if(password !== confirmPassword){
+            toast.error('Passwords do not match. Please try again.');
+            return;
+        }
 
         const loadingToast = toast.loading('Sending OTP email...');
 
@@ -274,6 +282,8 @@ function CustomerRegisterPage() {
                                     type={showPasswordConfirm ? 'text' : 'password'}
                                     className='form-input'
                                     id='confirmPassword'
+                                    value={data.confirmPassword}
+                                    onChange={(e) => setData({...data, confirmPassword: e.target.value})}
                                     />
                                     <FontAwesomeIcon
                                     icon={showPasswordConfirm ? faEyeSlash : faEye}

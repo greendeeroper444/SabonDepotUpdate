@@ -12,6 +12,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         category: '', 
         price: '', 
         quantity: '',
+        stockLevel: '',
         discountPercentage: '',
         productSize: '',
         sizeUnit: '',
@@ -33,9 +34,9 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
 
     const handleUploadProductStaff = async(e) => {
         e.preventDefault();
-        const {productCode, productName, category, price, quantity, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
+        const {productCode, productName, category, price, quantity, stockLevel, discountPercentage, productSize, sizeUnit, expirationDate} = dataInput;
 
-        if(!productCode || !productName || !category || !price || !quantity || !productSize || !sizeUnit || !expirationDate){
+        if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !productSize || !sizeUnit || !expirationDate){
             toast.error('Please input all fields');
             return;
         }
@@ -47,6 +48,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
         formData.append('category', category);
         formData.append('price', price);
         formData.append('quantity', quantity);
+        formData.append('stockLevel', stockLevel);
         formData.append('discountPercentage', discountPercentage);
         formData.append('image', selectedImage);
         formData.append('productSize', productSize);
@@ -69,6 +71,7 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                     category: '', 
                     price: '', 
                     quantity: '',
+                    stockLevel: '',
                     discountPercentage: '',
                     productSize: '',
                     sizeUnit: '',
@@ -253,11 +256,11 @@ function StaffModalProductsAddComponent({isOpen, onClose, fetchProducts}) {
                 </div>
             </div>
             <div className='label-text'>
-                <label>Low stock level:</label>
+                <label>STOCK LEVEL:</label>
                 <div>
                     <input type="number"
-                    value={dataInput.quantity} 
-                    onChange={(e) => setDataInput({...dataInput, quantity: e.target.value})}
+                    value={dataInput.stockLevel} 
+                    onChange={(e) => setDataInput({...dataInput, stockLevel: e.target.value})}
                     />
                 </div>
             </div>

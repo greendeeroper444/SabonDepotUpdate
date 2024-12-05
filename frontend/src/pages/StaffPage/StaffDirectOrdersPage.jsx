@@ -7,6 +7,7 @@ import StaffDirectOrdersRefillContentComponent from '../../components/StaffCompo
 import StaffModalWalkinContentDetailsComponent from '../../components/StaffComponents/StaffPos/modals/StaffModalWalkinContentDetailsComponent';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 import UseCartHook from '../../hooks/StaffHooks/UseCartHook';
+import StaffModalRefillingContentDetailsComponent from '../../components/StaffComponents/StaffPos/modals/StaffModalRefillingContentDetailsComponent';
 
 function StaffDirectOrdersPage() {
     const [selectedCategory, setSelectedCategory] = useState('');
@@ -135,34 +136,49 @@ function StaffDirectOrdersPage() {
             {
                 orderType === 'Walkin' ? (
                     <StaffDirectOrdersWalkinContentComponent
-                        onAddToCart={handleAddToCart}
-                        cartItems={cartItems}
-                        setCartItems={setCartItems}
-                        staff={staff}
-                        selectedSizeUnit={selectedSizeUnit}
-                        selectedProductSize={selectedProductSize}
+                    onAddToCart={handleAddToCart}
+                    cartItems={cartItems}
+                    setCartItems={setCartItems}
+                    staff={staff}
+                    selectedSizeUnit={selectedSizeUnit}
+                    selectedProductSize={selectedProductSize}
                     />
                 ) : (
                     <StaffDirectOrdersRefillContentComponent
-                        onAddToCart={handleAddToCart}
-                        cartItems={cartItems}
-                        setCartItems={setCartItems}
-                        staff={staff}
-                        selectedSizeUnit={selectedSizeUnit}
-                        selectedProductSize={selectedProductSize}
+                    onAddToCart={handleAddToCart}
+                    cartItems={cartItems}
+                    setCartItems={setCartItems}
+                    staff={staff}
+                    selectedSizeUnit={selectedSizeUnit}
+                    selectedProductSize={selectedProductSize}
                     />
                 )
             }
         </div>
     </div>
-        {/* modal to show when item is added to cart */}
-        <StaffModalWalkinContentDetailsComponent
-        isOpen={isModalOpen}
-        onClose={handleCloseModal}
-        cartItems={cartItems}
-        setCartItems={setCartItems}
-        staffId={staff?._id}
-        />
+        {
+            orderType === 'Walkin' && (
+                <StaffModalWalkinContentDetailsComponent
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    cartItems={cartItems}
+                    setCartItems={setCartItems}
+                    staffId={staff?._id}
+                />
+            )
+        }
+
+        {
+            orderType === 'Refilling' && (
+                <StaffModalRefillingContentDetailsComponent
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    cartItems={cartItems}
+                    setCartItems={setCartItems}
+                    staffId={staff?._id}
+                />
+            )
+        }
     </>
   )
 }

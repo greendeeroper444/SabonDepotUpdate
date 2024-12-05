@@ -157,7 +157,12 @@ function CustomerCheckOutPage() {
                     selectedItems.map((item, index) => (
                         <div key={index} className='order-items-subtotal'>
                             <p>{`${item.productId.productName} x ${item.quantity}`}</p>
-                            <p>{`Php ${item.finalPrice ? item.finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2}) : item.productId.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</p>
+                            <p>{`Php ${
+                                (customer?.isNewCustomer && new Date(customer?.newCustomerExpiresAt) > new Date()
+                                    ? item.productId.price * 0.7
+                                    : item.discountedPrice || item.productId.discountedPrice
+                                ).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
+                            }`}</p>
                         </div>
                     ))
                 }
@@ -190,28 +195,6 @@ function CustomerCheckOutPage() {
                             Make your payment directly into our Gcash account. Please use your Reference ID as the payment reference. Your order will not be shipped until the funds have cleared in our account.
                         </p>
                     </label>
-                    {/* {
-                        customer && [
-                            'Retailer', 
-                            'Wholesaler', 
-                            'Franchiser', 
-                            'Dealer'
-                        ].includes(customer.clientType) && (
-                            <label>
-                                <input
-                                type="radio"
-                                name='payment'
-                                value="Pay Later"
-                                checked={paymentMethod === 'Pay Later'}
-                                onChange={handlePaymentChange}
-                                />
-                                <span>Pay Later</span>
-                                <p>
-                                    Unlock extended payment periods and innovative financing alternatives targeted to your business.
-                                </p>
-                            </label>
-                        )
-                    } */}
                     <label>
                         <input
                         type="radio"

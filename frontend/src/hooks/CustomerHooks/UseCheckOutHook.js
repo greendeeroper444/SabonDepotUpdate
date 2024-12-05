@@ -1,6 +1,7 @@
 import axios from 'axios';
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import toast from 'react-hot-toast';
+import { CustomerContext } from '../../../contexts/CustomerContexts/CustomerAuthContext';
 
 export default function UseCheckOutHook(customerId, selectedItems, navigate) {
     const [billingDetails, setBillingDetails] = useState({
@@ -23,14 +24,28 @@ export default function UseCheckOutHook(customerId, selectedItems, navigate) {
     const [paymentProof, setPaymentProof] = useState(null);
     const [showCashOnDeliveryModal, setShowCashOnDeliveryModal] = useState(false);
     const [showGcashModal, setShowGcashModal] = useState(false);
+    const {customer} = useContext(CustomerContext);
 
-    //
+    // //
+    // useEffect(() => {
+    //     setTotal(selectedItems.reduce((acc, item) => {
+    //         const price = item.finalPrice || item.productId.price;
+    //         return acc + price * item.quantity;
+    //     }, 0));
+    // }, [selectedItems]);
+
     useEffect(() => {
-        setTotal(selectedItems.reduce((acc, item) => {
-            const price = item.finalPrice || item.productId.price;
-            return acc + price * item.quantity;
-        }, 0));
-    }, [selectedItems]);
+        setTotal(
+            selectedItems.reduce((acc, item) => {
+                const price =
+                    customer?.isNewCustomer && new Date(customer?.newCustomerExpiresAt) > new Date()
+                        ? item.productId.price * 0.7
+                        : item.discountedPrice || item.productId.discountedPrice;
+                return acc + price * item.quantity;
+            }, 0)
+        );
+    }, [selectedItems, customer]);
+    
 
     //
     useEffect(() => {

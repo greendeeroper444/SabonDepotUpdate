@@ -33,6 +33,10 @@ const ProductSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    stockLevel: {
+        type: Number,
+        required: true
+    },
     uploaderId: { 
         type: mongoose.Schema.Types.ObjectId, 
         required: true 

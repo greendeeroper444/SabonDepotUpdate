@@ -51,10 +51,10 @@ const uploadProductStaff = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize){
+            if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !imageUrl || !productSize){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -99,6 +99,7 @@ const uploadProductStaff = async(req, res) => {
                     price,
                     discountedPrice,
                     quantity,
+                    stockLevel,
                     discountPercentage,
                     imageUrl,
                     sizeUnit: sizeUnit || null,
@@ -215,10 +216,10 @@ const editProductStaff = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -241,6 +242,7 @@ const editProductStaff = async(req, res) => {
             product.price = price;
             product.discountedPrice = discountedPrice;
             product.quantity = quantity;
+            product.stockLevel = stockLevel;
             product.discountPercentage = discountPercentage;
             product.sizeUnit = sizeUnit;
             product.productSize = productSize;
@@ -251,7 +253,14 @@ const editProductStaff = async(req, res) => {
 
             const updatedProduct = await product.save();
 
-            await getInventoryReport(product._id, productName, expirationDate, productSize, category, quantity)
+            await getInventoryReport(
+                product._id, 
+                productName, 
+                expirationDate, 
+                productSize, 
+                category, 
+                quantity
+            )
 
             return res.json({
                 message: 'Product updated successfully!',
@@ -475,9 +484,14 @@ const archiveProductStaff = async(req, res) => {
 
 
 //to get or notify the low quantity of product.
-const getOutOfStockProducts = async(req, res) => {
+const getOutOfStockProducts = async (req, res) => {
     try {
-        const outOfStockProducts = await ProductModel.find({quantity: {$lt: 10}});
+        //fetch all products
+        const products = await ProductModel.find();
+
+        //filter the products where quantity < stockLevel
+        const outOfStockProducts = products.filter(product => product.quantity < product.stockLevel);
+
         return res.json(outOfStockProducts);
     } catch (error) {
         console.error(error);
@@ -486,6 +500,7 @@ const getOutOfStockProducts = async(req, res) => {
         });
     }
 };
+
 
 
 module.exports = {

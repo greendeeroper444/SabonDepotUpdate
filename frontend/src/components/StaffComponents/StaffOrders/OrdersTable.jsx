@@ -35,7 +35,7 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
                         </td>
                     </tr>
                 ) : (
-                    orders.map(order => (
+                    orders.map((order) => (
                     <tr
                     key={order._id}
                     className='clickable-row'
@@ -43,14 +43,10 @@ function OrdersTable({orders, handleRowClick, orderDate, noOrdersMessage}) {
                     >
                         {/* <td><input type='checkbox' onClick={(e) => e.stopPropagation()} /></td> */}
                         <td>
-                        {
-                            order.items.map(item => (
-                            <div key={item._id}>
-                                {/* <h4>{item.productName}</h4> */}
-                                <span style={{ fontSize: '12px', color: 'black' }}>#ID{order._id}</span>
-                            </div>
-                            ))
-                        }
+                        <div >
+                            {/* <h4>{item.productName}</h4> */}
+                            <span style={{ fontSize: '12px', color: 'black' }}>#ID{order._id}</span>
+                        </div>
                         </td>
                         <td>{orderDate(order.createdAt)}</td>
                         <td>

@@ -49,10 +49,10 @@ const uploadProductAdmin = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !imageUrl || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !imageUrl || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -97,6 +97,7 @@ const uploadProductAdmin = async(req, res) => {
                     price,
                     discountedPrice,
                     quantity,
+                    stockLevel,
                     discountPercentage,
                     imageUrl,
                     sizeUnit: sizeUnit || null,
@@ -170,10 +171,10 @@ const editProductAdmin = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -196,6 +197,7 @@ const editProductAdmin = async(req, res) => {
             product.price = price;
             product.discountedPrice = discountedPrice;
             product.quantity = quantity;
+            product.stockLevel = stockLevel;
             product.discountPercentage = discountPercentage;
             product.sizeUnit = sizeUnit;
             product.productSize = productSize;
@@ -306,7 +308,7 @@ const getProductSummaryAdmin = async(req, res) => {
 
         //get the count of products with low stock (quantity < 10)
         const lowStockCount = await ProductModel.countDocuments({quantity: {$lt: 10}});
-        const notInStock = await ProductModel.countDocuments({ quantity: 0 });
+        const notInStock = await ProductModel.countDocuments({quantity: 0});
 
         res.json({
             categoryCount,
@@ -327,7 +329,12 @@ const getProductSummaryAdmin = async(req, res) => {
 //to get or notify the low quantity of product.
 const getOutOfStockProductsAdmin = async(req, res) => {
     try {
-        const outOfStockProducts = await ProductModel.find({quantity: {$lt: 10}});
+        //fetch all products
+        const products = await ProductModel.find();
+
+        //filter the products where quantity < stockLevel
+        const outOfStockProducts = products.filter(product => product.quantity < product.stockLevel);
+
         return res.json(outOfStockProducts);
     } catch (error) {
         console.error(error);

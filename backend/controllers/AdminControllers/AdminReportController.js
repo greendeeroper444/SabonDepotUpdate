@@ -80,10 +80,9 @@ const getSalesReport = async(
     productId,
     productName,
     sizeUnit,
-    productSize,
     category,
+    price,
     unitsSold,
-    isOrderPlaced
 ) => {
     try {
         const today = new Date();
@@ -114,6 +113,7 @@ const getSalesReport = async(
                 productCode: product.productCode,
                 sizeUnit,
                 category,
+                price: product.price,
                 inventoryLevel: product.quantity,
                 unitsSold,
                 totalRevenue: product.price * unitsSold,

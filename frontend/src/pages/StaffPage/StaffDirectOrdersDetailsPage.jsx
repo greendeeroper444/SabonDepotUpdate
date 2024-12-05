@@ -8,7 +8,7 @@ import CustomerFooterComponent from '../../components/CustomerComponents/Custome
 import { useNavigate, useParams } from 'react-router-dom';
 import UseFetchProductDetailsHook from '../../hooks/CustomerHooks/UseFetchProductDetailsHook';
 import UseCartHook from '../../hooks/StaffHooks/UseCartHook';
-import calculateFinalPriceUtils from '../../utils/CalculateFinalPriceUtils';
+import calculateFinalPriceUtils from '../../utils/StaffCalculateFinalPriceUtils';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 import StaffModalWalkinContentDetailsComponent from '../../components/StaffComponents/StaffPos/modals/StaffModalWalkinContentDetailsComponent';
 
