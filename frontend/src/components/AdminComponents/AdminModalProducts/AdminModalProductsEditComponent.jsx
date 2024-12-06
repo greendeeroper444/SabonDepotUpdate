@@ -14,12 +14,13 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         quantity: '',
         stockLevel: '',
         discountPercentage: '',
+        discountedDate: '',
         productSize: '',
         sizeUnit: '',
         expirationDate: '',
         updatedAt: ''
     });
-    const [inputValue, setInputValue] = useState(''); 
+    const [inputValue, setInputValue] = useState(0); 
 
     const handleEditProductAdmin = async(e) => {
         e.preventDefault();
@@ -32,8 +33,9 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         formData.append('category', dataInput.category);
         formData.append('price', dataInput.price);
         formData.append('quantity', updatedQuantity);
-        formData.eppend('stockLevel', dataInput.stockLevel)
+        formData.append('stockLevel', dataInput.stockLevel)
         formData.append('discountPercentage', dataInput.discountPercentage);
+        formData.append('discountedDate', dataInput.discountedDate);
         formData.append('productSize', dataInput.productSize);
         formData.append('sizeUnit', dataInput.sizeUnit);
         formData.append('expirationDate', dataInput.expirationDate);
@@ -59,15 +61,16 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
 
     useEffect(() => {
         if(selectedProduct){
-            const {productCode, productName, category, price, quantity, stockLevel, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
+            const {productCode, productName, category, price, quantity, stockLevel, imageUrl, discountPercentage, discountedDate, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
             setDataInput({
                 productCode: productCode || '',
                 productName: productName || '',
                 category: category || '',
                 price: price || '',
-                quantity: quantity || '',
+                quantity: quantity || 0,
                 stockLevel: stockLevel || '',
                 discountPercentage: discountPercentage || '',
+                discountedDate: discountedDate ? new Date(discountedDate).toISOString().split('T')[0] : '',
                 productSize: productSize || '',
                 sizeUnit: sizeUnit || '',
                 expirationDate: expirationDate ? new Date(expirationDate).toISOString().split('T')[0] : '',
@@ -287,6 +290,16 @@ function AdminModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                         type="number"
                         value={dataInput.discountPercentage}
                         onChange={(e) => setDataInput({...dataInput, discountPercentage: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>DISCOUNTED DATE:</label>
+                <div>
+                    <input
+                    type="date"
+                    value={dataInput.discountedDate}
+                    onChange={(e) => setDataInput({...dataInput, discountedDate: e.target.value})}
                     />
                 </div>
             </div>

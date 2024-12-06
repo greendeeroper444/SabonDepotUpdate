@@ -20,7 +20,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         expirationDate: '',
         updatedAt: ''
     });
-    const [inputValue, setInputValue] = useState(''); 
+    const [inputValue, setInputValue] = useState(0); 
 
     const handleEditProductStaff = async(e) => {
         e.preventDefault();
@@ -67,7 +67,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 productName: productName || '',
                 category: category || '',
                 price: price || '',
-                quantity: quantity || '',
+                quantity: quantity || 0,
                 stockLevel: stockLevel || '',
                 discountPercentage: discountPercentage || '',
                 discountedDate: discountedDate ? new Date(discountedDate).toISOString().split('T')[0] : '',

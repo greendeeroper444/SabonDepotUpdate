@@ -116,7 +116,7 @@ const uploadProductStaff = async(req, res) => {
                     discountPercentage: isDiscountEnd ? 0 : discountPercentage,
                     quantity,
                     stockLevel,
-                    discountPercentage,
+                    discountedDate,
                     imageUrl,
                     sizeUnit: sizeUnit || null,
                     productSize: productSize || null,

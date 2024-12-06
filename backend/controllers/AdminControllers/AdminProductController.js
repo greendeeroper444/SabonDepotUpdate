@@ -49,7 +49,7 @@ const uploadProductAdmin = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, discountedDate, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
             if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !imageUrl || !productSize || !expirationDate){
@@ -57,9 +57,20 @@ const uploadProductAdmin = async(req, res) => {
                     error: 'Please provide all required fields'
                 });
             }
+            //check if the discountedDate is valid
+            if(discountedDate && new Date(discountedDate) < new Date()){
+                return res.json({
+                    error: 'Discounted date must be today or a future date.',
+                });
+            }
 
-            //calculate discountedPrice
-            const discountedPrice = price - (price * discountPercentage / 100);
+            
+             //calculate discountedPrice
+            // const discountedPrice = price - (price * discountPercentage / 100);
+            const discountedPrice =
+                discountPercentage > 0
+                    ? price - (price * discountPercentage) / 100
+                    : price;
 
             const token = req.cookies.token;
             if(!token){
@@ -67,7 +78,6 @@ const uploadProductAdmin = async(req, res) => {
                     error: 'Unauthorized - Missing token'
                 });
             }
-
             jwt.verify(token, process.env.JWT_SECRET, {}, async(err, decodedToken) => {
                 if(err){
                     return res.json({
@@ -89,16 +99,20 @@ const uploadProductAdmin = async(req, res) => {
                 //     const code3 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
                 //     return `${code1} ${code2} ${code3}`;
                 // };
+                const today = new Date();
+                const discountEnds = new Date(discountedDate);
+                const isDiscountEnd = discountEnds.toDateString() === today.toDateString();
 
                 const newProduct = await ProductModel.create({
                     productCode,
                     productName,
                     category,
                     price,
-                    discountedPrice,
+                    discountedPrice: isDiscountEnd ? price : discountedPrice,
+                    discountPercentage: isDiscountEnd ? 0 : discountPercentage,
                     quantity,
                     stockLevel,
-                    discountPercentage,
+                    discountedDate,
                     imageUrl,
                     sizeUnit: sizeUnit || null,
                     productSize: productSize || null,
@@ -171,7 +185,7 @@ const editProductAdmin = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, discountedDate, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
             if(!productCode || !productName || !category || !price || !stockLevel || !productSize || !expirationDate){
@@ -187,8 +201,19 @@ const editProductAdmin = async(req, res) => {
                 });
             }
 
-            //calculate discountedPrice
-            const discountedPrice = price - (price * discountPercentage / 100);
+            // //calculate discountedPrice
+            // const discountedPrice = price - (price * discountPercentage / 100);
+            const currentDate = new Date();
+            let discountedPrice = price;
+
+            if(discountPercentage > 0 && discountedDate && new Date(discountedDate) > currentDate){
+                discountedPrice = price - (price * discountPercentage / 100);
+            } else{
+                //reset discount if expired or invalid
+                product.discountPercentage = 0;
+                product.discountedDate = null;
+            }
+ 
 
             //update product fields
             product.productCode = productCode;
@@ -202,6 +227,7 @@ const editProductAdmin = async(req, res) => {
             product.sizeUnit = sizeUnit;
             product.productSize = productSize;
             product.expirationDate = expirationDate;
+            product.discountedDate = discountedDate;
             if(imageUrl){
                 product.imageUrl = imageUrl;
             }
