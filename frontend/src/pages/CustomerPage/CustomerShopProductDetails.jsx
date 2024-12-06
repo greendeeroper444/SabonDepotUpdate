@@ -279,7 +279,7 @@ function CustomerShopProductDetails() {
                                             <button className='add-to-cart' 
                                             onClick={handleAddToCart}
                                             >Add To Cart</button>
-                                            <button className='check-out' onClick={() => handleCheckout(product)}>Checkout</button>
+                                            {/* <button className='check-out' onClick={() => handleCheckout(product)}>Checkout</button> */}
                                         </div>
                                     )
                                 }

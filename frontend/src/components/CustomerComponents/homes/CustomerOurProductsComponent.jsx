@@ -57,7 +57,7 @@ function CustomerOurProductsComponent() {
                                             </span>
                                         </h5>
                                         <span>{product.category}</span>
-                                        <h6>{`Php ${finalPrice}`}</h6>
+                                        <h6>{`₱ ${finalPrice}`}</h6>
                                     </div>
                                 </div>
                                 <div className='view-details'>

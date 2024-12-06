@@ -134,7 +134,7 @@ function StaffDirectOrdersDetailsPage() {
                             <div className='customer-shop-product-details-content-right-header'>
                                 <h1>{`${product.productName} (${product.productSize})`}</h1>
                                 <h4>{product.productSize}</h4>
-                                <span>{`Php ${finalPrice}`}</span>
+                                <span>{`₱ ${finalPrice}`}</span>
                                 <div className='stars-reviews-content'>
                                     {/* {renderStars(rating)} */}
                                     <span className='customer-review'>5 Customer Review</span>

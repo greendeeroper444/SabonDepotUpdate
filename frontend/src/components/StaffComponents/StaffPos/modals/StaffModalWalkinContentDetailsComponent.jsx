@@ -171,7 +171,7 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                                                     className='input-quantity-update'
                                                 />
                                                 <span>X</span>
-                                                <span>{`Php ${calculateFinalPriceModalStaff(cartItem)}`}</span>
+                                                <span>{`₱ ${calculateFinalPriceModalStaff(cartItem)}`}</span>
                                             </p>
                                         </div>
                                         <span
@@ -190,19 +190,19 @@ function StaffModalWalkinContentDetailsComponent({isOpen, onClose, cartItems, se
                 <div className='customer-modal-footer'>
                     <div className='products-subtotal'>
                         <span>Subtotal:</span>
-                        <span>Php {calculateSubtotalModalStaff(cartItems).rawSubtotal}</span>
+                        <span>₱ {calculateSubtotalModalStaff(cartItems).rawSubtotal}</span>
                     </div>
                     {
                         calculateSubtotalModalStaff(cartItems).discountRate > 0 && (
                             <div className='products-subtotal'>
                                 <span>Discount ({calculateSubtotalModalStaff(cartItems).discountRate}%):</span>
-                                <span>- Php {calculateSubtotalModalStaff(cartItems).discountAmount}</span>
+                                <span>- ₱ {calculateSubtotalModalStaff(cartItems).discountAmount}</span>
                             </div>
                         )
                     }
                     <div className='products-subtotal'>
                         <span>Total:</span>
-                        <span> Php {calculateSubtotalModalStaff(cartItems).finalSubtotal}</span>
+                        <span> ₱ {calculateSubtotalModalStaff(cartItems).finalSubtotal}</span>
                     </div>
                 </div>
 

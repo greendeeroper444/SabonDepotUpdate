@@ -205,14 +205,14 @@ function AdminWorkinProgressPage() {
                         <td>{summaryData.categoryCount}</td>
                         <td>{summaryData.totalProducts}</td>
                         <td>{summaryData.totalUnitsProduced}</td>
-                        <td>Php {summaryData.totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
+                        <td>₱ {summaryData.totalValue.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</td>
                         <td>{summaryData.lowStockCount}</td>
                         <td>{summaryData.notInStock}</td>
                     </tr>
                     <tr className='subtext'>
+                        {/* <td>Last 7 days</td>
                         <td>Last 7 days</td>
-                        <td>Last 7 days</td>
-                        <td>Last 7 days</td>
+                        <td>Last 7 days</td> */}
                         <td>Total</td>
                         <td>Ordered</td>
                         <td>Not in stock</td>

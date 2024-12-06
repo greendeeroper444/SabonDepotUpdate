@@ -73,7 +73,7 @@ function StaffOrderSummaryPage() {
                             <span>Invoice</span>
                         </button>
                     </div>
-                    <p>Total Amount: Php {order.totalAmount}</p>
+                    <p>Total Amount: ₱ {order.totalAmount}</p>
                     <p>Order Date: {orderDate(order.createdAt)}</p>
 
 
@@ -84,7 +84,7 @@ function StaffOrderSummaryPage() {
                                     <img src={`http://localhost:8000/${item.imageUrl}`} alt={item.productName} />
                                     <div>
                                         <h3>{item.productName}</h3>
-                                        <p>Price: Php {item.price}</p>
+                                        <p>Price: ₱ {item.price}</p>
                                         <p>Quantity: {item.quantity}</p>
                                     </div>
                                 </div>
