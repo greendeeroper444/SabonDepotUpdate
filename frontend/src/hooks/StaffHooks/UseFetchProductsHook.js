@@ -8,7 +8,7 @@ export default function UseFetchProductsHook(selectedCategory) {
 
     const fetchProducts = async(category = '') => {
         try {
-            const response = await axios.get('/staffProduct/getProductShopStaff', {
+            const response = await axios.get('/staffProduct/getProductsStaff', {
                 params: {category}
             });
             const productData = Array.isArray(response.data) ? response.data : [];

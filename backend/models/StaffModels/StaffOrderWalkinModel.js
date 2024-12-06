@@ -10,7 +10,7 @@ const StaffOrderWalkinSchema = new mongoose.Schema({
         {
             productId: {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Product',
+                ref: 'WorkinProgressProduct',
                 required: true,
             },
             productCode: String,

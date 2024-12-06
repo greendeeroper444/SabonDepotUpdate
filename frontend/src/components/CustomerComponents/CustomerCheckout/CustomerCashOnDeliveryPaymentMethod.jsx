@@ -31,13 +31,19 @@ const CustomerCashOnDeliveryPaymentMethod = ({onClose, onSetPartialPayment, defa
     };
 
     const handleSubmit = () => {
-        if(partialPayment && referenceNumber && paymentProof){
-            onSetPartialPayment({partialPayment, paymentProof, referenceNumber});
-            toast.success('Submitted successfully! Please place your order.');
-            onClose();
-        } else{
+        if(!partialPayment || !paymentProof || !referenceNumber){
             toast.error('Please fill in all fields and upload a payment proof.');
+            return;
         }
+    
+        if(referenceNumber.length !== 13){
+            toast.error('Reference number must be exactly 13 digits.');
+            return;
+        }
+    
+        onSetPartialPayment({partialPayment, referenceNumber, paymentProof});
+        toast.success('Submitted successfully! Please place your order.');
+        onClose();
     };
 
     // useEffect(() => {

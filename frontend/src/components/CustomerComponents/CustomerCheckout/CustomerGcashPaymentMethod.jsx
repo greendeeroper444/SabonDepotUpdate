@@ -18,13 +18,19 @@ const CustomerGcashPaymentMethod = ({onClose, onGcashPayment, defaultGcashPaid }
     };
 
     const handleSubmit = () => {
-        if(gcashPaid && paymentProof && referenceNumber){
-            onGcashPayment({gcashPaid, referenceNumber, paymentProof});
-            toast.success('Submitted successfully! Please place your order.');
-            onClose();
-        } else{
+        if(!gcashPaid || !paymentProof || !referenceNumber){
             toast.error('Please fill in all fields and upload a payment proof.');
+            return;
         }
+    
+        if(referenceNumber.length !== 13){
+            toast.error('Reference number must be exactly 13 digits.');
+            return;
+        }
+    
+        onGcashPayment({gcashPaid, referenceNumber, paymentProof});
+        toast.success('Submitted successfully! Please place your order.');
+        onClose();
     };
 
   return (

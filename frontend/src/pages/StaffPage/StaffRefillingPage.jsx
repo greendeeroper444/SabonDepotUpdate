@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react'
 import '../../CSS/CustomerCSS/Shop/CustomerShopContent.css';
 import '../../CSS/StaffCSS/StaffPayment.css';
-import UseFetchCategoriesHook from '../../hooks/CustomerHooks/UseFetchCategoriesHook';
-import UseFetchProductsHook from '../../hooks/CustomerHooks/UseFetchProductsHook';
+import UseFetchCategoriesHook from '../../hooks/StaffHooks/UseFetchCategoriesHook';
+import UseFetchProductsHook from '../../hooks/StaffHooks/UseFetchProductsHook';
 import IsDiscountValidUtils from '../../utils/IsDiscountValidUtils';
 import { StaffContext } from '../../../contexts/StaffContexts/StaffAuthContext';
 import UseCartHook from '../../hooks/StaffHooks/UseCartHook';

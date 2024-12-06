@@ -24,7 +24,7 @@ function CustomerShopProductDetails() {
     const {customerId} = useParams();
 
     const handleCheckout = (product) => {
-        navigate(`/checkout/${customer?._id}`, {
+        navigate(`/direct-checkout/${customer?._id}`, {
             state: {
                 selectedItems: [
                     {
@@ -194,7 +194,7 @@ function CustomerShopProductDetails() {
                                 {
                                     shouldShowDiscount && !customer.isNewCustomer && (
                                         <h4 className='final-price line-through'>
-                                            Php {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                            ₱ {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                         </h4>
                                     )
                                 }
@@ -202,12 +202,12 @@ function CustomerShopProductDetails() {
                                 {
                                     customer.isNewCustomer && new Date(customer.newCustomerExpiresAt) > new Date() && (
                                         <h4 className='final-price line-through'>
-                                            Php {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
+                                            ₱ {product.price.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
                                         </h4>
                                     )
                                 }
                                     <h4 className='final-price'>
-                                        Php {finalPrice}
+                                        ₱ {finalPrice}
                                     </h4>
                                 </div>
                                 {/* <div className='stars-reviews-content'>

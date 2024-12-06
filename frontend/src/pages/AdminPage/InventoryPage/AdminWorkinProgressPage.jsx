@@ -244,7 +244,10 @@ function AdminWorkinProgressPage() {
                             <th>Product Name</th>
                             <th>Category</th>
                             <th>Quantity</th>
-                            <th>Availability</th>
+                            <th>Price</th>
+                            <th>Size</th>
+                            {/* <th>Availability</th> */}
+                            <th>Status</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -263,8 +266,11 @@ function AdminWorkinProgressPage() {
                                     </td>
                                     <td>{product.category}</td>
                                     {/* <td>{product.sizeUnit.slice(0, 1)} - {product.productSize}</td> */}
-                                    <td>{`₱${product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
+                                    {/* <td>{`₱${product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td> */}
                                     <td>{product.quantity}</td>
+                                    <td>{`₱${product.price.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
+                                    <td>{product.productSize}</td>
+                                    {/* <td>{product.quantity}</td> */}
                                     <td className={product.quantity > 0 ? (product.quantity > 10 ? 'in-stock' : 'low-stock') : 'out-of-stock'}>
                                         {product.quantity > 0 ? (product.quantity > 10 ? 'In stock' : 'Low stock') : 'Out of stock'}
                                     </td>

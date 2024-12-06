@@ -13,6 +13,8 @@ import InventoryReport from '../pages/AdminPage/ReportsPage/InventoryReport'
 import SalesReport from '../pages/AdminPage/ReportsPage/SalesReport'
 import AdminAccountDetails from '../pages/AdminPage/AdminAccountDetails'
 import AdminWorkinProgressPage from '../pages/AdminPage/InventoryPage/AdminWorkinProgressPage'
+import AdminOrdersWalkinPage from '../pages/AdminPage/AdminOrderWalkinPage'
+import AdminOrdersRefillPage from '../pages/AdminPage/AdminOrdersRefillPage'
 
 function AdminRoutes({adminToggleSidebar, adminCloseSidebar, adminSidebarVisible}) {
   return (
@@ -27,6 +29,8 @@ function AdminRoutes({adminToggleSidebar, adminCloseSidebar, adminSidebarVisible
                 <Route path='/admin/dashboard' element={<AdminDashboardPage />} />
                 <Route path='/admin/orders' element={<AdminOrdersPage />} />
                 <Route path='/admin/orders/details/:orderId' element={<AdminOrdersDetailsPage />} />
+                <Route path='/admin/walkins' element={<AdminOrdersWalkinPage />} />
+                <Route path='/admin/refills' element={<AdminOrdersRefillPage />} />
                 <Route path='/admin/inventory/finished-product' element={<AdminFinishedProductPage />} />
                 <Route path='/admin/inventory/workin-progress' element={<AdminWorkinProgressPage />} />
                 <Route path='/admin/accounts' element={<AdminAccountsPage />} />

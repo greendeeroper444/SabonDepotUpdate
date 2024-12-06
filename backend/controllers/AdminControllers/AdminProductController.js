@@ -174,7 +174,7 @@ const editProductAdmin = async(req, res) => {
             const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !stockLevel || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });

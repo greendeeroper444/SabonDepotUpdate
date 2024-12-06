@@ -100,12 +100,12 @@ function CustomerShopContentComponent() {
                                             {
                                                 shouldShowDiscount && (
                                                     <h4 className='final-price line-through'>
-                                                        Php {originalPrice}
+                                                        ₱ {originalPrice}
                                                     </h4>
                                                 )
                                             }
                                             <h4 className='final-price'>
-                                                Php {finalPrice}
+                                                ₱ {finalPrice}
                                             </h4>
                                         </div>
                                     </div>

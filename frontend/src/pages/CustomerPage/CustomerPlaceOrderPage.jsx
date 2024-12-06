@@ -93,7 +93,7 @@ function CustomerPlaceOrderPage() {
                         <p>{item.productId.category} | 250ml</p>
                     </div>
                     <div className='item-price'>
-                        <p>Php {item.finalPrice}.00</p>
+                        <p>₱ {item.finalPrice}.00</p>
                         <p>{`Qty: ${item.quantity}`}</p>
                     </div>
                 </div>

@@ -151,7 +151,7 @@
 //                                                     <p>{cartItem.productId.productName}</p>
 //                                                 </div>
 //                                             </td>
-//                                             <td>{`Php ${cartItem.finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
+//                                             <td>{`₱ ${cartItem.finalPrice.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
 //                                             <td>
 //                                                 <input
 //                                                 type="number"
@@ -160,7 +160,7 @@
 //                                                 onChange={(e) => handleQuantityChange(cartItem, parseInt(e.target.value))}
 //                                                 />
 //                                             </td>
-//                                             <td>{`Php ${(cartItem.finalPrice) * cartItem.quantity.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
+//                                             <td>{`₱ ${(cartItem.finalPrice) * cartItem.quantity.toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
 //                                             <td>
 //                                                 <button className='delete-button' 
 //                                                 onClick={() => handleDeleteCartClick(cartItem._id)}>
@@ -182,7 +182,7 @@
 //                     <div className='totals-item'>
 //                         <span>Subtotal</span>
 //                         <span>
-//                             {`Php ${
+//                             {`₱ ${
 //                                 selectedItems.some(item => item.finalPrice < item.productId.price)
 //                                 ? selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 //                                 : selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
@@ -191,12 +191,12 @@
 //                     </div>
 //                     <div className='totals-item'>
 //                         <span>Shipping Fee</span>
-//                         <span>Php 50.00</span>
+//                         <span>₱ 50.00</span>
 //                     </div>
 //                     <div className='totals-total'>
 //                         <span>Total</span>
 //                         <span>
-//                             {`Php ${
+//                             {`₱ ${
 //                                 selectedItems.some(item => item.finalPrice < item.productId.price)
 //                                 ? (selectedItems.reduce((acc, item) => acc + (item.finalPrice || item.productId.price) * item.quantity, 0) + 50).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
 //                                 : (selectedItems.reduce((acc, item) => acc + item.productId.price * item.quantity, 0) + 50).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})
@@ -380,7 +380,7 @@ function CustomerCartPage() {
                                                 </div>
                                             </td>
                                             <td>
-                                                {`Php ${
+                                                {`₱ ${
                                                     customer?.isNewCustomer && new Date(customer?.newCustomerExpiresAt) > new Date()
                                                         ? (cartItem.productId.price * 0.7).toLocaleString('en-US', {
                                                             minimumFractionDigits: 2,
@@ -401,7 +401,7 @@ function CustomerCartPage() {
                                                 />
                                             </td>
                                             <td>
-                                                {`Php ${
+                                                {`₱ ${
                                                     customer?.isNewCustomer && new Date(customer?.newCustomerExpiresAt) > new Date()
                                                         ? (cartItem.productId.price * 0.7 * cartItem.quantity).toLocaleString('en-US', {
                                                             minimumFractionDigits: 2,
@@ -433,7 +433,7 @@ function CustomerCartPage() {
                     <div className='totals-item'>
                         <span>Subtotal</span>
                         <span>
-                            {`Php ${
+                            {`₱ ${
                                 selectedItems.reduce((acc, item) => {
                                     const price = customer?.isNewCustomer && new Date(customer?.newCustomerExpiresAt) > new Date()
                                         ? item.productId.price * 0.7
@@ -445,12 +445,12 @@ function CustomerCartPage() {
                     </div>
                     <div className='totals-item'>
                         <span>Shipping Fee</span>
-                        <span>Php 50.00</span>
+                        <span>₱ 50.00</span>
                     </div>
                     <div className='totals-total'>
                         <span>Total</span>
                         <span>
-                            {`Php ${
+                            {`₱ ${
                                 selectedItems.reduce((acc, item) => {
                                     const price = customer?.isNewCustomer && new Date(customer?.newCustomerExpiresAt) > new Date()
                                         ? item.productId.price * 0.7

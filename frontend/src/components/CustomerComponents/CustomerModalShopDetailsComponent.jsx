@@ -88,9 +88,9 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                                         <p>
                                             <span>{cartItem.quantity}</span>
                                             <span>X</span> 
-                                            <span>{`Php ${calculateFinalPriceModal(cartItem, customer)}`}</span>
+                                            <span>{`₱ ${calculateFinalPriceModal(cartItem, customer)}`}</span>
                                             {/* <span>=</span>
-                                            <span>{`Php ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
+                                            <span>{`₱ ${(item.productId.price * item.quantity).toFixed(2)}`}</span> */}
                                         </p>
                                     </div>
                                     <span className='customer-modal-cancel-items' onClick={() => handleCartItemDelete(cartItem._id)}>
@@ -105,7 +105,7 @@ function CustomerModalShopDetailsComponent({isOpen, onClose, cartItems, setCartI
                 <div className='customer-modal-footer'>
                 <div className="products-subtotal">
                     <span>Subtotal</span>
-                    <span>{`Php ${calculateSubtotalModalCustomer(cartItems, customer)}`}</span>
+                    <span>{`₱ ${calculateSubtotalModalCustomer(cartItems, customer)}`}</span>
                 </div>
 
                 </div>

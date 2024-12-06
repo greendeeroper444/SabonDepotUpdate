@@ -6,6 +6,7 @@ const ProductModel = require("../../models/ProductModel");
 const { BestSellingModel, TotalSaleModel } = require("../../models/SalesOverviewModel");
 const ProductionReportModel = require("../../models/ProductionReportModel");
 const { getInventoryReport, getSalesReport } = require("../AdminControllers/AdminReportController");
+const WorkinProgressProductModel = require("../../models/WorkinProgressProductModel");
 
 //create order via staff
 const addOrderWalkinStaff = async(req, res) => {
@@ -95,6 +96,10 @@ const addOrderWalkinStaff = async(req, res) => {
                 await ProductModel.findByIdAndUpdate(item.productId._id, {
                     $inc: {quantity: -item.quantity} //decrease product quantity
                 });
+                await WorkinProgressProductModel.findByIdAndUpdate(item.productId._id, {
+                    $inc: {quantity: -item.quantity} //decrease product quantity
+                });
+
 
                 const today = new Date();
                 today.setUTCHours(0, 0, 0, 0); //set time to midnight for the day field

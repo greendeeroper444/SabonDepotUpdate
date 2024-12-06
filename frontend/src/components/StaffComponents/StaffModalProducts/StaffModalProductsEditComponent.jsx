@@ -14,6 +14,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         quantity: '',
         stockLevel: '', 
         discountPercentage: '',
+        discountedDate: '',
         productSize: '',
         sizeUnit: '',
         expirationDate: '',
@@ -34,6 +35,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
         formData.append('quantity', updatedQuantity);
         formData.append('stockLevel', dataInput.stockLevel);
         formData.append('discountPercentage', dataInput.discountPercentage);
+        formData.append('discountedDate', dataInput.discountedDate);
         formData.append('productSize', dataInput.productSize);
         formData.append('sizeUnit', dataInput.sizeUnit);
         formData.append('expirationDate', dataInput.expirationDate);
@@ -59,7 +61,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
 
     useEffect(() => {
         if(selectedProduct){
-            const {productCode, productName, category, price, quantity, stockLevel, imageUrl, discountPercentage, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
+            const {productCode, productName, category, price, quantity, stockLevel, imageUrl, discountPercentage, discountedDate, productSize, sizeUnit, expirationDate, updatedAt} = selectedProduct;
             setDataInput({
                 productCode: productCode || '',
                 productName: productName || '',
@@ -68,6 +70,7 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                 quantity: quantity || '',
                 stockLevel: stockLevel || '',
                 discountPercentage: discountPercentage || '',
+                discountedDate: discountedDate ? new Date(discountedDate).toISOString().split('T')[0] : '',
                 productSize: productSize || '',
                 sizeUnit: sizeUnit || '',
                 expirationDate: expirationDate ? new Date(expirationDate).toISOString().split('T')[0] : '',
@@ -286,6 +289,16 @@ function StaffModalProductsEditComponent({isOpen, onClose, selectedProduct, fetc
                         type="number"
                         value={dataInput.discountPercentage}
                         onChange={(e) => setDataInput({...dataInput, discountPercentage: e.target.value})}
+                    />
+                </div>
+            </div>
+            <div className='label-text'>
+                <label>UPDATE DISCOUNTED DATE:</label>
+                <div>
+                    <input
+                    type="date"
+                    value={dataInput.discountedDate}
+                    onChange={(e) => setDataInput({...dataInput, discountedDate: e.target.value})}
                     />
                 </div>
             </div>

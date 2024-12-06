@@ -9,7 +9,7 @@ export default function UseFetchProductDetailsHook(productId) {
     useEffect(() => {
         const fetchProductDetails = async() => {
             try {
-                const response = await axios.get(`/staffProduct/getProductDetailsShopStaff/${productId}`);
+                const response = await axios.get(`/staffProduct/getProductDetailsStaff/${productId}`);
                 if(response.status === 200){
                     setProduct(response.data);
                 } else {

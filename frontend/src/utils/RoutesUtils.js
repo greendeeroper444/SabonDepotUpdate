@@ -3,6 +3,8 @@ export const adminRoutes = [
     '/admin/dashboard',
     '/admin/orders',
     '/admin/orders/details/:orderId',
+    '/admin/walkins',
+    '/admin/refills',
     '/admin/inventory/finished-product',
     '/admin/inventory/workin-progress',
     '/admin/accounts',
@@ -72,6 +74,7 @@ export const customerRoutes = [
     '/shop/product/details/:productId',
     '/cart/:customerId',
     '/checkout/:customerId',
+    '/direct-checkout/:customerId',
     '/place-order/:customerId/:orderId',
     '/payable/:customerId'
 ];

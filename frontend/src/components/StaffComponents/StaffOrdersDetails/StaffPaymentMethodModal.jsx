@@ -3,13 +3,22 @@ import { toast } from 'react-hot-toast';
 import '../../../CSS/StaffCSS/StaffOrdersDetails/StaffPaymentMethodModal.css';
 import PropTypes from 'prop-types';
 import { orderDate } from '../../../utils/OrderUtils';
+import axios from 'axios';
 
 
 function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
 
     if(!isOpen) return null;
 
-    const handleDecline = () => {
+    const handleDecline = async() => {
+        // try {
+        //     const response = await axios.put(`/staffOrders/declineOrderStaff/${order._id}/`);
+        //     toast.success('Order declined successfully!');
+        //     onClose();
+        // } catch (error) {
+        //     console.error(error);
+        //     toast.error('Failed to decline the order. Please try again.');
+        // }
         onClose();
     };
 
@@ -29,7 +38,7 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                         order.overallPaid !== 0 && (
                             <div className='payment-total'>
                                 <h3>Total Payment</h3>
-                                <p>{`PHP ${order.overallPaid}`}</p>
+                                <p>{`₱ ${order.overallPaid}`}</p>
                             </div>
                         )
                     }
@@ -37,7 +46,7 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                         order.outstandingAmount !== 0 && (
                             <div className='payment-total'>
                                 <h3>Total Debt</h3>
-                                <p>{`PHP ${order.outstandingAmount}`}</p>
+                                <p>{`₱ ${order.outstandingAmount}`}</p>
                             </div>
                         )
                     }
@@ -82,7 +91,7 @@ function StaffPaymentMethodModal({isOpen, onClose, order, handleApprove}) {
                         {order.isConfirmed ? 'Approved' : 'Approve'}
                     </button>
                     <button onClick={handleDecline} className='decline-button'>
-                        Decline
+                        Cancel
                     </button>
                 </div>
             </div>

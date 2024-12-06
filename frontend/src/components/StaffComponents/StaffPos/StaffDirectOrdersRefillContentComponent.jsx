@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import '../../../CSS/CustomerCSS/Shop/CustomerShopContent.css';
-import UseFetchProductsHook from '../../../hooks/CustomerHooks/UseFetchProductsHook';
+import UseFetchProductsHook from '../../../hooks/StaffHooks/UseFetchProductsHook';
 import IsDiscountValidUtils from '../../../utils/IsDiscountValidUtils';
 import { Link } from 'react-router-dom';
 

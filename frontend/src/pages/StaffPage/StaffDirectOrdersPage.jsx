@@ -1,7 +1,7 @@
 import React, {useContext, useState } from 'react'
 import '../../CSS/StaffCSS/StaffPayment.css';
-import UseFetchCategoriesHook from '../../hooks/CustomerHooks/UseFetchCategoriesHook';
-import UseFetchProductsHook from '../../hooks/CustomerHooks/UseFetchProductsHook';
+import UseFetchCategoriesHook from '../../hooks/StaffHooks/UseFetchCategoriesHook';
+import UseFetchProductsHook from '../../hooks/StaffHooks/UseFetchProductsHook';
 import StaffDirectOrdersWalkinContentComponent from '../../components/StaffComponents/StaffPos/StaffDirectOrdersWalkinContentComponent';
 import StaffDirectOrdersRefillContentComponent from '../../components/StaffComponents/StaffPos/StaffDirectOrdersRefillContentComponent';
 import StaffModalWalkinContentDetailsComponent from '../../components/StaffComponents/StaffPos/modals/StaffModalWalkinContentDetailsComponent';

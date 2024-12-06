@@ -345,6 +345,140 @@ const createOrderCustomer = async(req, res) => {
     });
 };
 
+const createDirectOrderCustomer = async(req, res) => {
+    upload(req, res, async (err) => {
+        if(err){
+            return res.status(400).json({
+                message: err,
+            });
+        }
+
+        try {
+            const {
+                customerId,
+                paymentMethod,
+                selectedItems,
+                billingDetails,
+                partialPayment = 0,
+                gcashPaid = 0,
+                referenceNumber,
+            } = req.body;
+
+            const paymentProof = req.file ? req.file.path : '';
+
+            let parsedBillingDetails = {};
+            try {
+                parsedBillingDetails = JSON.parse(billingDetails);
+            } catch (error) {
+                return res.status(400).json({
+                    message: 'Invalid billing details format.',
+                });
+            }
+
+            //validate billing details
+            if(
+                !parsedBillingDetails.firstName ||
+                !parsedBillingDetails.lastName ||
+                !parsedBillingDetails.middleInitial ||
+                !parsedBillingDetails.contactNumber ||
+                !parsedBillingDetails.province ||
+                !parsedBillingDetails.city ||
+                !parsedBillingDetails.barangay ||
+                !parsedBillingDetails.purokStreetSubdivision ||
+                !parsedBillingDetails.emailAddress ||
+                !parsedBillingDetails.clientType
+            ) {
+                return res.status(400).json({
+                    message: 'Billing details are required.',
+                });
+            }
+
+            // Compute total amount
+            const totalAmount = selectedItems.reduce((acc, item) => {
+                const originalPrice = item.price;
+                let discountedPrice = originalPrice;
+
+                if(item.discountPercentage && item.discountPercentage > 0){
+                    discountedPrice = originalPrice - (originalPrice * item.discountPercentage) / 100;
+                }
+
+                acc += discountedPrice * item.quantity;
+                return acc;
+            }, 0);
+
+            const shippingCost = 50;
+            const totalAmountWithShipping = totalAmount + shippingCost;
+
+            //handle payment
+            let paymentStatus, outstandingAmount;
+
+            if(paymentMethod === 'Gcash'){
+                ({paymentStatus, outstandingAmount} = await handleGcashPayment({
+                    paymentProof,
+                    gcashPaid,
+                    referenceNumber,
+                    totalAmountWithShipping,
+                    partialPayment,
+                }));
+            } else if (paymentMethod === 'Cash On Delivery'){
+                ({paymentStatus, outstandingAmount} = await handleCodPayment({
+                    paymentProof,
+                    referenceNumber,
+                    totalAmountWithShipping,
+                    partialPayment,
+                }));
+            } else {
+                return res.status(400).json({
+                    message: 'Invalid payment method.',
+                });
+            }
+
+            //create order
+            const order = new OrderModel({
+                customerId,
+                items: selectedItems.map(item => ({
+                    productId: item.productId,
+                    productCode: item.productCode,
+                    productName: item.productName,
+                    category: item.category,
+                    price: item.price,
+                    discountPercentage: item.discountPercentage,
+                    discountedPrice: item.discountedPrice,
+                    finalPrice: item.price,
+                    quantity: item.quantity,
+                    uploaderId: item.uploaderId,
+                    uploaderType: item.uploaderType,
+                    imageUrl: item.imageUrl,
+                    sizeUnit: item.sizeUnit,
+                    productSize: item.productSize,
+                })),
+                totalAmount: totalAmountWithShipping,
+                paymentProof,
+                gcashPaid,
+                referenceNumber,
+                partialPayment,
+                outstandingAmount,
+                paymentMethod,
+                billingDetails: parsedBillingDetails,
+                paymentStatus,
+                orderStatus: 'Pending',
+            });
+
+            await order.save();
+
+            res.status(201).json({
+                message: 'Order created successfully',
+                orderId: order._id,
+            });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({
+                message: 'Server error',
+            });
+        }
+    });
+};
+
 
 // const createOrderCustomer = async(req, res) => {
 //      upload(req, res, async(err) => {
@@ -724,6 +858,7 @@ const receivedButton = async(req, res) => {
 
 module.exports = {
     createOrderCustomer,
+    createDirectOrderCustomer,
     getOrderCustomer,
     getAllOrdersCustomer,
     uploadProof,

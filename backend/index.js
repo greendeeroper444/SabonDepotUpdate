@@ -8,6 +8,7 @@ dotenv.config({ path: './.env' });
 const app = express();
 
 require('./cronJobs/dailyInventoryReport');
+require('./cronJobs/resetDiscounted');
 
 app.use(middleware);
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));

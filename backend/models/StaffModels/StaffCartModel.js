@@ -12,7 +12,7 @@ const StaffCartSchema = new mongoose.Schema({
         required: true,
         ref: 'Product'
     },
-    productName: { type: String }, 
+    productName: {type: String}, 
     quantity: {
         type: Number,
         required: true,

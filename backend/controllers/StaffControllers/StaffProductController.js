@@ -6,6 +6,7 @@ const jwt = require('jsonwebtoken');
 const CartModel = require('../../models/CartModel');
 const { getInventoryReport } = require('../AdminControllers/AdminReportController');
 const mongoose = require('mongoose');
+const WorkinProgressProductModel = require('../../models/WorkinProgressProductModel');
 
 //set up storage engine
 const storage = multer.diskStorage({
@@ -51,7 +52,7 @@ const uploadProductStaff = async(req, res) => {
         }
 
         try {
-            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, discountedDate, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
             if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !imageUrl || !productSize){
@@ -59,9 +60,20 @@ const uploadProductStaff = async(req, res) => {
                     error: 'Please provide all required fields'
                 });
             }
+            //check if the discountedDate is valid
+            if(discountedDate && new Date(discountedDate) < new Date()){
+                return res.json({
+                    error: 'Discounted date must be today or a future date.',
+                });
+            }
+
 
             //calculate discountedPrice
-            const discountedPrice = price - (price * discountPercentage / 100);
+            // const discountedPrice = price - (price * discountPercentage / 100);
+            const discountedPrice =
+                discountPercentage > 0
+                    ? price - (price * discountPercentage) / 100
+                    : price;
 
             const token = req.cookies.token;
             if(!token){
@@ -91,13 +103,17 @@ const uploadProductStaff = async(req, res) => {
                 //     const code3 = Math.floor(Math.random() * 1000000).toString().padStart(6, '0');
                 //     return `${code1} ${code2} ${code3}`;
                 // };
+                const today = new Date();
+                const discountEnds = new Date(discountedDate);
+                const isDiscountEnd = discountEnds.toDateString() === today.toDateString();
 
                 const newProduct = await ProductModel.create({
                     productCode,
                     productName,
                     category,
                     price,
-                    discountedPrice,
+                    discountedPrice: isDiscountEnd ? price : discountedPrice,
+                    discountPercentage: isDiscountEnd ? 0 : discountPercentage,
                     quantity,
                     stockLevel,
                     discountPercentage,
@@ -216,10 +232,10 @@ const editProductStaff = async(req, res) => {
 
         try {
             const {productId} = req.params;
-            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, sizeUnit, productSize, expirationDate} = req.body;
+            const {productCode, productName, category, price, quantity, stockLevel, discountPercentage = 0, discountedDate, sizeUnit, productSize, expirationDate} = req.body;
             const imageUrl = req.file ? req.file.path : '';
 
-            if(!productCode || !productName || !category || !price || !quantity || !stockLevel || !productSize || !expirationDate){
+            if(!productCode || !productName || !category || !price || !stockLevel || !productSize || !expirationDate){
                 return res.json({
                     error: 'Please provide all required fields'
                 });
@@ -232,8 +248,20 @@ const editProductStaff = async(req, res) => {
                 });
             }
 
-            //calculate discountedPrice
-            const discountedPrice = price - (price * discountPercentage / 100);
+            // //calculate discountedPrice
+            // const discountedPrice = price - (price * discountPercentage / 100);
+            //validate the discounted date
+            const currentDate = new Date();
+            let discountedPrice = price;
+
+            if(discountPercentage > 0 && discountedDate && new Date(discountedDate) > currentDate){
+                discountedPrice = price - (price * discountPercentage / 100);
+            } else{
+                //reset discount if expired or invalid
+                product.discountPercentage = 0;
+                product.discountedDate = null;
+            }
+ 
 
             //update product fields
             product.productCode = productCode;
@@ -247,6 +275,7 @@ const editProductStaff = async(req, res) => {
             product.sizeUnit = sizeUnit;
             product.productSize = productSize;
             product.expirationDate = expirationDate;
+            product.discountedDate = discountedDate;
             if(imageUrl){
                 product.imageUrl = imageUrl;
             }
@@ -503,6 +532,168 @@ const getOutOfStockProducts = async (req, res) => {
 
 
 
+// const getProductsStaff = async (req, res) => {
+//     const category = req.query.category;
+
+//     try {
+//         const query = {
+//             ...(category ? {category: category} : {}),
+//             isArchived: false,
+//         };
+
+//         //fetch all products that match the query without stock checks
+//         const customerProducts = await ProductModel.find(query);
+
+//         //group by productName and prioritize by sizeUnit and productSize
+//         const productMap = new Map();
+
+//         customerProducts.forEach(product => {
+//             const key = product.productName;
+
+//             if(!productMap.has(key)){
+//                 productMap.set(key, product);
+//             } else{
+//                 const existingProduct = productMap.get(key);
+
+//                 const sizePriority = {
+//                     'Gallons': 3,
+//                     'Liters': 2,
+//                     'Milliliters': 1,
+//                 };
+
+//                 const existingSizePriority = sizePriority[existingProduct.sizeUnit] || 0;
+//                 const newSizePriority = sizePriority[product.sizeUnit] || 0;
+
+//                 if(
+//                     newSizePriority > existingSizePriority ||
+//                     (newSizePriority === existingSizePriority && product.productSize > existingProduct.productSize)
+//                 ){
+//                     productMap.set(key, product);
+//                 }
+//             }
+//         });
+
+//         const prioritizedProducts = Array.from(productMap.values());
+
+//         return res.json(prioritizedProducts);
+//     } catch (error) {
+//         console.log(error);
+//         return res.status(500).json({
+//             message: 'Server error',
+//         });
+//     }
+// };
+
+const getProductsStaff = async (req, res) => {
+    const category = req.query.category;
+
+    try {
+        const query = {
+            ...(category ? {category: category} : {}),
+            isArchived: false,
+        };
+
+        //fetch all products from ProductModel
+        const customerProducts = await ProductModel.find(query);
+
+        //fetch all products from WorkinProgressProductModel
+        const workinProgressProducts = await WorkinProgressProductModel.find(query);
+
+        //combine both product lists
+        const allProducts = [...customerProducts, ...workinProgressProducts];
+
+        //group by productName and prioritize by sizeUnit and productSize
+        const productMap = new Map();
+
+        allProducts.forEach(product => {
+            const key = product.productName;
+
+            if(!productMap.has(key)){
+                productMap.set(key, product);
+            } else{
+                const existingProduct = productMap.get(key);
+
+                const sizePriority = {
+                    'Gallons': 3,
+                    'Liters': 2,
+                    'Milliliters': 1,
+                };
+
+                const existingSizePriority = sizePriority[existingProduct.sizeUnit] || 0;
+                const newSizePriority = sizePriority[product.sizeUnit] || 0;
+
+                if(
+                    newSizePriority > existingSizePriority ||
+                    (newSizePriority === existingSizePriority && product.productSize > existingProduct.productSize)
+                ){
+                    productMap.set(key, product);
+                }
+            }
+        });
+
+        const prioritizedProducts = Array.from(productMap.values());
+
+        return res.json(prioritizedProducts);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({
+            message: 'Server error',
+        });
+    }
+};
+
+const getProductDetailsStaff = async(req, res) => {
+    const productId = req.params.productId;
+
+    try {
+        const productDetails = await ProductModel.findById(productId);
+        if(!productDetails){
+            return res.status(404).json({ 
+                error: 'Product not found.' 
+            });
+        }
+
+        //get all products with the same productName to fetch available sizes and units
+        const relatedProducts = await ProductModel.find({productName: productDetails.productName});
+
+        //extract available sizes and units
+        const sizesAndUnits = relatedProducts.map(product => ({
+            sizeUnit: product.sizeUnit,
+            productSize: product.productSize,
+            productId: product._id
+        }));
+
+        //find related products (based on category)
+        const moreRelatedProducts = await ProductModel.find({
+            _id: {$ne: productId},  //exclude the current product
+            category: productDetails.category //filter by the same category
+        }).limit(5);
+
+        return res.json({
+            ...productDetails.toObject(),
+            sizesAndUnits: sizesAndUnits,
+            relatedProducts: moreRelatedProducts //iclude related products based on category
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
+
+const getUniqueCategoriesStaff = async(req, res) => {
+    try {
+        const categories = await ProductModel.distinct('category');
+        return res.json(categories);
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ 
+            message: 'Server error' 
+        });
+    }
+};
+
 module.exports = {
     uploadProductStaff,
     getProductStaff,
@@ -512,5 +703,8 @@ module.exports = {
     getProductShopStaff,
     getProductDetailsShopStaff,
     archiveProductStaff,
-    getOutOfStockProducts
+    getOutOfStockProducts,
+    getProductsStaff,
+    getProductDetailsStaff,
+    getUniqueCategoriesStaff
 }

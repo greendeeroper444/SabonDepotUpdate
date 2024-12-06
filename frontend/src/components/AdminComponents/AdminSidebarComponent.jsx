@@ -16,7 +16,11 @@ import { faAngleDown, faAngleUp } from '@fortawesome/free-solid-svg-icons';
 function AdminSidebarComponent() {
     const [isDropdownOpenInventory, setIsDropdownOpenInventory] = useState(false);
     const [isDropdownOpenReports, setIsDropdownOpenReports] = useState(false);
+    const [isDropdownTransaction, setIsDropdownTransaction] = useState(false);
 
+    const toggleDropdownTransaction = () => {
+        setIsDropdownTransaction(!isDropdownTransaction);
+    };
     const toggleDropdownInventory = () => {
         setIsDropdownOpenInventory(!isDropdownOpenInventory);
     };
@@ -39,12 +43,34 @@ function AdminSidebarComponent() {
                 </NavLink>
             </li>
             <li>
+                <div className='admin-sidebar-item' onClick={toggleDropdownTransaction}>
+                    <img src={ordersIcon} alt="Inventory" className='sidebar-icon' />
+                    <span>Transaction</span>
+                    <FontAwesomeIcon icon={isDropdownTransaction ? faAngleUp : faAngleDown} />
+                </div>
+                {
+                    isDropdownTransaction && (
+                        <div className='admin-sidebar-item-dropdown'>
+                            <NavLink to='/admin/orders' className='admin-sidebar-item' activeClassName='active'>
+                                <span>Online</span>
+                            </NavLink>
+                            <NavLink to='/admin/walkins' className='admin-sidebar-item' activeClassName='active'>
+                                <span>Walkin</span>
+                            </NavLink>
+                            <NavLink to='/admin/refills' className='admin-sidebar-item' activeClassName='active'>
+                                <span>Refill</span>
+                            </NavLink>
+                        </div>
+                    )
+                }
+            </li>
+            {/* <li>
                 <NavLink to='/admin/orders' className='admin-sidebar-item' activeClassName='active'>
                     <img src={ordersIcon} alt="Orders" className='sidebar-icon' />
                     <img src={ordersIconWhite} alt="Orders" className='sidebar-icon-active' />
                     <span>Orders</span>
                 </NavLink>
-            </li>
+            </li> */}
             <li>
                 <div className='admin-sidebar-item' onClick={toggleDropdownInventory}>
                     <img src={inventoryIcon} alt="Inventory" className='sidebar-icon' />

@@ -32,6 +32,12 @@ const WorkinProgressProductSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    sizeUnit: {
+        type: String, //example: 'Milliliters (mL)', 'Liters (L)', 'Gallons (gal)'
+    },
+    productSize: {
+        type: String, //example: '500 mL', '1 L', etc.
+    },
     uploaderId: { 
         type: mongoose.Schema.Types.ObjectId, 
         required: true 
