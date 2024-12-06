@@ -51,8 +51,8 @@ function StaffDirectOrdersPage() {
     <>
     <div className='staff-payment-container'>
         <div className='customer-shop-content-container'>
-            <div className='customer-shop-content-header'>
-                <div className='customer-shop-content-header-left'>
+            <div className='staff-shop-content-header'>
+                <div className='staff-shop-content-header-left'>
                     <div>
                         <select 
                         name="category" 
@@ -126,7 +126,7 @@ function StaffDirectOrdersPage() {
                         }
                     </select>
                 </div>
-                <div className='customer-shop-content-header-section-right'>
+                <div className='staff-shop-content-header-section-right'>
                     <span>Show</span>
                     <button>16</button>
                 </div>

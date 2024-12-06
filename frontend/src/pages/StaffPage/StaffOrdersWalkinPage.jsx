@@ -50,8 +50,11 @@ function StaffOrdersWalkinPage() {
     const fetchOrderWalkins = async() => {
         try {
             const response = await axios.get('/staffOrderWalkin/getAllOrderWalkinStaff');
-            setOrderWalkins(response.data);
-            setFilteredOrders(response.data);
+            // setOrderWalkins(response.data);
+            // setFilteredOrders(response.data);
+            const sortedData = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+            setOrderWalkins(sortedData);
+            setFilteredOrders(sortedData);
         } catch (error) {
             console.log(error);
         }
@@ -151,6 +154,7 @@ function StaffOrdersWalkinPage() {
                     <th>Orders Id</th>
                     <th>Item</th>
                     <th>Qty</th>
+                    <th>Size</th>
                     <th>Price</th>
                     <th>Subtotal</th>
                     <th>Date</th>
@@ -166,6 +170,7 @@ function StaffOrdersWalkinPage() {
                                 <td>{order._id}</td>
                                 <td>{item.productName || "N/A"}</td>
                                 <td>{item.quantity || 0}</td>
+                                <td>{item.productSize}</td>
                                 <td>{`₱${(item.price ?? 0).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                 <td>{`₱${((item.price ?? 0) * (item.quantity ?? 0)).toLocaleString('en-US', {minimumFractionDigits: 2, maximumFractionDigits: 2})}`}</td>
                                 <td>{orderDate(order.createdAt)}</td>

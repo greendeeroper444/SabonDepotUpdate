@@ -3,6 +3,114 @@
     justify-content: space-between;
     padding: 50px 0;
 }
+.staff-shop-content-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .staff-shop-content-header-left {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+  }
+  
+  .staff-shop-content-header-left select {
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .staff-shop-content-header-left select:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  .staff-shop-content-header-left span {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .staff-shop-content-header > div {
+    display: flex;
+    align-items: center;
+  }
+  
+  .staff-shop-content-header > div select {
+    margin-left: 10px;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #fff;
+    transition: border-color 0.3s ease;
+  }
+  
+  .staff-shop-content-header > div select:focus {
+    border-color: #007BFF;
+    outline: none;
+  }
+  
+  .staff-shop-content-header-section-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .staff-shop-content-header-section-right span {
+    font-size: 14px;
+    color: #555;
+  }
+  
+  .staff-shop-content-header-section-right button {
+    padding: 8px 16px;
+    font-size: 14px;
+    color: white;
+    background-color: #007BFF;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .staff-shop-content-header-section-right button:hover {
+    background-color: #0056b3;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .staff-shop-content-header {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .staff-shop-content-header-left {
+      flex-direction: column;
+      gap: 10px;
+    }
+  
+    .staff-shop-content-header > div {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  
+    .staff-shop-content-header-section-right {
+      width: 100%;
+      justify-content: space-between;
+    }
+  
+    .staff-shop-content-header-section-right button {
+      width: 100%;
+      padding: 10px;
+    }
+  }
   
 .staff-payment-container .staff-payment-order-details{
     width: 90%;

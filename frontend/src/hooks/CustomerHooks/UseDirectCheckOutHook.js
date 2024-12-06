@@ -127,15 +127,24 @@ export default function UseDirectCheckOutHook(customerId, selectedItems, navigat
             if (paymentProof) formData.append('paymentProof', paymentProof);
     
             selectedItems.forEach(item =>
-                formData.append('selectedItems[]', JSON.stringify(item))
+                formData.append('selectedItems[]', item) // Correct
             );
-    
+            
             const response = await axios.post(
                 '/customerOrder/createDirectOrderCustomer',
-                formData,
+                {
+                    customerId,
+                    paymentMethod,
+                    billingDetails,
+                    partialPayment,
+                    gcashPaid,
+                    referenceNumber,
+                    paymentProof,
+                    selectedItems, // Pass directly as array
+                },
                 {
                     headers: {
-                        'Content-Type': 'multipart/form-data',
+                        'Content-Type': 'application/json',
                     },
                 }
             );

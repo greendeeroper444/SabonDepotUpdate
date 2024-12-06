@@ -10,7 +10,12 @@ const StaffCartSchema = new mongoose.Schema({
     productId: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,
-        ref: 'Product'
+        refPath: 'productModel',
+    },
+    productModel: {
+        type: String,
+        required: true,
+        enum: ['Product', 'WorkinProgressProduct'],
     },
     productName: {type: String}, 
     quantity: {

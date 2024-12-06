@@ -157,6 +157,77 @@ const WorkinProgressProductModel = require("../../models/WorkinProgressProductMo
 //         }
 //     });
 // };
+// const addProductToCartStaff = async(req, res) => {
+//     const {productId, quantity} = req.body;
+//     const token = req.cookies.token;
+
+//     if(!token){
+//         return res.json({
+//             error: 'Unauthorized - Missing token',
+//         });
+//     }
+
+//     jwt.verify(token, process.env.JWT_SECRET, {}, async(err, decodedToken) => {
+//         if(err){
+//             return res.json({
+//                 error: 'Unauthorized - Invalid token',
+//             });
+//         }
+
+//         const staffId = decodedToken.id;
+
+//         const staffExists = await StaffAuthModel.findById(staffId);
+//         if(!staffExists){
+//             return res.json({
+//                 error: 'Staff does not exist',
+//             });
+//         }
+
+//         try {
+//             //try to find the product in both ProductModel and WorkinProgressProductModel
+//             let product = await ProductModel.findById(productId);
+//             if(!product){
+//                 product = await WorkinProgressProductModel.findById(productId);
+//             }
+
+//             if(!product){
+//                 return res.json({
+//                     error: 'Product does not exist in both ProductModel and WorkinProgressProductModel',
+//                 });
+//             }
+
+//             const finalPrice = product.price;
+
+//             let existingCartItem = await StaffCartModel.findOne({staffId, productId});
+
+//             if(existingCartItem){
+//                 //if item exists, update the quantity and finalPrice
+//                 existingCartItem.quantity += quantity;
+//                 existingCartItem.finalPrice = finalPrice;
+//                 existingCartItem.updatedAt = Date.now();
+//                 await existingCartItem.save();
+//             } else{
+//                 await new StaffCartModel({
+//                     staffId,
+//                     productId,
+//                     quantity,
+//                     finalPrice,
+//                 }).save();
+//             }
+
+//             const updatedCart = await StaffCartModel.find({
+//                 staffId,
+//             }).populate('productId');
+
+//             res.json(updatedCart);
+//         } catch (error) {
+//             console.log(error);
+//             return res.status(500).json({
+//                 message: 'Server error',
+//             });
+//         }
+//     });
+// };
 const addProductToCartStaff = async(req, res) => {
     const {productId, quantity} = req.body;
     const token = req.cookies.token;
@@ -184,10 +255,12 @@ const addProductToCartStaff = async(req, res) => {
         }
 
         try {
-            //try to find the product in both ProductModel and WorkinProgressProductModel
             let product = await ProductModel.findById(productId);
+            let productModel = 'Product';
+
             if(!product){
                 product = await WorkinProgressProductModel.findById(productId);
+                productModel = 'WorkinProgressProduct';
             }
 
             if(!product){
@@ -196,9 +269,13 @@ const addProductToCartStaff = async(req, res) => {
                 });
             }
 
-            const finalPrice = product.price;
+            const finalPrice = product.discountedPrice || product.price;
 
-            let existingCartItem = await StaffCartModel.findOne({staffId, productId});
+            let existingCartItem = await StaffCartModel.findOne({
+                staffId,
+                productId,
+                productModel,
+            });
 
             if(existingCartItem){
                 //if item exists, update the quantity and finalPrice
@@ -210,14 +287,16 @@ const addProductToCartStaff = async(req, res) => {
                 await new StaffCartModel({
                     staffId,
                     productId,
+                    productModel,
                     quantity,
                     finalPrice,
+                    productName: product.productName,
+                    sizeUnit: product.sizeUnit,
+                    productSize: product.productSize,
                 }).save();
             }
 
-            const updatedCart = await StaffCartModel.find({
-                staffId,
-            }).populate('productId');
+            const updatedCart = await StaffCartModel.find({staffId}).populate('productId');
 
             res.json(updatedCart);
         } catch (error) {

@@ -7,7 +7,7 @@ import Draggable from 'react-draggable';
 import toast from 'react-hot-toast';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { calculateFinalPriceModal, calculateSubtotalModal } from '../../../../utils/StaffCalculateFinalPriceUtils';
+import { calculateFinalPriceModalStaff, calculateSubtotalModalStaff } from '../../../../utils/StaffCalculateFinalPriceUtils';
 
 function StaffModalRefillingContentDetailsComponent({isOpen, onClose, cartItems, setCartItems, staffId}) {
     const navigate = useNavigate();
@@ -46,7 +46,7 @@ function StaffModalRefillingContentDetailsComponent({isOpen, onClose, cartItems,
         }
 
         try {
-            const {finalSubtotal} = calculateSubtotalModal(cartItems);
+            const {finalSubtotal} = calculateSubtotalModalStaff(cartItems);
 
             const orderData = {
                 staffId,
@@ -54,9 +54,9 @@ function StaffModalRefillingContentDetailsComponent({isOpen, onClose, cartItems,
                     productId: item.productId._id,
                     productName: item.productId.productName,
                     quantity: item.quantity,
-                    finalPrice: calculateFinalPriceModal(item),
+                    finalPrice: calculateFinalPriceModalStaff(item),
                 })),
-                // totalAmount: calculateSubtotalModal(cartItems),
+                // totalAmount: calculateSubtotalModalStaff(cartItems),
                 totalAmount: parseFloat(finalSubtotal.replace(/,/g, '')),
             };
 
@@ -171,7 +171,7 @@ function StaffModalRefillingContentDetailsComponent({isOpen, onClose, cartItems,
                                                     className='input-quantity-update'
                                                 />
                                                 <span>X</span>
-                                                <span>{`Php ${calculateFinalPriceModal(cartItem)}`}</span>
+                                                <span>{`Php ${calculateFinalPriceModalStaff(cartItem)}`}</span>
                                             </p>
                                         </div>
                                         <span
@@ -190,19 +190,19 @@ function StaffModalRefillingContentDetailsComponent({isOpen, onClose, cartItems,
                 <div className='customer-modal-footer'>
                     <div className='products-subtotal'>
                         <span>Subtotal:</span>
-                        <span>Php {calculateSubtotalModal(cartItems).rawSubtotal}</span>
+                        <span>Php {calculateSubtotalModalStaff(cartItems).rawSubtotal}</span>
                     </div>
                     {
-                        calculateSubtotalModal(cartItems).discountRate > 0 && (
+                        calculateSubtotalModalStaff(cartItems).discountRate > 0 && (
                             <div className='products-subtotal'>
-                                <span>Discount ({calculateSubtotalModal(cartItems).discountRate}%):</span>
-                                <span>- Php {calculateSubtotalModal(cartItems).discountAmount}</span>
+                                <span>Discount ({calculateSubtotalModalStaff(cartItems).discountRate}%):</span>
+                                <span>- Php {calculateSubtotalModalStaff(cartItems).discountAmount}</span>
                             </div>
                         )
                     }
                     <div className='products-subtotal'>
                         <span>Total:</span>
-                        <span> Php {calculateSubtotalModal(cartItems).finalSubtotal}</span>
+                        <span> Php {calculateSubtotalModalStaff(cartItems).finalSubtotal}</span>
                     </div>
                 </div>
 

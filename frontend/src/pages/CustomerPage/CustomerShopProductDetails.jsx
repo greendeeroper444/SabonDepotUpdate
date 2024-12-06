@@ -43,6 +43,7 @@ function CustomerShopProductDetails() {
     
     
     
+    
 
     //event handler for product relateds
     const handleProductClick = (relatedProductId) => {
